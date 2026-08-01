@@ -11,7 +11,6 @@ const LeadSchema = z.object({
   timeline: z.string()
 });
 
-export const runtime = 'edge';
 
 export async function POST(req: NextRequest) {
   try {

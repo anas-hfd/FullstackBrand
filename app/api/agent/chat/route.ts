@@ -1,6 +1,5 @@
+// FullstackBrand
 import { NextRequest } from 'next/server';
-
-export const runtime = 'edge';
 
 const SYSTEM_PROMPT = `You are the FullstackBrand Sales & Agency Assistant. 
 You help clients understand our services: Branding, Marketing, Web Development, Design, AI Agents, AI Automation, and Digital Marketing. 
