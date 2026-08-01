@@ -1,9 +1,6 @@
 // FullstackBrand
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
 import { z } from 'zod';
-
-const prisma = new PrismaClient();
 
 const LeadSchema = z.object({
   name: z.string().min(2),
@@ -14,20 +11,26 @@ const LeadSchema = z.object({
   timeline: z.string()
 });
 
+export const runtime = 'edge';
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const validated = LeadSchema.parse(body);
 
+    // Generate a unique project ID for this lead
     const projectId = `FSB-${Date.now().toString(36).toUpperCase()}`;
 
-    const lead = await prisma.lead.create({
-      data: { ...validated, projectId }
-    });
+    // Log lead data (in production, forward to CRM/email/webhook)
+    console.log('[Lead Submitted]', { projectId, ...validated });
 
-    return NextResponse.json({ success: true, projectId: lead.projectId, lead });
+    return NextResponse.json({
+      success: true,
+      projectId,
+      lead: { ...validated, projectId, createdAt: new Date().toISOString() }
+    });
   } catch (error) {
-    console.error(error);
+    console.error('[Lead Error]', error);
     return NextResponse.json({ success: false, error: 'Invalid submission' }, { status: 400 });
   }
 }

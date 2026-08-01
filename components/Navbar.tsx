@@ -43,7 +43,7 @@ export default function Navbar() {
           {mounted && (
             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
               <Image
-                src={theme === 'dark' ? '/logos/Asset 2.png' : '/logos/Hor-Btxt.png'}
+                src={theme === 'dark' ? '/logos/Hor-Wtxt.png' : '/logos/Hor-Btxt.png'}
                 alt="FullstackBrand"
                 width={180}
                 height={40}
