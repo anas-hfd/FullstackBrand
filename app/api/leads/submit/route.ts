@@ -13,7 +13,7 @@ const LeadSchema = z.object({
   message: z.string().optional().default('N/A'),
 })
 
-const TARGET_EMAIL = process.env.TARGET_EMAIL || 'anas1.hfd@gmail.com'
+const TARGET_EMAIL = process.env.TARGET_EMAIL || 'contact@fullstackbrand.co'
 
 let cachedTransporter: nodemailer.Transporter | null = null
 
@@ -74,8 +74,40 @@ export async function POST(req: NextRequest) {
       `,
     }
 
-    // 1. Try Nodemailer if SMTP credentials exist
-    if (user && pass) {
+    const resendApiKey = process.env.RESEND_API_KEY
+
+    // 1. Try Resend HTTP API (Native fetch — 100% compatible with Cloudflare Edge Workers & Pages)
+    if (resendApiKey) {
+      try {
+        const res = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${resendApiKey}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            from: process.env.RESEND_FROM_EMAIL || 'FullstackBrand Leads <onboarding@resend.dev>',
+            to: [TARGET_EMAIL],
+            reply_to: validated.email,
+            subject: `⚡ [New Inquiry] ${validated.name} - ${validated.services} (${projectId})`,
+            html: mailOptions.html,
+          }),
+        })
+
+        if (res.ok) {
+          emailSent = true
+          providerUsed = 'resend'
+          console.log('[Email Sent via Resend HTTP API to', TARGET_EMAIL, ']')
+        } else {
+          console.error('[Resend API Error]', await res.text())
+        }
+      } catch (resendErr) {
+        console.error('[Resend HTTP Error]', resendErr)
+      }
+    }
+
+    // 2. Try Nodemailer if SMTP credentials exist & Resend didn't run
+    if (!emailSent && user && pass) {
       try {
         const transporter = getTransporter(host, port, secure, user, pass)
         await transporter.sendMail(mailOptions)
@@ -87,7 +119,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // 2. Fallback to FormSubmit HTTP API (Always reliable on Cloudflare Edge via fetch)
+    // 3. Fallback to FormSubmit HTTP API (Always reliable on Cloudflare Edge via fetch)
     if (!emailSent) {
       try {
         const res = await fetch(`https://formsubmit.co/ajax/${TARGET_EMAIL}`, {
