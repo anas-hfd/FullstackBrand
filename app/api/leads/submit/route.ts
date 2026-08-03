@@ -1,7 +1,6 @@
 // FullstackBrand
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-import nodemailer from 'nodemailer'
 
 const LeadSchema = z.object({
   name: z.string().min(2),
@@ -14,23 +13,6 @@ const LeadSchema = z.object({
 })
 
 const TARGET_EMAIL = process.env.TARGET_EMAIL || 'contact@fullstackbrand.co'
-
-let cachedTransporter: nodemailer.Transporter | null = null
-
-function getTransporter(host: string, port: number, secure: boolean, user: string, pass: string) {
-  if (!cachedTransporter) {
-    cachedTransporter = nodemailer.createTransport({
-      host,
-      port,
-      secure,
-      pool: true,
-      maxConnections: 5,
-      maxMessages: 100,
-      auth: { user, pass },
-    })
-  }
-  return cachedTransporter
-}
 
 export async function POST(req: NextRequest) {
   try {
@@ -45,81 +27,56 @@ export async function POST(req: NextRequest) {
     let emailSent = false
     let providerUsed = 'none'
 
-    const host = process.env.SMTP_HOST || 'smtp.gmail.com'
-    const port = Number(process.env.SMTP_PORT) || 465
-    const secure = process.env.SMTP_SECURE === 'true' || port === 465
-    const user = process.env.SMTP_USER || process.env.EMAIL_USER || process.env.TARGET_EMAIL
-    const pass = process.env.SMTP_PASS || process.env.EMAIL_PASS
-
-    const mailOptions = {
-      from: `"FullstackBrand Leads" <${user || TARGET_EMAIL}>`,
-      to: TARGET_EMAIL,
-      replyTo: validated.email,
-      subject: `⚡ [New Inquiry] ${validated.name} - ${validated.services} (${projectId})`,
-      html: `
-        <div style="font-family: Arial, sans-serif; background: #111318; color: #fff; padding: 24px; border-radius: 12px; max-width: 600px;">
-          <h2 style="color: #00CC60; margin-top: 0;">⚡ New Project Inquiry</h2>
-          <p style="color: #888;">Ref: ${projectId}</p>
-          <hr style="border: 0; border-top: 1px solid #333;" />
-          <p><strong>Client Name:</strong> ${validated.name}</p>
-          <p><strong>Email:</strong> <a href="mailto:${validated.email}" style="color: #00CC60;">${validated.email}</a></p>
-          <p><strong>Company:</strong> ${validated.company}</p>
-          <p><strong>Services:</strong> <span style="color: #00CC60;">${validated.services}</span></p>
-          <p><strong>Budget Range:</strong> ${validated.budget}</p>
-          <p><strong>Timeline:</strong> ${validated.timeline}</p>
-          <p><strong>Message / Notes:</strong> ${validated.message}</p>
-          <hr style="border: 0; border-top: 1px solid #333;" />
-          <p style="font-size: 12px; color: #666;">Submitted via FullstackBrand website on ${timestamp} UTC</p>
-        </div>
-      `,
-    }
+    const htmlBody = `
+      <div style="font-family: Arial, sans-serif; background: #111318; color: #fff; padding: 24px; border-radius: 12px; max-width: 600px;">
+        <h2 style="color: #00CC60; margin-top: 0;">⚡ New Project Inquiry</h2>
+        <p style="color: #888;">Ref: ${projectId}</p>
+        <hr style="border: 0; border-top: 1px solid #333;" />
+        <p><strong>Client Name:</strong> ${validated.name}</p>
+        <p><strong>Email:</strong> <a href="mailto:${validated.email}" style="color: #00CC60;">${validated.email}</a></p>
+        <p><strong>Company:</strong> ${validated.company}</p>
+        <p><strong>Services:</strong> <span style="color: #00CC60;">${validated.services}</span></p>
+        <p><strong>Budget Range:</strong> ${validated.budget}</p>
+        <p><strong>Timeline:</strong> ${validated.timeline}</p>
+        <p><strong>Message / Notes:</strong> ${validated.message}</p>
+        <hr style="border: 0; border-top: 1px solid #333;" />
+        <p style="font-size: 12px; color: #666;">Submitted via FullstackBrand website on ${timestamp} UTC</p>
+      </div>
+    `
 
     const resendApiKey = process.env.RESEND_API_KEY
 
-    // 1. Try Resend HTTP API (Native fetch — 100% compatible with Cloudflare Edge Workers & Pages)
+    // 1. Send via Resend HTTP REST API (Native fetch for Cloudflare Pages / Workers Edge Runtime)
     if (resendApiKey) {
       try {
-        const res = await fetch('https://api.resend.com/emails', {
+        const resendRes = await fetch('https://api.resend.com/emails', {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${resendApiKey}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            from: process.env.RESEND_FROM_EMAIL || 'FullstackBrand Leads <onboarding@resend.dev>',
+            from: process.env.RESEND_FROM_EMAIL || 'Website Contact Form <onboarding@resend.dev>',
             to: [TARGET_EMAIL],
             reply_to: validated.email,
             subject: `⚡ [New Inquiry] ${validated.name} - ${validated.services} (${projectId})`,
-            html: mailOptions.html,
+            html: htmlBody,
           }),
         })
 
-        if (res.ok) {
+        if (resendRes.ok) {
           emailSent = true
           providerUsed = 'resend'
           console.log('[Email Sent via Resend HTTP API to', TARGET_EMAIL, ']')
         } else {
-          console.error('[Resend API Error]', await res.text())
+          console.error('[Resend API Error]', await resendRes.text())
         }
       } catch (resendErr) {
-        console.error('[Resend HTTP Error]', resendErr)
+        console.error('[Resend HTTP Exception]', resendErr)
       }
     }
 
-    // 2. Try Nodemailer if SMTP credentials exist & Resend didn't run
-    if (!emailSent && user && pass) {
-      try {
-        const transporter = getTransporter(host, port, secure, user, pass)
-        await transporter.sendMail(mailOptions)
-        emailSent = true
-        providerUsed = 'smtp'
-        console.log('[Email Sent via SMTP to', TARGET_EMAIL, ']')
-      } catch (err) {
-        console.error('[SMTP Error on Cloudflare Worker]', err)
-      }
-    }
-
-    // 3. Fallback to FormSubmit HTTP API (Always reliable on Cloudflare Edge via fetch)
+    // 2. HTTP Fallback via FormSubmit (Guarantees delivery on Cloudflare Edge if RESEND_API_KEY is unset)
     if (!emailSent) {
       try {
         const res = await fetch(`https://formsubmit.co/ajax/${TARGET_EMAIL}`, {
