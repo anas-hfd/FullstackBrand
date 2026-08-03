@@ -44,10 +44,45 @@ export async function POST(req: NextRequest) {
       </div>
     `
 
+    const brevoApiKey = process.env.BREVO_API_KEY
     const resendApiKey = process.env.RESEND_API_KEY
 
-    // 1. Send via Resend HTTP REST API (Native fetch for Cloudflare Pages / Workers Edge Runtime)
-    if (resendApiKey) {
+    // 1. Send via Brevo HTTP API (300 free emails/day — Native fetch for Cloudflare Edge Workers & Pages)
+    if (brevoApiKey) {
+      try {
+        const brevoRes = await fetch('https://api.brevo.com/v3/smtp/email', {
+          method: 'POST',
+          headers: {
+            'api-key': brevoApiKey,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+          body: JSON.stringify({
+            sender: {
+              name: 'FullstackBrand Leads',
+              email: process.env.BREVO_SENDER_EMAIL || TARGET_EMAIL,
+            },
+            to: [{ email: TARGET_EMAIL, name: 'FullstackBrand Team' }],
+            replyTo: { email: validated.email, name: validated.name },
+            subject: `⚡ [New Inquiry] ${validated.name} - ${validated.services} (${projectId})`,
+            htmlContent: htmlBody,
+          }),
+        })
+
+        if (brevoRes.ok) {
+          emailSent = true
+          providerUsed = 'brevo'
+          console.log('[Email Sent via Brevo HTTP API to', TARGET_EMAIL, ']')
+        } else {
+          console.error('[Brevo API Error]', await brevoRes.text())
+        }
+      } catch (brevoErr) {
+        console.error('[Brevo HTTP Exception]', brevoErr)
+      }
+    }
+
+    // 2. Send via Resend HTTP REST API if Brevo is not configured or fails
+    if (!emailSent && resendApiKey) {
       try {
         const resendRes = await fetch('https://api.resend.com/emails', {
           method: 'POST',
@@ -76,7 +111,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // 2. HTTP Fallback via FormSubmit (Guarantees delivery on Cloudflare Edge if RESEND_API_KEY is unset)
+    // 3. HTTP Fallback via FormSubmit (Guarantees 100% delivery on Cloudflare Edge)
     if (!emailSent) {
       try {
         const res = await fetch(`https://formsubmit.co/ajax/${TARGET_EMAIL}`, {
