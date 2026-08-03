@@ -14,10 +14,10 @@ const budgetRanges = [
 const timelines = ['1–3 Months', '3–6 Months', '6–12 Months', 'Ongoing Retainer']
 
 const serviceOptions = [
+  { id: 'brand-design', label: 'Brand Design & Visual Identity', icon: '🎨' },
+  { id: 'digital-marketing', label: 'Digital Marketing & Brand Strategy', icon: '📣' },
   { id: 'web-dev', label: 'Web Development', icon: '🌐' },
-  { id: 'ai-automation', label: 'AI & Automation', icon: '🤖' },
-  { id: 'design', label: 'Design', icon: '🎨' },
-  { id: 'branding-marketing', label: 'Branding & Marketing', icon: '📣' },
+  { id: 'ai-automation', label: 'AI Automation', icon: '🤖' },
   { id: 'full-ecosystem', label: 'Full Ecosystem', icon: '⚡', highlight: true },
 ]
 
@@ -41,7 +41,6 @@ export default function LeadForm() {
 
   const toggleService = (id: string) => {
     if (id === 'full-ecosystem') {
-      // Selecting full ecosystem deselects others and vice versa
       setSelectedServices(prev =>
         prev.includes('full-ecosystem') ? [] : ['full-ecosystem']
       )
@@ -72,6 +71,11 @@ export default function LeadForm() {
     setErrors({})
     setLoading(true)
     try {
+      // Map service IDs back to readable service labels
+      const readableServices = selectedServices.map(
+        id => serviceOptions.find(opt => opt.id === id)?.label || id
+      )
+
       const res = await fetch('/api/leads/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -79,7 +83,7 @@ export default function LeadForm() {
           name: sanitize(form.name),
           email: sanitize(form.email, 100),
           company: sanitize(form.company),
-          services: selectedServices,
+          services: readableServices.join(', '),
           budget: form.budget,
           timeline: form.timeline,
           message: sanitize(form.message, 1000),

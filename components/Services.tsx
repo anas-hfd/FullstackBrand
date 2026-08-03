@@ -1,13 +1,13 @@
 // FullstackBrand
 'use client'
 import { motion } from 'framer-motion'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import {
   Code2, Bot, PenTool, Megaphone,
   Globe, LayoutDashboard, Smartphone, Package,
   Workflow, MessageSquareCode, Mic, Sparkles,
-  Palette, Frame, Layers, Search, BarChart2, Target, TrendingUp,
-  ChevronDown, Fingerprint, Monitor, Share2, Mail,
+  Palette, Frame, Search, BarChart2, Target, TrendingUp,
+  ChevronDown, Fingerprint, Monitor,
 } from 'lucide-react'
 
 const pillars = [
@@ -23,10 +23,10 @@ const pillars = [
     gradient: 'from-pink-500/20 via-pink-500/8 to-transparent',
     borderColor: 'rgba(236,72,153,0.5)',
     services: [
-      { icon: Fingerprint,     label: 'Logo & Brand Identity',        desc: 'Distinctive marks and full visual identity systems' },
-      { icon: Palette,         label: 'Brand Guidelines & Systems',   desc: 'Typography, color, and voice consistency at scale' },
-      { icon: Frame,           label: 'UI/UX Design',                 desc: 'User research, wireframes, and high-fidelity prototypes' },
-      { icon: Monitor,         label: 'Product & Dashboard Design',   desc: 'End-to-end product design and scalable design systems' },
+      { icon: Fingerprint,     label: 'Brand Visual & Motion Identity', desc: 'Distinctive marks, motion design, and full visual identity systems' },
+      { icon: Palette,         label: 'Brand Guidelines & Systems',     desc: 'Typography, color, and voice consistency at scale' },
+      { icon: Frame,           label: 'UI/UX Design',                   desc: 'User research, wireframes, and high-fidelity prototypes' },
+      { icon: Monitor,         label: 'Product & Dashboard Design',     desc: 'End-to-end product design and scalable design systems' },
     ],
   },
   {
@@ -91,14 +91,16 @@ function PillarCard({
   hoveredId,
   onHover,
   onLeave,
+  cardRef,
 }: {
   pillar: typeof pillars[0]
   index: number
   hoveredId: number | null
   onHover: (id: number) => void
   onLeave: () => void
+  cardRef?: (node: HTMLDivElement | null) => void
 }) {
-  const ref = useRef<HTMLDivElement>(null)
+  const localRef = useRef<HTMLDivElement>(null)
   const [tilt, setTilt] = useState({ x: 0, y: 0 })
   const [expanded, setExpanded] = useState(false)
   const Icon = pillar.icon
@@ -106,9 +108,15 @@ function PillarCard({
   const isHovered = hoveredId === pillar.id
   const isShrunk = hoveredId !== null && hoveredId !== pillar.id
 
+  const setRefs = (node: HTMLDivElement | null) => {
+    ;(localRef as any).current = node
+    if (cardRef) cardRef(node)
+  }
+
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (!ref.current) return
-    const rect = ref.current.getBoundingClientRect()
+    if (window.innerWidth < 1024) return // disable 3D tilt on mobile
+    if (!localRef.current) return
+    const rect = localRef.current.getBoundingClientRect()
     const x = (e.clientX - rect.left) / rect.width - 0.5
     const y = (e.clientY - rect.top) / rect.height - 0.5
     setTilt({ x: y * 7, y: -x * 7 })
@@ -121,7 +129,7 @@ function PillarCard({
 
   return (
     <motion.div
-      ref={ref}
+      ref={setRefs}
       onMouseMove={handleMouseMove}
       onMouseEnter={() => onHover(pillar.id)}
       onMouseLeave={handleMouseLeave}
@@ -239,6 +247,40 @@ function PillarCard({
 
 export default function Services() {
   const [hoveredId, setHoveredId] = useState<number | null>(null)
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([])
+
+  // Mobile scroll-based active card detection
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.innerWidth >= 1024) return // Mobile/tablet screens only
+      const viewportCenter = window.innerHeight / 2
+
+      let closestId: number | null = null
+      let minDistance = Infinity
+
+      cardRefs.current.forEach((card, idx) => {
+        if (!card) return
+        const rect = card.getBoundingClientRect()
+        // Check if card is visible in viewport
+        if (rect.bottom > 0 && rect.top < window.innerHeight) {
+          const cardCenter = rect.top + rect.height / 2
+          const dist = Math.abs(cardCenter - viewportCenter)
+          if (dist < minDistance) {
+            minDistance = dist
+            closestId = pillars[idx].id
+          }
+        }
+      })
+
+      if (closestId !== null) {
+        setHoveredId(closestId)
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   return (
     <section id="services" className="max-w-7xl mx-auto px-6 py-24">
@@ -267,6 +309,7 @@ export default function Services() {
             hoveredId={hoveredId}
             onHover={setHoveredId}
             onLeave={() => setHoveredId(null)}
+            cardRef={el => { cardRefs.current[i] = el }}
           />
         ))}
       </div>

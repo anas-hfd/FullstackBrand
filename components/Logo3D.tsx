@@ -155,7 +155,7 @@ function OrbitRing({
                   style={{ boxShadow: `0 0 18px ${orbit.color}55` }}
                 >
                   <Image
-                    src={theme === 'dark' ? '/logos/Logomark-W.png' : '/logos/logomark-B.png'}
+                    src={theme === 'dark' ? '/logos/Logomark-White.png' : '/logos/Logomark-Black.png'}
                     alt="FullstackBrand"
                     width={18}
                     height={18}
@@ -368,7 +368,7 @@ function CentralPlanet({
             }}
           >
             <Image
-              src="/logos/logomark.png"
+              src="/logos/Logomark.png"
               alt="FullstackBrand"
               width={96}
               height={96}

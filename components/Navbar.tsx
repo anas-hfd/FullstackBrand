@@ -7,10 +7,10 @@ import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const navLinks = [
-  { label: 'Services', href: '#services' },
-  { label: 'Process', href: '#process' },
-  { label: 'AI Automation', href: '#ai' },
-  { label: 'Contact', href: '#start' },
+  { label: 'Services', href: '/#services' },
+  { label: 'Process', href: '/#process' },
+  { label: 'AI Automation', href: '/#ai' },
+  { label: 'Contact', href: '/#start' },
 ]
 
 export default function Navbar() {
@@ -43,7 +43,7 @@ export default function Navbar() {
           {mounted && (
             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
               <Image
-                src={theme === 'dark' ? '/logos/Hor-Wtxt.png' : '/logos/Hor-Btxt.png'}
+                src={theme === 'dark' ? '/logos/Horizontal-WhiteTXT.png' : '/logos/Horizontal-BlackTXT.png'}
                 alt="FullstackBrand"
                 width={180}
                 height={40}

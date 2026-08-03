@@ -32,7 +32,9 @@ export default function ParticleField() {
 
     const initParticles = () => {
       particles = []
-      const count = Math.floor((width * height) / 10000)
+      const isMobile = width < 768
+      const maxCount = isMobile ? 15 : 35
+      const count = Math.min(Math.floor((width * height) / 25000), maxCount)
       for (let i = 0; i < count; i++) {
         const vx = (Math.random() - 0.5) * 0.4
         const vy = (Math.random() - 0.5) * 0.4

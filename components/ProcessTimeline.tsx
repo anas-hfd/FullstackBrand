@@ -1,7 +1,7 @@
 // FullstackBrand
 'use client'
 import { motion, useInView } from 'framer-motion'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import {
   Telescope, Map, Palette, Code2, Bot, Rocket, TrendingUp,
 } from 'lucide-react'
@@ -44,7 +44,7 @@ const steps = [
     subtitle: 'Agile, transparent building',
     description:
       'We build in two-week sprints with weekly demos. Clean, maintainable code. Performance-first engineering. You always know exactly where your project stands.',
-    accent: '#10B981',
+    accent: '#00CC60',
     gradient: 'from-brand-light/20 to-emerald-500/10',
   },
   {
@@ -197,12 +197,14 @@ function MobileStepCard({
   hoveredIndex,
   onHover,
   onLeave,
+  cardRef,
 }: {
   step: typeof steps[0]
   index: number
   hoveredIndex: number | null
   onHover: (i: number) => void
   onLeave: () => void
+  cardRef?: (node: HTMLDivElement | null) => void
 }) {
   const Icon = step.icon
   const isHovered = hoveredIndex === index
@@ -210,6 +212,7 @@ function MobileStepCard({
 
   return (
     <motion.div
+      ref={cardRef}
       initial={{ opacity: 0, x: -20 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, margin: '-40px' }}
@@ -264,6 +267,39 @@ function MobileStepCard({
 /* ─── Section ───────────────────────────────────────────────────────────── */
 export default function ProcessTimeline() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+  const mobileCardRefs = useRef<(HTMLDivElement | null)[]>([])
+
+  // Mobile scroll-based active card detection
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.innerWidth >= 1024) return // Mobile/tablet viewports only
+      const viewportCenter = window.innerHeight / 2
+
+      let closestIdx: number | null = null
+      let minDistance = Infinity
+
+      mobileCardRefs.current.forEach((card, idx) => {
+        if (!card) return
+        const rect = card.getBoundingClientRect()
+        if (rect.bottom > 0 && rect.top < window.innerHeight) {
+          const cardCenter = rect.top + rect.height / 2
+          const dist = Math.abs(cardCenter - viewportCenter)
+          if (dist < minDistance) {
+            minDistance = dist
+            closestIdx = idx
+          }
+        }
+      })
+
+      if (closestIdx !== null) {
+        setHoveredIndex(closestIdx)
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   return (
     <section id="process" className="max-w-7xl mx-auto px-6 py-24 overflow-hidden">
@@ -309,6 +345,7 @@ export default function ProcessTimeline() {
               hoveredIndex={hoveredIndex}
               onHover={setHoveredIndex}
               onLeave={() => setHoveredIndex(null)}
+              cardRef={el => { mobileCardRefs.current[i] = el }}
             />
           ))}
         </div>

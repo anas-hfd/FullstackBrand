@@ -8,21 +8,20 @@ import { Instagram, Linkedin, ArrowUpRight, Mail, MapPin, Phone, MessageCircle }
 
 const footerLinks = {
   Services: [
-    { label: 'Brand Design & Visual Identity', href: '#services' },
-    { label: 'Digital Marketing & Brand Strategy', href: '#services' },
-    { label: 'Web Development', href: '#services' },
-    { label: 'AI Automation', href: '#ai' },
+    { label: 'Brand Design & Visual Identity', href: '/#services' },
+    { label: 'Digital Marketing & Brand Strategy', href: '/#services' },
+    { label: 'Web Development', href: '/#services' },
+    { label: 'AI Automation', href: '/#ai' },
   ],
   Company: [
-    { label: 'Our Services', href: '#services' },
-    { label: 'How We Work', href: '#process' },
-    { label: 'AI Automation', href: '#ai' },
-    { label: 'Start a Project', href: '#start' },
+    { label: 'Our Services', href: '/#services' },
+    { label: 'How We Work', href: '/#process' },
+    { label: 'AI Automation', href: '/#ai' },
+    { label: 'Start a Project', href: '/#start' },
   ],
   Legal: [
-    { label: 'Privacy Policy', href: '#' },
-    { label: 'Terms of Service', href: '#' },
-    { label: 'Cookie Policy', href: '#' },
+    { label: 'Privacy Policy', href: '/privacy' },
+    { label: 'Terms of Service', href: '/terms' },
   ],
 }
 
@@ -72,7 +71,7 @@ export default function Footer() {
               <Link href="/" className="inline-block mb-6">
                 {mounted && (
                   <Image
-                    src={theme === 'dark' ? '/logos/Full-V-W-desc.png' : '/logos/Full-H-B-desc.png'}
+                    src={theme === 'dark' ? '/logos/VerticalLogo_Full-WhiteTXT+desc.png' : '/logos/VerticalLogo_FULL-BlackTXT+desc.png'}
                     alt="FullstackBrand"
                     width={200}
                     height={80}
@@ -153,7 +152,7 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          {/* Copyright + small logo */}
+          {/* Copyright + logomark */}
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -163,11 +162,11 @@ export default function Footer() {
           >
             {mounted && (
               <Image
-                src={theme === 'dark' ? '/logos/Logomark-W.png' : '/logos/logomark-B.png'}
-                alt="FullstackBrand"
+                src={theme === 'dark' ? '/logos/Logomark-White.png' : '/logos/Logomark-Black.png'}
+                alt="FullstackBrand Reserved Rights"
                 width={28}
                 height={28}
-                className="object-contain opacity-60"
+                className="object-contain opacity-80"
               />
             )}
             <span className="text-xs text-slate-400 dark:text-slate-500">
@@ -201,4 +200,3 @@ export default function Footer() {
     </footer>
   )
 }
-

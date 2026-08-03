@@ -11,7 +11,7 @@ export default {
     extend: {
       colors: {
         brand: {
-          light: '#10B981',
+          light: '#00CC60',
           dark: '#00CC60',
           electric: '#22C55E',
           obsidian: '#111318',
