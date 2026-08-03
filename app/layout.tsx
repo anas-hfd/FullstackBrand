@@ -13,7 +13,12 @@ export const metadata = {
   description:
     'FullstackBrand engineers intelligent digital ecosystems — premium web development, AI automation, branding, and growth marketing for ambitious businesses.',
   icons: {
-    icon: '/logos/Logomark.png',
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon.png', type: 'image/png' },
+      { url: '/logos/Logomark.png', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico',
     apple: '/logos/Logomark.png',
   },
   metadataBase: new URL('https://fullstackbrand.co'),
@@ -31,7 +36,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/logos/Logomark.png" type="image/png" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/favicon.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/logos/Logomark.png" />
       </head>
       <body
         className={`${inter.className} bg-brand-offwhite dark:bg-brand-obsidian text-slate-900 dark:text-white transition-colors duration-300`}

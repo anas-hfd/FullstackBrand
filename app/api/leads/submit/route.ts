@@ -42,6 +42,7 @@ export async function POST(req: NextRequest) {
 
     console.log('[Lead Submitted]', { projectId, ...validated })
 
+    let emailSent = false
     let providerUsed = 'none'
 
     const host = process.env.SMTP_HOST || 'smtp.gmail.com'
@@ -73,52 +74,57 @@ export async function POST(req: NextRequest) {
       `,
     }
 
+    // 1. Try Nodemailer if SMTP credentials exist
     if (user && pass) {
-      providerUsed = 'smtp'
-      const transporter = getTransporter(host, port, secure, user, pass)
-
-      // Fast email sending with timeout fallback to ensure client response is instantaneous
-      const sendPromise = transporter.sendMail(mailOptions).then(() => {
+      try {
+        const transporter = getTransporter(host, port, secure, user, pass)
+        await transporter.sendMail(mailOptions)
+        emailSent = true
+        providerUsed = 'smtp'
         console.log('[Email Sent via SMTP to', TARGET_EMAIL, ']')
-      }).catch(err => {
-        console.error('[SMTP Error]', err)
-      })
+      } catch (err) {
+        console.error('[SMTP Error on Cloudflare Worker]', err)
+      }
+    }
 
-      // Race with 300ms so if SMTP is fast it completes, otherwise it continues in background without blocking response
-      await Promise.race([
-        sendPromise,
-        new Promise(resolve => setTimeout(resolve, 300))
-      ])
-    } else {
-      providerUsed = 'formsubmit'
-      fetch(`https://formsubmit.co/ajax/${TARGET_EMAIL}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({
-          _subject: `⚡ New Project Inquiry: ${validated.name} (${projectId})`,
-          _template: 'table',
-          _captcha: 'false',
-          "Project ID": projectId,
-          "Client Name": validated.name,
-          "Client Email": validated.email,
-          "Company": validated.company,
-          "Services": validated.services,
-          "Budget": validated.budget,
-          "Timeline": validated.timeline,
-          "Message": validated.message,
-          "Timestamp": `${timestamp} UTC`,
-        }),
-      }).then(() => {
-        console.log('[Email Sent via FormSubmit API to', TARGET_EMAIL, ']')
-      }).catch(httpErr => {
-        console.error('[HTTP Mail Error]', httpErr)
-      })
+    // 2. Fallback to FormSubmit HTTP API (Always reliable on Cloudflare Edge via fetch)
+    if (!emailSent) {
+      try {
+        const res = await fetch(`https://formsubmit.co/ajax/${TARGET_EMAIL}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({
+            _subject: `⚡ New Project Inquiry: ${validated.name} (${projectId})`,
+            _template: 'table',
+            _captcha: 'false',
+            "Project ID": projectId,
+            "Client Name": validated.name,
+            "Client Email": validated.email,
+            "Company": validated.company,
+            "Services": validated.services,
+            "Budget": validated.budget,
+            "Timeline": validated.timeline,
+            "Message": validated.message,
+            "Timestamp": `${timestamp} UTC`,
+          }),
+        })
+
+        if (res.ok) {
+          emailSent = true
+          providerUsed = 'formsubmit'
+          console.log('[Email Sent via FormSubmit API to', TARGET_EMAIL, ']')
+        } else {
+          console.error('[FormSubmit API Error]', await res.text())
+        }
+      } catch (httpErr) {
+        console.error('[HTTP Mail Fallback Error]', httpErr)
+      }
     }
 
     return NextResponse.json({
       success: true,
       projectId,
-      emailSent: true,
+      emailSent,
       providerUsed,
       recipient: TARGET_EMAIL,
       lead: { ...validated, projectId, createdAt: new Date().toISOString() },
