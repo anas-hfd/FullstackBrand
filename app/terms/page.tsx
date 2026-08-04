@@ -29,7 +29,7 @@ export default function TermsOfServicePage() {
           Terms of Service
         </h1>
         <p className="text-slate-500 dark:text-slate-400 text-sm md:text-base leading-relaxed">
-          These Terms of Service govern the engagement between FullstackBrand LLC (&quot;FullstackBrand&quot;, &quot;we&quot;, &quot;our&quot;, or &quot;us&quot;) and client entities or individuals (&quot;Client&quot;, &quot;you&quot;). By accessing our website, commissioning services, or interacting with our digital ecosystem, you agree to these legal conditions.
+          These Terms of Service govern the engagement between Fullstack Brand LLC (&quot;FullstackBrand&quot;, &quot;we&quot;, &quot;our&quot;, or &quot;us&quot;) and client entities or individuals (&quot;Client&quot;, &quot;you&quot;). By accessing our website, commissioning services, or interacting with our digital ecosystem, you agree to these legal conditions.
         </p>
         <div className="mt-6 text-xs font-mono text-slate-400">
           Effective Date: {effectiveDate} · Document Ref: FSB-TOS-2026
