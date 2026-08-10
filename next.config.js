@@ -46,6 +46,8 @@ const securityHeaders = [
 ]
 
 const nextConfig = {
+  compress: true,
+  poweredByHeader: false,
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion'],
   },

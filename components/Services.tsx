@@ -294,7 +294,7 @@ export default function Services() {
         <span className="text-xs uppercase tracking-[0.2em] text-brand-light dark:text-brand-dark font-semibold mb-3 block">
           What we do
         </span>
-        <h2 className="text-4xl md:text-5xl font-black mb-4 tracking-tight">Our Services</h2>
+        <h2 className="text-4xl md:text-5xl font-black mb-4 tracking-tight">Web Development, UI/UX &amp; AI Services</h2>
         <p className="text-slate-500 dark:text-slate-400 max-w-lg mx-auto">
           Four core disciplines. One cohesive ecosystem. Everything your brand needs to compete and win in the digital era.
         </p>

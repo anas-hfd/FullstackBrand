@@ -136,7 +136,7 @@ export default function Hero() {
           >
             <Sparkles size={14} className="text-brand-light dark:text-brand-dark" />
           </motion.span>
-          Brand Experience · AI-Powered Digital Agency
+          Web Development Agency · AI-Powered Digital Solutions
           <span className="w-1.5 h-1.5 rounded-full bg-brand-light dark:bg-brand-dark animate-pulse" />
         </motion.div>
 
@@ -159,7 +159,7 @@ export default function Hero() {
             />
           </span>
           <br />
-          <span className="text-slate-900 dark:text-white">Brands.</span>
+          <span className="text-slate-900 dark:text-white">Digital Brands.</span>
         </motion.h1>
 
         {/* Subtext */}
@@ -170,7 +170,7 @@ export default function Hero() {
           className="text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto mb-12 leading-relaxed"
           style={{ transform: 'translateZ(15px)' }}
         >
-          From futuristic web experiences to autonomous AI agents —
+          Full-stack web development, UI/UX design, AI automation &amp; branding —
           we engineer the digital ecosystem your business needs to{' '}
           <span className="text-brand-light dark:text-brand-dark font-semibold">scale without limits</span>.
         </motion.p>

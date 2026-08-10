@@ -4,6 +4,11 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Bot, Workflow, CheckCircle2, Zap, Brain, Shield, ArrowRight } from 'lucide-react'
 
+interface AgentStep {
+  action: string
+  duration: string
+}
+
 const capabilities = [
   { icon: Brain, label: 'Best-in-Class LLM', desc: 'The best model selected for your specific task' },
   { icon: Workflow, label: 'Agent Orchestration', desc: 'Complex multi-step agent pipelines' },
@@ -12,18 +17,21 @@ const capabilities = [
 ]
 
 export default function AIShowcase() {
-  const [steps, setSteps] = useState<any[]>([])
+  const [steps, setSteps] = useState<AgentStep[]>([])
   const [activeStep, setActiveStep] = useState(-1)
 
   useEffect(() => {
     fetch('/api/automation/demo')
       .then(res => res.json())
-      .then(data => {
+      .then((data: { steps: AgentStep[] }) => {
         setSteps(data.steps)
         // Animate steps one by one
-        data.steps.forEach((_: any, i: number) => {
+        data.steps.forEach((_: AgentStep, i: number) => {
           setTimeout(() => setActiveStep(i), i * 800 + 600)
         })
+      })
+      .catch(() => {
+        // Silently fail — section renders without demo steps
       })
   }, [])
 
@@ -163,7 +171,7 @@ export default function AIShowcase() {
           {/* Footer CTA */}
           <div className="px-6 py-4 border-t border-slate-200/50 dark:border-white/10">
             <a
-              href="#configurator"
+              href="#start"
               className="flex items-center gap-2 text-xs font-semibold text-brand-light dark:text-brand-dark hover:gap-3 transition-all duration-200"
             >
               Deploy an AI Agent for your business <ArrowRight size={12} />
