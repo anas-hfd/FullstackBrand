@@ -8,11 +8,6 @@ interface Message {
   content: string
 }
 
-const QUICK_PROMPTS = [
-  'What services do you offer?',
-  'How much does it cost?',
-  'How do you work?',
-]
 
 /* Animated thinking dots shown while streaming is pending */
 function ThinkingDots() {
@@ -36,7 +31,7 @@ export default function AIAssistant() {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: 'Hi! 👋 I\'m the FullstackBrand AI — how can I help you today?',
+      content: "Hi! I'm FullstackBrand's AI assistant. Ask me anything about our services, pricing, process, or how we can help your business — I'm here to help.",
     },
   ])
   const [isThinking, setIsThinking] = useState(false)
@@ -131,14 +126,14 @@ export default function AIAssistant() {
       if (firstChunk) {
         setMessages(prev => [
           ...prev,
-          { role: 'assistant', content: 'Sorry, I couldn\'t process that. Please try again.' },
+          { role: 'assistant', content: "I'm having a moment — something went wrong on my end. Please try again, or reach out directly at contact@fullstackbrand.co and we'll be happy to help!" },
         ])
       }
     } catch (error) {
       console.error('Chat error:', error)
       setMessages(prev => [
         ...prev,
-        { role: 'assistant', content: 'Something went wrong. Please try again in a moment.' },
+        { role: 'assistant', content: "I'm having a moment — something went wrong on my end. Please try again, or reach out directly at contact@fullstackbrand.co and we'll be happy to help!" },
       ])
     } finally {
       setIsThinking(false)
@@ -232,20 +227,6 @@ export default function AIAssistant() {
               </AnimatePresence>
             </div>
 
-            {/* Quick prompts (only when no messages beyond the greeting) */}
-            {messages.length === 1 && !isThinking && (
-              <div className="px-4 pb-2 flex gap-2 flex-wrap">
-                {QUICK_PROMPTS.map(p => (
-                  <button
-                    key={p}
-                    onClick={() => handleSend(p)}
-                    className="text-xs px-3 py-1.5 rounded-full glass border-brand-light/20 dark:border-brand-dark/20 text-brand-light dark:text-brand-dark font-medium hover:bg-brand-light/10 dark:hover:bg-brand-dark/10 transition-colors"
-                  >
-                    {p}
-                  </button>
-                ))}
-              </div>
-            )}
 
             {/* Input bar */}
             <div className="p-3 flex gap-2 border-t border-slate-200/50 dark:border-white/10 flex-shrink-0">
