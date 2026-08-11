@@ -214,10 +214,13 @@ export default function LeadForm() {
                 {serviceOptions.map(({ id, label, icon, highlight }) => {
                   const active = selectedServices.includes(id)
                   return (
-                    <button
+                    <motion.button
                       key={id}
                       type="button"
                       onClick={() => toggleService(id)}
+                      whileHover={{ x: active ? 0 : 4 }}
+                      whileTap={{ x: 0 }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 20 }}
                       className={`
                         relative flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium transition-all duration-200
                         ${active
@@ -240,7 +243,7 @@ export default function LeadForm() {
                           <Check size={10} className="text-current" />
                         </motion.span>
                       )}
-                    </button>
+                    </motion.button>
                   )
                 })}
               </div>
@@ -297,9 +300,10 @@ export default function LeadForm() {
             <motion.button
               type="submit"
               disabled={loading}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="w-full flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-brand-light dark:bg-brand-dark text-white font-bold text-base disabled:opacity-60 shadow-lg shadow-brand-light/30 dark:shadow-brand-dark/20 transition-all"
+              whileHover={!loading ? { x: 6 } : {}}
+              whileTap={!loading ? { x: 0 } : {}}
+              transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+              className="w-full flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-brand-light dark:bg-brand-dark text-white font-bold text-base disabled:opacity-60 shadow-lg shadow-brand-light/30 dark:shadow-brand-dark/20 transition-opacity"
             >
               {loading ? (
                 <>

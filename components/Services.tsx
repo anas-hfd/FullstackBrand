@@ -292,11 +292,25 @@ export default function Services() {
         className="text-center mb-16"
       >
         <span className="text-xs uppercase tracking-[0.2em] text-brand-light dark:text-brand-dark font-semibold mb-3 block">
-          What we do
+          Our Services
         </span>
-        <h2 className="text-4xl md:text-5xl font-black mb-4 tracking-tight">Web Development, UI/UX &amp; AI Services</h2>
+        <h2
+          className="text-5xl md:text-7xl font-black mb-4 tracking-tight text-slate-900 dark:text-white"
+          style={{
+            textShadow: '0 0 40px rgba(0,255,102,0.35), 0 0 80px rgba(0,255,102,0.15)',
+          }}
+        >
+          Branding, Design, Web Dev,{' '}
+          <span
+            className="text-brand-light dark:text-brand-dark"
+            style={{ textShadow: '0 0 30px rgba(0,255,102,0.6), 0 0 60px rgba(0,255,102,0.25)' }}
+          >
+            AI
+          </span>{' '}
+          &amp; Automation
+        </h2>
         <p className="text-slate-500 dark:text-slate-400 max-w-lg mx-auto">
-          Four core disciplines. One cohesive ecosystem. Everything your brand needs to compete and win in the digital era.
+          Four disciplines. One seamless ecosystem. Everything your brand needs to stand out, scale up, and dominate the digital era.
         </p>
       </motion.div>
 

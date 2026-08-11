@@ -170,12 +170,15 @@ export default function AIShowcase() {
 
           {/* Footer CTA */}
           <div className="px-6 py-4 border-t border-slate-200/50 dark:border-white/10">
-            <a
+            <motion.a
               href="#start"
+              whileHover={{ x: 4 }}
+              whileTap={{ x: 0 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 20 }}
               className="flex items-center gap-2 text-xs font-semibold text-brand-light dark:text-brand-dark hover:gap-3 transition-all duration-200"
             >
               Deploy an AI Agent for your business <ArrowRight size={12} />
-            </a>
+            </motion.a>
           </div>
         </motion.div>
       </div>

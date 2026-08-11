@@ -94,9 +94,9 @@ export default function Navbar() {
           {/* CTA button */}
           <motion.a
             href="#start"
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.97 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            whileHover={{ x: 5 }}
+            whileTap={{ x: 0 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 20 }}
             className="hidden sm:flex items-center gap-2 bg-brand-light dark:bg-brand-dark text-white px-4 py-2 rounded-full text-sm font-bold shadow-md shadow-brand-light/25 dark:shadow-brand-dark/20"
           >
             <Rocket size={14} />
@@ -137,6 +137,9 @@ export default function Navbar() {
             <motion.a
               href="#start"
               onClick={() => setMobileOpen(false)}
+              whileHover={{ x: 5 }}
+              whileTap={{ x: 0 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 20 }}
               className="mt-3 flex items-center justify-center gap-2 bg-brand-light dark:bg-brand-dark text-white px-4 py-2.5 rounded-full text-sm font-bold w-full"
             >
               <Rocket size={14} />

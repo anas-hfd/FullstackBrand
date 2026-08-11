@@ -15,22 +15,24 @@ const SITE_NAME = 'FullstackBrand'
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Fullstack Brand | Web Development, UI/UX & Digital Solutions',
+    default: ' FullstackBrand| Brand Experience · AI-Powered Digital Agency',
     template: '%s | FullstackBrand',
   },
   description:
-    'FullstackBrand is an AI-powered full-stack web development agency delivering UI/UX design, AI automation, branding & digital marketing. Build your intelligent digital ecosystem today.',
+    'Your brand deserves more than a logo — FullstackBrand is a full branding ecosystem agency delivering bold visual identities, AI-powered automation, high-performance web development, and growth-driven digital marketing. One partner. Infinite impact.',
   keywords: [
-    'web development agency',
-    'fullstack web solutions',
-    'UI/UX design agency',
+    'branding agency',
+    'visual identity design',
+    'brand identity agency',
     'AI automation agency',
+    'web development agency',
     'digital marketing agency',
-    'brand identity design',
-    'Next.js web development',
+    'full branding ecosystem',
+    'brand strategy',
     'AI agents integration',
-    'SaaS development',
     'FullstackBrand',
+    'UI/UX design agency',
+    'growth marketing',
   ],
   authors: [{ name: 'FullstackBrand', url: SITE_URL }],
   creator: 'FullstackBrand',
@@ -45,17 +47,16 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
+      { url: '/logos/Logomark.png', type: 'image/png', sizes: '512x512' },
       { url: '/favicon.ico', sizes: 'any' },
-      { url: '/favicon.png', type: 'image/png' },
-      { url: '/logos/Logomark.png', type: 'image/png' },
     ],
-    shortcut: '/favicon.ico',
+    shortcut: '/logos/Logomark.png',
     apple: '/logos/Logomark.png',
   },
   openGraph: {
-    title: 'Fullstack Brand | Web Development, UI/UX & Digital Solutions',
+    title: 'Brand Experience · AI-Powered Digital Agency | FullstackBrand',
     description:
-      'From futuristic web experiences to autonomous AI agents — FullstackBrand engineers the digital ecosystem your business needs to scale without limits.',
+      'Your brand deserves more than a logo. FullstackBrand builds complete brand ecosystems — bold visual identities, AI automation, stunning web experiences & results-driven marketing.',
     url: SITE_URL,
     siteName: SITE_NAME,
     type: 'website',
@@ -65,16 +66,16 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'FullstackBrand — We Build Intelligent Brands',
+        alt: 'FullstackBrand — Full Branding Ecosystem Agency',
         type: 'image/png',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Fullstack Brand | Web Development, UI/UX & Digital Solutions',
+    title: 'Brand Experience · AI-Powered Digital Agency | FullstackBrand',
     description:
-      'AI-powered full-stack agency: web development, UI/UX design, AI automation & digital marketing. Engineer your brand without limits.',
+      'Bold branding. Intelligent automation. High-performance web. Growth marketing. FullstackBrand is your full branding ecosystem partner.',
     images: ['/og-image.png'],
     site: '@fullstackbrand',
     creator: '@fullstackbrand',
@@ -96,15 +97,23 @@ const jsonLd = {
         height: 200,
       },
       description:
-        'FullstackBrand is an AI-powered full-stack digital agency specializing in web development, UI/UX design, AI automation, branding, and digital marketing.',
+        'FullstackBrand is a full branding ecosystem agency specializing in visual identity design, AI automation, web development, and growth-driven digital marketing.',
       foundingDate: '2026',
-      contactPoint: {
-        '@type': 'ContactPoint',
-        contactType: 'Customer Support',
-        email: 'contact@fullstackbrand.co',
-        telephone: '+1-945-997-2019',
-        availableLanguage: 'English',
-      },
+      contactPoint: [
+        {
+          '@type': 'ContactPoint',
+          contactType: 'Customer Support',
+          email: 'contact@fullstackbrand.co',
+          telephone: '+1-945-997-2019',
+          availableLanguage: 'English',
+        },
+        {
+          '@type': 'ContactPoint',
+          contactType: 'Sales',
+          telephone: '+1-945-997-2019',
+          availableLanguage: 'English',
+        },
+      ],
       address: {
         '@type': 'PostalAddress',
         streetAddress: '1309 Coffeen Avenue STE 1200',
@@ -113,6 +122,7 @@ const jsonLd = {
         postalCode: '82801',
         addressCountry: 'US',
       },
+      telephone: '+1-945-997-2019',
       sameAs: [
         'https://www.instagram.com/fullstackbrand_agency',
         'https://www.threads.com/@fullstackbrand_agency',
@@ -160,9 +170,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Favicon */}
+        {/* Favicon — Logomark as primary for best search engine appearance */}
+        <link rel="icon" href="/logos/Logomark.png" type="image/png" sizes="512x512" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/favicon.png" type="image/png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/logos/Logomark.png" />
         <link rel="apple-touch-icon" href="/logos/Logomark.png" />
 
         {/* Canonical */}

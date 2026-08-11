@@ -139,13 +139,16 @@ export default function ValueSection() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="text-center mt-12"
         >
-          <a
+          <motion.a
             href="#start"
-            className="inline-flex items-center gap-2 bg-brand-light dark:bg-brand-dark text-white px-8 py-4 rounded-full font-bold text-sm hover:scale-105 transition-transform shadow-lg shadow-brand-light/20 dark:shadow-brand-dark/20 group"
+            whileHover={{ x: 6 }}
+            whileTap={{ x: 0 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+            className="inline-flex items-center gap-2 bg-brand-light dark:bg-brand-dark text-white px-8 py-4 rounded-full font-bold text-sm shadow-lg shadow-brand-light/20 dark:shadow-brand-dark/20 group"
           >
             Start your transformation
             <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-          </a>
+          </motion.a>
         </motion.div>
       </div>
     </section>

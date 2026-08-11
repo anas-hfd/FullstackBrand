@@ -136,7 +136,7 @@ export default function Hero() {
           >
             <Sparkles size={14} className="text-brand-light dark:text-brand-dark" />
           </motion.span>
-          Web Development Agency · AI-Powered Digital Solutions
+          Brand Experience · AI-Powered Digital Agency
           <span className="w-1.5 h-1.5 rounded-full bg-brand-light dark:bg-brand-dark animate-pulse" />
         </motion.div>
 
@@ -170,8 +170,11 @@ export default function Hero() {
           className="text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto mb-12 leading-relaxed"
           style={{ transform: 'translateZ(15px)' }}
         >
-          Full-stack web development, UI/UX design, AI automation &amp; branding —
-          we engineer the digital ecosystem your business needs to{' '}
+          Iconic brands. Intelligent systems. Experiences that convert.
+          We craft{' '}
+          <span className="text-brand-light dark:text-brand-dark font-semibold">bold visual identities</span>,
+          automate with AI, build high-performance web platforms, and run marketing that delivers —
+          all under one roof, all built to{' '}
           <span className="text-brand-light dark:text-brand-dark font-semibold">scale without limits</span>.
         </motion.p>
 
@@ -183,22 +186,28 @@ export default function Hero() {
           className="flex flex-col sm:flex-row gap-4 justify-center items-center"
           style={{ transform: 'translateZ(20px)' }}
         >
-          <a
+          <motion.a
             href="#start"
-            className="group relative flex items-center justify-center gap-2 bg-brand-light dark:bg-brand-dark text-white px-8 py-4 rounded-full font-bold text-base hover:scale-105 transition-transform duration-300 shadow-lg shadow-brand-light/25 dark:shadow-brand-dark/20 overflow-hidden"
+            whileHover={{ x: 6 }}
+            whileTap={{ x: 0 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+            className="group relative flex items-center justify-center gap-2 bg-brand-light dark:bg-brand-dark text-white px-8 py-4 rounded-full font-bold text-base shadow-lg shadow-brand-light/25 dark:shadow-brand-dark/20 overflow-hidden"
           >
             <span className="relative z-10 flex items-center gap-2">
               Start Your Project
               <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" />
             </span>
-          </a>
+          </motion.a>
 
-          <a
+          <motion.a
             href="#services"
-            className="flex items-center justify-center gap-2 glass px-8 py-4 rounded-full font-bold text-base hover:bg-slate-100 dark:hover:bg-white/10 transition-all duration-300 hover:scale-105"
+            whileHover={{ x: -6 }}
+            whileTap={{ x: 0 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+            className="flex items-center justify-center gap-2 glass px-8 py-4 rounded-full font-bold text-base hover:bg-slate-100 dark:hover:bg-white/10 transition-colors duration-300"
           >
             Explore Our Services
-          </a>
+          </motion.a>
         </motion.div>
 
         {/* Stats row */}

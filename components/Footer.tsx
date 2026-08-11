@@ -103,7 +103,7 @@ export default function Footer() {
               </Link>
 
               <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed max-w-xs mb-8">
-                We engineer intelligent digital ecosystems — from cutting-edge web applications to autonomous AI agents that scale your business. Est. 2026.
+                We engineer intelligent digital ecosystems — from cutting-edge web applications to autonomous AI agents that scale your business.
               </p>
 
               {/* Contact info */}
