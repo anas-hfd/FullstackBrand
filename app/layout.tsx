@@ -15,7 +15,7 @@ const SITE_NAME = 'FullstackBrand'
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: ' FullstackBrand| Brand Experience · AI-Powered Digital Agency',
+    default: 'Fullstack Brand | Creative Brand Experience · AI-Powered Digital Agency',
     template: '%s | FullstackBrand',
   },
   description:
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     apple: '/logos/Logomark.png',
   },
   openGraph: {
-    title: 'Brand Experience · AI-Powered Digital Agency | FullstackBrand',
+    title: 'Fullstack Brand | Creative Brand Experience · AI-Powered Digital Agency',
     description:
       'Your brand deserves more than a logo. FullstackBrand builds complete brand ecosystems — bold visual identities, AI automation, stunning web experiences & results-driven marketing.',
     url: SITE_URL,
@@ -73,7 +73,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Brand Experience · AI-Powered Digital Agency | FullstackBrand',
+    title: 'Fullstack Brand | Creative Brand Experience · AI-Powered Digital Agency',
     description:
       'Bold branding. Intelligent automation. High-performance web. Growth marketing. FullstackBrand is your full branding ecosystem partner.',
     images: ['/og-image.png'],
