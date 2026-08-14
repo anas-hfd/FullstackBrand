@@ -97,7 +97,7 @@ const jsonLd = {
         height: 200,
       },
       description:
-        'FullstackBrand is a full branding ecosystem agency specializing in visual identity design, AI automation, web development, and growth-driven digital marketing.',
+        'FullstackBrand is a Creative Brand Experience & AI-Powered Digital Agency specializing in bold visual identities, AI automation, high-performance web development, and growth-driven digital marketing.',
       foundingDate: '2026',
       contactPoint: [
         {
@@ -134,7 +134,7 @@ const jsonLd = {
       '@id': `${SITE_URL}/#website`,
       url: SITE_URL,
       name: SITE_NAME,
-      description: 'We Build Intelligent Brands — AI-Powered Full-Stack Digital Agency',
+      description: 'Fullstack Brand | Creative Brand Experience · AI-Powered Digital Agency — bold visual identities, AI automation, high-performance web & results-driven marketing. One partner. Infinite impact.',
       publisher: { '@id': `${SITE_URL}/#organization` },
       potentialAction: {
         '@type': 'SearchAction',
@@ -175,6 +175,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="apple-touch-icon" sizes="180x180" href="/logos/Logomark.png" />
         <link rel="apple-touch-icon" href="/logos/Logomark.png" />
+
+        {/* Explicit title tag — reinforces metadata against Google title rewriting */}
+        <title>Fullstack Brand | Creative Brand Experience · AI-Powered Digital Agency</title>
 
         {/* Canonical */}
         <link rel="canonical" href={SITE_URL} />
