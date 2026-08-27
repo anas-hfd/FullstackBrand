@@ -1,8 +1,12 @@
 // FullstackBrand
 'use client'
 import { useEffect, useRef, useState, useCallback } from 'react'
+import { usePathname } from 'next/navigation'
 
 export default function CursorLight() {
+  const pathname = usePathname()
+  const isAgency = pathname?.startsWith('/agency')
+
   const blobRef = useRef<HTMLDivElement>(null)
   const dotRef = useRef<HTMLDivElement>(null)
   const posRef = useRef({ x: -500, y: -500 })
@@ -11,7 +15,6 @@ export default function CursorLight() {
   const hasMoved = useRef(false)
   const [mounted, setMounted] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
-  const nudgedRef = useRef<Map<HTMLElement, number>>(new Map())
 
   const lerp = (start: number, end: number, t: number) => start + (end - start) * t
 
@@ -74,6 +77,15 @@ export default function CursorLight() {
 
   if (!mounted || isMobile) return null
 
+  const blobBg = isAgency
+    ? 'radial-gradient(circle, rgba(16,185,129,0.18) 0%, rgba(16,185,129,0.06) 40%, transparent 70%)'
+    : 'radial-gradient(circle, rgba(139,92,246,0.22) 0%, rgba(139,92,246,0.08) 40%, transparent 70%)'
+
+  const dotBg = isAgency ? '#10B981' : '#8B5CF6'
+  const dotShadow = isAgency
+    ? '0 0 10px 2px rgba(16,185,129,0.65)'
+    : '0 0 12px 3px rgba(139,92,246,0.7)'
+
   return (
     <>
       {/* Glowing orb — follows with lag */}
@@ -88,14 +100,14 @@ export default function CursorLight() {
           width: 400,
           height: 400,
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(0,204,96,0.12) 0%, rgba(0,204,96,0.05) 40%, transparent 70%)',
+          background: blobBg,
           transform: 'translate(-50%, -50%)',
           pointerEvents: 'none',
           zIndex: 9998,
           mixBlendMode: 'screen',
           willChange: 'left, top',
           opacity: 0,
-          transition: 'opacity 0.3s ease',
+          transition: 'opacity 0.3s ease, background 0.4s ease',
         }}
       />
       {/* Precise dot — snaps to cursor */}
@@ -110,14 +122,14 @@ export default function CursorLight() {
           width: 7,
           height: 7,
           borderRadius: '50%',
-          background: '#00CC60',
+          background: dotBg,
           transform: 'translate(-50%, -50%)',
           pointerEvents: 'none',
           zIndex: 9999,
-          boxShadow: '0 0 8px 2px rgba(0,204,96,0.55)',
+          boxShadow: dotShadow,
           willChange: 'left, top',
           opacity: 0,
-          transition: 'opacity 0.3s ease',
+          transition: 'opacity 0.3s ease, background 0.4s ease, box-shadow 0.4s ease',
         }}
       />
     </>

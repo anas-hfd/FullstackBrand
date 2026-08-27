@@ -36,7 +36,8 @@ export default function AIShowcase() {
   }, [])
 
   return (
-    <section id="ai" className="max-w-7xl mx-auto px-6 py-24">
+    <section id="ai-showcase" className="max-w-7xl mx-auto px-6 py-24 relative">
+      <span id="ai" className="absolute -top-24" />
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}

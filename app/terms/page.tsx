@@ -12,13 +12,22 @@ export default function TermsOfServicePage() {
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-12">
-      {/* Back button */}
-      <Link
-        href="/"
-        className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-500 hover:text-brand-light dark:hover:text-brand-dark transition-colors mb-8"
-      >
-        <ArrowLeft size={14} /> Back to Home
-      </Link>
+      {/* Back navigation buttons */}
+      <div className="flex items-center gap-4 mb-8">
+        <Link
+          href="/agency"
+          className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-500 hover:text-emerald-500 transition-colors"
+        >
+          <ArrowLeft size={14} /> Back to Agency
+        </Link>
+        <span className="text-slate-300 dark:text-slate-700">·</span>
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-500 hover:text-lab-DEFAULT transition-colors"
+        >
+          AI Lab Home
+        </Link>
+      </div>
 
       {/* Header */}
       <div className="glass p-8 md:p-12 rounded-3xl mb-12 border border-brand-light/30 dark:border-brand-dark/30">

@@ -1,20 +1,17 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { useTheme } from 'next-themes'
-import { Sun, Moon, Rocket, Menu, X } from 'lucide-react'
+import { usePathname } from 'next/navigation'
+import { Sun, Moon, Rocket, Menu, X, Sparkles, Building2, Terminal } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 
-const navLinks = [
-  { label: 'Services', href: '/#services' },
-  { label: 'Process', href: '/#process' },
-  { label: 'AI Automation', href: '/#ai' },
-  { label: 'Contact', href: '/#start' },
-]
-
 export default function Navbar() {
   const { theme, setTheme } = useTheme()
+  const pathname = usePathname()
+  const isAgency = pathname?.startsWith('/agency')
+
   const [mounted, setMounted] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -25,6 +22,21 @@ export default function Navbar() {
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  const navLinks = isAgency
+    ? [
+        { label: 'Services', href: '/agency#services' },
+        { label: 'Process', href: '/agency#process' },
+        { label: 'AI Automation', href: '/agency#ai' },
+        { label: 'AI Lab', href: '/' },
+        { label: 'Contact', href: '/agency#start' },
+      ]
+    : [
+        { label: 'AI Research', href: '/#research' },
+        { label: 'Fullstack Agency', href: '/agency' },
+        { label: 'Client Services', href: '/agency#services' },
+        { label: 'Start a Project', href: '/agency#start' },
+      ]
 
   return (
     <header className="fixed top-0 left-0 right-0 z-40 p-4">
@@ -38,32 +50,55 @@ export default function Navbar() {
             : 'bg-transparent border border-transparent'
         }`}
       >
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 group">
-          {mounted && (
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-              <Image
-                src={theme === 'dark' ? '/logos/Horizontal-WhiteTXT.png' : '/logos/Horizontal-BlackTXT.png'}
-                alt="FullstackBrand"
-                width={180}
-                height={40}
-                className="object-contain"
-                priority
-              />
-            </motion.div>
-          )}
-        </Link>
+        {/* Logo and Route Switcher Badge */}
+        <div className="flex items-center gap-3">
+          <Link href={isAgency ? '/agency' : '/'} className="flex items-center gap-2 group">
+            {mounted && (
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <Image
+                  src={theme === 'dark' ? '/logos/Horizontal-WhiteTXT.png' : '/logos/Horizontal-BlackTXT.png'}
+                  alt="FullstackBrand"
+                  width={170}
+                  height={38}
+                  className="object-contain"
+                  priority
+                />
+              </motion.div>
+            )}
+          </Link>
+
+          {/* Ecosystem Route Indicator Badge */}
+          <div className="hidden lg:flex items-center text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-full border border-slate-200 dark:border-white/10 glass">
+            {isAgency ? (
+              <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
+                <Building2 size={12} /> Agency Studio
+              </span>
+            ) : (
+              <span className="flex items-center gap-1 text-lab-DEFAULT dark:text-lab-light">
+                <Terminal size={12} /> AI Research Lab
+              </span>
+            )}
+          </div>
+        </div>
 
         {/* Desktop nav links */}
-        <div className="hidden md:flex items-center gap-8 text-sm font-medium">
+        <div className="hidden md:flex items-center gap-7 text-sm font-medium">
           {navLinks.map(link => (
             <Link
               key={link.label}
               href={link.href}
-              className="relative text-slate-600 dark:text-slate-300 hover:text-brand-light dark:hover:text-brand-dark transition-colors duration-200 group"
+              className={`relative transition-colors duration-200 group text-slate-600 dark:text-slate-300 ${
+                isAgency
+                  ? 'hover:text-emerald-500 dark:hover:text-emerald-400'
+                  : 'hover:text-lab-DEFAULT dark:hover:text-lab-light'
+              }`}
             >
               {link.label}
-              <span className="absolute -bottom-0.5 left-0 right-0 h-px bg-brand-light dark:bg-brand-dark scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-full" />
+              <span
+                className={`absolute -bottom-0.5 left-0 right-0 h-px scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-full ${
+                  isAgency ? 'bg-emerald-500' : 'bg-lab-DEFAULT'
+                }`}
+              />
             </Link>
           ))}
         </div>
@@ -92,16 +127,19 @@ export default function Navbar() {
           </button>
 
           {/* CTA button */}
-          <motion.a
-            href="#start"
-            whileHover={{ x: 5 }}
-            whileTap={{ x: 0 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-            className="hidden sm:flex items-center gap-2 bg-brand-light dark:bg-brand-dark text-white px-4 py-2 rounded-full text-sm font-bold shadow-md shadow-brand-light/25 dark:shadow-brand-dark/20"
-          >
-            <Rocket size={14} />
-            Start a Project
-          </motion.a>
+          <motion.div whileHover={{ x: 3 }} whileTap={{ x: 0 }}>
+            <Link
+              href={isAgency ? '/agency#start' : '/agency#start'}
+              className={`hidden sm:flex items-center gap-2 text-white px-4 py-2 rounded-full text-sm font-bold shadow-md transition-all ${
+                isAgency
+                  ? 'bg-emerald-600 hover:bg-emerald-500 shadow-emerald-500/25'
+                  : 'bg-gradient-to-r from-lab-DEFAULT to-lab-dark hover:from-purple-500 hover:to-lab-DEFAULT shadow-lab-DEFAULT/30'
+              }`}
+            >
+              {isAgency ? <Rocket size={14} /> : <Sparkles size={14} />}
+              <span>{isAgency ? 'Start a Project' : 'Hire Agency'}</span>
+            </Link>
+          </motion.div>
 
           {/* Mobile hamburger */}
           <button
@@ -129,25 +167,31 @@ export default function Navbar() {
                 key={link.label}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className="block py-3 px-2 text-sm font-medium border-b border-slate-200/30 dark:border-white/10 last:border-0 hover:text-brand-light dark:hover:text-brand-dark transition-colors"
+                className={`block py-3 px-2 text-sm font-medium border-b border-slate-200/30 dark:border-white/10 last:border-0 transition-colors ${
+                  isAgency
+                    ? 'hover:text-emerald-500 dark:hover:text-emerald-400'
+                    : 'hover:text-lab-DEFAULT dark:hover:text-lab-light'
+                }`}
               >
                 {link.label}
               </Link>
             ))}
-            <motion.a
-              href="#start"
+            <Link
+              href="/agency#start"
               onClick={() => setMobileOpen(false)}
-              whileHover={{ x: 5 }}
-              whileTap={{ x: 0 }}
-              transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-              className="mt-3 flex items-center justify-center gap-2 bg-brand-light dark:bg-brand-dark text-white px-4 py-2.5 rounded-full text-sm font-bold w-full"
+              className={`mt-3 flex items-center justify-center gap-2 text-white px-4 py-2.5 rounded-full text-sm font-bold w-full ${
+                isAgency
+                  ? 'bg-emerald-600'
+                  : 'bg-gradient-to-r from-lab-DEFAULT to-lab-dark'
+              }`}
             >
-              <Rocket size={14} />
-              Start a Project
-            </motion.a>
+              {isAgency ? <Rocket size={14} /> : <Sparkles size={14} />}
+              <span>{isAgency ? 'Start a Project' : 'Hire Agency'}</span>
+            </Link>
           </motion.div>
         )}
       </AnimatePresence>
     </header>
   )
 }
+

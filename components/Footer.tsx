@@ -2,22 +2,23 @@
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useTheme } from 'next-themes'
 import { useState, useEffect } from 'react'
 import { Instagram, ArrowUpRight, Mail, MapPin, Phone, MessageCircle } from 'lucide-react'
 
 const footerLinks = {
-  Services: [
-    { label: 'Brand Design & Visual Identity', href: '/#services' },
-    { label: 'Digital Marketing & Brand Strategy', href: '/#services' },
-    { label: 'Web Development', href: '/#services' },
-    { label: 'AI Automation', href: '/#ai' },
+  'Agency Services': [
+    { label: 'Brand Design & Identity', href: '/agency#services' },
+    { label: 'Marketing & Strategy', href: '/agency#services' },
+    { label: 'Web & SaaS Platforms', href: '/agency#services' },
+    { label: 'AI Agent Systems', href: '/agency#ai' },
   ],
-  Company: [
-    { label: 'Our Services', href: '/#services' },
-    { label: 'How We Work', href: '/#process' },
-    { label: 'AI Automation', href: '/#ai' },
-    { label: 'Start a Project', href: '/#start' },
+  Ecosystem: [
+    { label: 'AI Research Lab (Root)', href: '/' },
+    { label: 'FullstackBrand Agency', href: '/agency' },
+    { label: 'How We Work', href: '/agency#process' },
+    { label: 'Start a Project', href: '/agency#start' },
   ],
   Legal: [
     { label: 'Privacy Policy', href: '/privacy' },
@@ -70,6 +71,8 @@ const socials = [
 
 export default function Footer() {
   const { theme } = useTheme()
+  const pathname = usePathname()
+  const isAgency = pathname?.startsWith('/agency')
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
 
@@ -90,10 +93,10 @@ export default function Footer() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <Link href="/" className="inline-block mb-6">
+              <Link href={isAgency ? '/agency' : '/'} className="inline-block mb-6">
                 {mounted && (
                   <Image
-                    src={theme === 'dark' ? '/logos/VerticalLogo_Full-WhiteTXT+desc.png' : '/logos/VerticalLogo_FULL-BlackTXT+desc.png'}
+                    src={theme === 'dark' ? '/logos/Asset 27-8.png' : '/logos/Asset 26-8.png'}
                     alt="FullstackBrand"
                     width={200}
                     height={80}
@@ -192,7 +195,7 @@ export default function Footer() {
               />
             )}
             <span className="text-xs text-slate-400 dark:text-slate-500">
-              © {new Date().getFullYear()} FullstackBrand. All rights reserved.
+              © 2026 Fullstack Brand LLC. All rights reserved.
             </span>
           </motion.div>
 

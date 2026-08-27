@@ -103,7 +103,8 @@ export default function LeadForm() {
   }
 
   return (
-    <section id="start" className="max-w-4xl mx-auto px-6 py-24">
+    <section id="contact" className="max-w-4xl mx-auto px-6 py-24 relative">
+      <span id="start" className="absolute -top-24" />
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}

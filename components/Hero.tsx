@@ -6,10 +6,10 @@ import ParticleField from './ParticleField'
 import { useRef, useEffect } from 'react'
 
 const stats = [
-  { metric: '150+', label: 'Projects Delivered' },
-  { metric: '99.9%', label: 'Uptime Guaranteed' },
-  { metric: '<2s', label: 'Load Times' },
-  { metric: '40+', label: 'AI Models' },
+  { metric: '4–6 Wks', label: 'Average MVP Launch' },
+  { metric: '100%', label: 'Bespoke Code Ownership' },
+  { metric: '< 50ms', label: 'Edge Global Latency' },
+  { metric: 'Zero-Lock', label: 'Sovereign Architecture' },
 ]
 
 export default function Hero() {

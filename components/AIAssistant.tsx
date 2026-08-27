@@ -1,6 +1,7 @@
 'use client'
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { usePathname } from 'next/navigation'
 import { MessageSquare, X, Send, Sparkles } from 'lucide-react'
 
 interface Message {
@@ -26,12 +27,14 @@ function ThinkingDots() {
 }
 
 export default function AIAssistant() {
+  const pathname = usePathname()
+  const isAgency = pathname?.startsWith('/agency')
   const [isOpen, setIsOpen] = useState(false)
   const [input, setInput] = useState('')
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: "Hi! I'm FullstackBrand's AI assistant. Ask me anything about our services, pricing, process, or how we can help your business — I'm here to help.",
+      content: "Hi! I'm FullstackBrand's AI assistant. Ask me anything about our AI research, agency services, pricing, or custom machine learning systems — I'm here to help.",
     },
   ])
   const [isThinking, setIsThinking] = useState(false)
@@ -148,7 +151,11 @@ export default function AIAssistant() {
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.95 }}
         aria-label={isOpen ? 'Close AI Assistant' : 'Open AI Assistant'}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-brand-light dark:bg-brand-dark flex items-center justify-center shadow-lg shadow-brand-light/40 dark:shadow-brand-dark/30 transition-shadow"
+        className={`fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-all ${
+          isAgency
+            ? 'bg-emerald-600 shadow-emerald-500/40'
+            : 'bg-gradient-to-tr from-lab-dark to-lab-DEFAULT shadow-lab-DEFAULT/40'
+        }`}
       >
         <AnimatePresence mode="wait" initial={false}>
           <motion.span
@@ -171,12 +178,16 @@ export default function AIAssistant() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 24, scale: 0.92 }}
             transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed bottom-24 right-6 z-50 w-[92vw] max-w-[400px] h-[520px] glass rounded-2xl flex flex-col overflow-hidden shadow-2xl border border-brand-light/20 dark:border-brand-dark/20"
+            className={`fixed bottom-24 right-6 z-50 w-[92vw] max-w-[400px] h-[520px] glass rounded-2xl flex flex-col overflow-hidden shadow-2xl border ${
+              isAgency ? 'border-emerald-500/30' : 'border-lab-DEFAULT/30'
+            }`}
           >
             {/* Header */}
             <div className="flex items-center gap-3 px-4 py-3 border-b border-slate-200/50 dark:border-white/10 bg-slate-50/50 dark:bg-white/[0.03] flex-shrink-0">
-              <div className="w-8 h-8 rounded-full bg-brand-light/15 dark:bg-brand-dark/20 flex items-center justify-center">
-                <Sparkles size={14} className="text-brand-light dark:text-brand-dark" />
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                isAgency ? 'bg-emerald-500/15 text-emerald-500' : 'bg-lab-DEFAULT/15 text-lab-DEFAULT'
+              }`}>
+                <Sparkles size={14} />
               </div>
               <div>
                 <div className="font-bold text-sm leading-tight">Fullstack AI Assistant</div>
@@ -200,7 +211,9 @@ export default function AIAssistant() {
                   <div
                     className={`max-w-[85%] px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed ${
                       msg.role === 'user'
-                        ? 'bg-brand-light dark:bg-brand-dark text-white rounded-br-sm'
+                        ? isAgency
+                          ? 'bg-emerald-600 text-white rounded-br-sm'
+                          : 'bg-gradient-to-r from-lab-DEFAULT to-lab-dark text-white rounded-br-sm'
                         : 'glass rounded-bl-sm text-slate-800 dark:text-slate-100'
                     }`}
                   >
@@ -235,10 +248,12 @@ export default function AIAssistant() {
                 value={input}
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && !e.shiftKey && handleSend()}
-                placeholder="Ask about our services…"
+                placeholder="Ask about our services or AI research…"
                 disabled={isThinking}
                 aria-label="Type your message"
-                className="flex-1 px-3 py-2 rounded-xl bg-transparent border border-slate-200 dark:border-white/10 focus:border-brand-light dark:focus:border-brand-dark outline-none text-sm placeholder:text-slate-400 disabled:opacity-50 transition-colors"
+                className={`flex-1 px-3 py-2 rounded-xl bg-transparent border border-slate-200 dark:border-white/10 outline-none text-sm placeholder:text-slate-400 disabled:opacity-50 transition-colors ${
+                  isAgency ? 'focus:border-emerald-500' : 'focus:border-lab-DEFAULT'
+                }`}
               />
               <motion.button
                 onClick={() => handleSend()}
@@ -246,9 +261,11 @@ export default function AIAssistant() {
                 whileHover={{ scale: 1.06 }}
                 whileTap={{ scale: 0.95 }}
                 aria-label="Send message"
-                className="p-2.5 rounded-xl bg-brand-light dark:bg-brand-dark disabled:opacity-40 transition-opacity flex-shrink-0"
+                className={`p-2.5 rounded-xl disabled:opacity-40 transition-opacity flex-shrink-0 text-white ${
+                  isAgency ? 'bg-emerald-600' : 'bg-lab-DEFAULT'
+                }`}
               >
-                <Send size={15} className="text-white" />
+                <Send size={15} />
               </motion.button>
             </div>
           </motion.div>

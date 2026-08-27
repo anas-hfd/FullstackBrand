@@ -12,29 +12,37 @@ interface Particle {
   baseVy: number
 }
 
-export default function ParticleField() {
+interface ParticleFieldProps {
+  color?: 'emerald' | 'violet'
+  className?: string
+}
+
+export default function ParticleField({ color = 'emerald', className = '' }: ParticleFieldProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const mouseRef = useRef({ x: -9999, y: -9999 })
   const rafRef = useRef<number>(0)
+
+  const isViolet = color === 'violet'
+  const rgbBase = isViolet ? '139, 92, 246' : '16, 185, 129'
 
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
     const ctx = canvas.getContext('2d')!
 
-    let width = (canvas.width = window.innerWidth)
-    let height = (canvas.height = window.innerHeight)
+    let width = (canvas.width = canvas.parentElement?.clientWidth || window.innerWidth)
+    let height = (canvas.height = canvas.parentElement?.clientHeight || window.innerHeight)
     let particles: Particle[] = []
 
-    const REPEL_RADIUS = 140
+    const REPEL_RADIUS = 150
     const REPEL_STRENGTH = 5
     const CONNECT_DIST = 130
 
     const initParticles = () => {
       particles = []
       const isMobile = width < 768
-      const maxCount = isMobile ? 15 : 35
-      const count = Math.min(Math.floor((width * height) / 25000), maxCount)
+      const maxCount = isMobile ? 18 : 45
+      const count = Math.min(Math.floor((width * height) / 22000), maxCount)
       for (let i = 0; i < count; i++) {
         const vx = (Math.random() - 0.5) * 0.4
         const vy = (Math.random() - 0.5) * 0.4
@@ -45,7 +53,7 @@ export default function ParticleField() {
           vy,
           baseVx: vx,
           baseVy: vy,
-          size: Math.random() * 1.8 + 0.5,
+          size: Math.random() * 2 + 0.6,
         })
       }
     }
@@ -60,13 +68,12 @@ export default function ParticleField() {
           const dy = particles[a].y - particles[b].y
           const dist = Math.sqrt(dx * dx + dy * dy)
           if (dist < CONNECT_DIST) {
-            // Check if either particle is close to mouse — brighten those lines
             const aDist = Math.hypot(particles[a].x - mx, particles[a].y - my)
             const bDist = Math.hypot(particles[b].x - mx, particles[b].y - my)
             const proximity = Math.min(aDist, bDist)
             const boost = proximity < REPEL_RADIUS ? 2.5 : 1
             const alpha = (1 - dist / CONNECT_DIST) * 0.3 * boost
-            ctx.strokeStyle = `rgba(0, 255, 102, ${Math.min(alpha, 1)})`
+            ctx.strokeStyle = `rgba(${rgbBase}, ${Math.min(alpha, 1)})`
             ctx.lineWidth = proximity < REPEL_RADIUS ? 1.2 : 0.5
             ctx.beginPath()
             ctx.moveTo(particles[a].x, particles[a].y)
@@ -117,17 +124,16 @@ export default function ParticleField() {
         const glowRadius = nearMouse ? p.size * 2.5 : p.size
 
         if (nearMouse) {
-          // Larger glow halo
           const grd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, glowRadius * 4)
-          grd.addColorStop(0, `rgba(0,255,102,0.6)`)
-          grd.addColorStop(1, `rgba(0,255,102,0)`)
+          grd.addColorStop(0, `rgba(${rgbBase}, 0.6)`)
+          grd.addColorStop(1, `rgba(${rgbBase}, 0)`)
           ctx.fillStyle = grd
           ctx.beginPath()
           ctx.arc(p.x, p.y, glowRadius * 4, 0, Math.PI * 2)
           ctx.fill()
         }
 
-        ctx.fillStyle = `rgba(0, 255, 102, ${particleAlpha})`
+        ctx.fillStyle = `rgba(${rgbBase}, ${particleAlpha})`
         ctx.beginPath()
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
         ctx.fill()
@@ -138,7 +144,6 @@ export default function ParticleField() {
     }
 
     const handleMouseMove = (e: MouseEvent) => {
-      // Position relative to canvas
       const rect = canvas.getBoundingClientRect()
       mouseRef.current = {
         x: e.clientX - rect.left,
@@ -157,8 +162,8 @@ export default function ParticleField() {
     window.addEventListener('mouseleave', handleMouseLeave)
 
     const handleResize = () => {
-      width = canvas.width = window.innerWidth
-      height = canvas.height = window.innerHeight
+      width = canvas.width = canvas.parentElement?.clientWidth || window.innerWidth
+      height = canvas.height = canvas.parentElement?.clientHeight || window.innerHeight
       initParticles()
     }
     window.addEventListener('resize', handleResize)
@@ -169,7 +174,12 @@ export default function ParticleField() {
       window.removeEventListener('mouseleave', handleMouseLeave)
       window.removeEventListener('resize', handleResize)
     }
-  }, [])
+  }, [rgbBase])
 
-  return <canvas ref={canvasRef} className="absolute inset-0 z-0 opacity-60" />
+  return (
+    <canvas
+      ref={canvasRef}
+      className={`absolute inset-0 w-full h-full pointer-events-none z-0 opacity-60 dark:opacity-75 ${className}`}
+    />
+  )
 }

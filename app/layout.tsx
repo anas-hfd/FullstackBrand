@@ -1,7 +1,7 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
 import { ThemeProvider } from '@/components/ThemeProvider'
-import Navbar from '@/components/Navbar'
+import Navbar from '@/components/navbar/Navbar'
 import AIAssistant from '@/components/AIAssistant'
 import Footer from '@/components/Footer'
 import CursorLight from '@/components/CursorLight'
@@ -175,12 +175,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="apple-touch-icon" sizes="180x180" href="/logos/Logomark.png" />
         <link rel="apple-touch-icon" href="/logos/Logomark.png" />
-
-        {/* Explicit title tag — reinforces metadata against Google title rewriting */}
-        <title>Fullstack Brand | Creative Brand Experience · AI-Powered Digital Agency</title>
-
-        {/* Canonical */}
-        <link rel="canonical" href={SITE_URL} />
 
         {/* DNS prefetch for performance */}
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
