@@ -34,7 +34,7 @@ export default function AIAssistant() {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: "Hi! I'm FullstackBrand's AI assistant. Ask me anything about our AI research, agency services, pricing, or custom machine learning systems — I'm here to help.",
+      content: "Hi! I'm FullstackBrand's AI assistant. Ask me anything about our AI research, technology solutions, pricing, or custom machine learning systems — I'm here to help.",
     },
   ])
   const [isThinking, setIsThinking] = useState(false)

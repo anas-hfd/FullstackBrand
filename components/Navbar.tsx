@@ -33,8 +33,8 @@ export default function Navbar() {
       ]
     : [
         { label: 'AI Research', href: '/#research' },
-        { label: 'Fullstack Agency', href: '/agency' },
-        { label: 'Client Services', href: '/agency#services' },
+        { label: 'Fullstack Studio', href: '/agency' },
+        { label: 'Solutions', href: '/agency#services' },
         { label: 'Start a Project', href: '/agency#start' },
       ]
 
@@ -71,7 +71,7 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-full border border-slate-200 dark:border-white/10 glass">
             {isAgency ? (
               <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
-                <Building2 size={12} /> Agency Studio
+                <Building2 size={12} /> Technology Studio
               </span>
             ) : (
               <span className="flex items-center gap-1 text-lab-DEFAULT dark:text-lab-light">
@@ -137,7 +137,7 @@ export default function Navbar() {
               }`}
             >
               {isAgency ? <Rocket size={14} /> : <Sparkles size={14} />}
-              <span>{isAgency ? 'Start a Project' : 'Hire Agency'}</span>
+              <span>{isAgency ? 'Start a Project' : 'Work With Us'}</span>
             </Link>
           </motion.div>
 
@@ -186,7 +186,7 @@ export default function Navbar() {
               }`}
             >
               {isAgency ? <Rocket size={14} /> : <Sparkles size={14} />}
-              <span>{isAgency ? 'Start a Project' : 'Hire Agency'}</span>
+              <span>{isAgency ? 'Start a Project' : 'Work With Us'}</span>
             </Link>
           </motion.div>
         )}

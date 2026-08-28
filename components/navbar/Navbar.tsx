@@ -67,17 +67,19 @@ export default function Navbar() {
 
     // Dynamic Favicon Switcher: Asset 25-8.png for Lab, Logomark.png for Agency
     const faviconHref = isLab ? '/logos/Asset 25-8.png' : '/logos/Logomark.png'
-    const iconLinks: NodeListOf<HTMLLinkElement> = document.querySelectorAll("link[rel*='icon']")
-    if (iconLinks.length > 0) {
-      iconLinks.forEach((link) => {
-        link.href = faviconHref
-      })
-    } else {
-      const link = document.createElement('link')
-      link.rel = 'icon'
-      link.type = 'image/png'
-      link.href = faviconHref
-      document.head.appendChild(link)
+    
+    try {
+      let linkIcon = document.getElementById('fsb-dynamic-favicon') as HTMLLinkElement | null
+      if (!linkIcon) {
+        linkIcon = document.createElement('link')
+        linkIcon.id = 'fsb-dynamic-favicon'
+        linkIcon.rel = 'icon'
+        linkIcon.type = 'image/png'
+        document.head.appendChild(linkIcon)
+      }
+      linkIcon.href = faviconHref
+    } catch {
+      // Ignore DOM exceptions on non-browser environments
     }
   }, [pathname, isLab])
 

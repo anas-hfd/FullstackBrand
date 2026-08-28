@@ -7,25 +7,6 @@ import { useTheme } from 'next-themes'
 import { useState, useEffect } from 'react'
 import { Instagram, ArrowUpRight, Mail, MapPin, Phone, MessageCircle, Linkedin } from 'lucide-react'
 
-const footerLinks = {
-  'Agency Services': [
-    { label: 'Brand Design & Identity', href: '/agency#services' },
-    { label: 'Marketing & Strategy', href: '/agency#services' },
-    { label: 'Web & SaaS Platforms', href: '/agency#services' },
-    { label: 'AI Agent Systems', href: '/agency#ai' },
-  ],
-  Ecosystem: [
-    { label: 'AI Research Lab (Root)', href: '/' },
-    { label: 'FullstackBrand Agency', href: '/agency' },
-    { label: 'How We Work', href: '/agency#process' },
-    { label: 'Start a Project', href: '/agency#contact' },
-  ],
-  Legal: [
-    { label: 'Privacy Policy', href: '/privacy' },
-    { label: 'Terms of Service', href: '/terms' },
-  ],
-}
-
 // WhatsApp number (digits only for wa.me link)
 const WA_NUMBER = '19459972019'
 
@@ -80,6 +61,25 @@ export default function Footer() {
   const isAgency = pathname?.startsWith('/agency')
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
+
+  const footerLinks = {
+    [isAgency ? 'Agency Services' : 'Services']: [
+      { label: 'Brand Design & Identity', href: '/agency#services' },
+      { label: 'Marketing & Strategy', href: '/agency#services' },
+      { label: 'Web & SaaS Platforms', href: '/agency#services' },
+      { label: 'AI Agent Systems', href: '/agency#ai' },
+    ],
+    Ecosystem: [
+      { label: 'AI Research Lab (Root)', href: '/' },
+      { label: isAgency ? 'FullstackBrand Agency' : 'FullstackBrand Studio', href: '/agency' },
+      { label: 'How We Work', href: '/agency#process' },
+      { label: 'Start a Project', href: '/agency#contact' },
+    ],
+    Legal: [
+      { label: 'Privacy Policy', href: '/privacy' },
+      { label: 'Terms of Service', href: '/terms' },
+    ],
+  }
 
   return (
     <footer className="relative mt-8 border-t border-slate-200/50 dark:border-white/10 overflow-hidden">

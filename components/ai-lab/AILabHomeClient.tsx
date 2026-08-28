@@ -256,7 +256,7 @@ export default function AILabHomeClient() {
       </section>
 
       {/* ══════════════════════════════════════════════════════════════════════
-          AGENCY PORTAL BRIDGE (Preserved Emerald Palette)
+          STUDIO PORTAL BRIDGE (Preserved Emerald Palette)
       ══════════════════════════════════════════════════════════════════════ */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="glass-agency p-8 md:p-12 rounded-3xl border border-emerald-500/30 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
@@ -265,10 +265,10 @@ export default function AILabHomeClient() {
               <Compass size={14} /> FullstackBrand Ecosystem
             </div>
             <h3 className="text-2xl md:text-3xl font-black text-zinc-900 dark:text-white">
-              Looking for Client Agency Solutions &amp; Brand Identity?
+              Looking for Studio Solutions &amp; Brand Engineering?
             </h3>
             <p className="text-zinc-600 dark:text-zinc-300 text-sm md:text-base leading-relaxed">
-              Explore our full-service digital agency branch providing brand design, high-performance web engineering, custom AI agent deployments, and digital marketing.
+              Explore our creative brand and digital engineering studio providing identity design, high-performance web platforms, custom AI agent deployments, and digital systems.
             </p>
           </div>
 
@@ -283,7 +283,7 @@ export default function AILabHomeClient() {
               className="flex-shrink-0 inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-8 py-4 rounded-full shadow-lg shadow-emerald-500/20 group"
               id="agency-bridge-cta"
             >
-              <span>Visit FullstackBrand Agency</span>
+              <span>Visit FullstackBrand Studio</span>
               <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" />
             </Link>
           </motion.div>

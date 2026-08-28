@@ -15,24 +15,24 @@ const SITE_NAME = 'FullstackBrand'
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Fullstack Brand | Creative Brand Experience · AI-Powered Digital Agency',
+    default: 'Fullstack Brand | Creative Brand Experience · AI Technology Studio',
     template: '%s | FullstackBrand',
   },
   description:
-    'Your brand deserves more than a logo — FullstackBrand is a full branding ecosystem agency delivering bold visual identities, AI-powered automation, high-performance web development, and growth-driven digital marketing. One partner. Infinite impact.',
+    'Your brand deserves more than a logo — FullstackBrand is a full branding ecosystem studio delivering bold visual identities, AI-powered automation, high-performance web development, and growth-driven digital systems. One partner. Infinite impact.',
   keywords: [
-    'branding agency',
+    'brand design studio',
     'visual identity design',
-    'brand identity agency',
-    'AI automation agency',
-    'web development agency',
-    'digital marketing agency',
+    'brand systems studio',
+    'AI automation systems',
+    'web engineering studio',
+    'digital growth systems',
     'full branding ecosystem',
     'brand strategy',
     'AI agents integration',
     'FullstackBrand',
-    'UI/UX design agency',
-    'growth marketing',
+    'UI/UX design studio',
+    'growth systems',
   ],
   authors: [{ name: 'FullstackBrand', url: SITE_URL }],
   creator: 'FullstackBrand',
@@ -46,17 +46,14 @@ export const metadata: Metadata = {
     canonical: SITE_URL,
   },
   icons: {
-    icon: [
-      { url: '/logos/Logomark.png', type: 'image/png', sizes: '512x512' },
-      { url: '/favicon.ico', sizes: 'any' },
-    ],
+    icon: '/logos/Logomark.png',
     shortcut: '/logos/Logomark.png',
     apple: '/logos/Logomark.png',
   },
   openGraph: {
-    title: 'Fullstack Brand | Creative Brand Experience · AI-Powered Digital Agency',
+    title: 'Fullstack Brand | Creative Brand Experience · AI Technology Studio',
     description:
-      'Your brand deserves more than a logo. FullstackBrand builds complete brand ecosystems — bold visual identities, AI automation, stunning web experiences & results-driven marketing.',
+      'Your brand deserves more than a logo. FullstackBrand builds complete brand ecosystems — bold visual identities, AI automation, stunning web experiences & results-driven digital systems.',
     url: SITE_URL,
     siteName: SITE_NAME,
     type: 'website',
@@ -66,16 +63,16 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'FullstackBrand — Full Branding Ecosystem Agency',
+        alt: 'FullstackBrand — Creative Brand & AI Technology Studio',
         type: 'image/png',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Fullstack Brand | Creative Brand Experience · AI-Powered Digital Agency',
+    title: 'Fullstack Brand | Creative Brand Experience · AI Technology Studio',
     description:
-      'Bold branding. Intelligent automation. High-performance web. Growth marketing. FullstackBrand is your full branding ecosystem partner.',
+      'Bold branding. Intelligent automation. High-performance web. Growth systems. FullstackBrand is your full branding ecosystem partner.',
     images: ['/og-image.png'],
     site: '@fullstackbrand',
     creator: '@fullstackbrand',
@@ -97,7 +94,7 @@ const jsonLd = {
         height: 200,
       },
       description:
-        'FullstackBrand is a Creative Brand Experience & AI-Powered Digital Agency specializing in bold visual identities, AI automation, high-performance web development, and growth-driven digital marketing.',
+        'FullstackBrand is a Creative Brand Experience & AI Technology Studio specializing in bold visual identities, AI automation, high-performance web development, and growth-driven digital systems.',
       foundingDate: '2026',
       contactPoint: [
         {
@@ -135,7 +132,7 @@ const jsonLd = {
       '@id': `${SITE_URL}/#website`,
       url: SITE_URL,
       name: SITE_NAME,
-      description: 'Fullstack Brand | Creative Brand Experience · AI-Powered Digital Agency — bold visual identities, AI automation, high-performance web & results-driven marketing. One partner. Infinite impact.',
+      description: 'Fullstack Brand | Creative Brand Experience · AI Technology Studio — bold visual identities, AI automation, high-performance web & results-driven systems. One partner. Infinite impact.',
       publisher: { '@id': `${SITE_URL}/#organization` },
       potentialAction: {
         '@type': 'SearchAction',
@@ -150,7 +147,7 @@ const jsonLd = {
       url: SITE_URL,
       image: `${SITE_URL}/og-image.png`,
       description:
-        'Full-stack digital agency offering web development, UI/UX design, AI automation, branding, and digital marketing services.',
+        'Creative technology studio offering web engineering, UI/UX design, AI automation, branding, and digital growth systems.',
       areaServed: 'Worldwide',
       priceRange: '$1,000 - $15,000+',
       hasOfferCatalog: {
@@ -171,12 +168,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Favicon — Logomark as primary for best search engine appearance */}
-        <link rel="icon" href="/logos/Logomark.png" type="image/png" sizes="512x512" />
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/logos/Logomark.png" />
-        <link rel="apple-touch-icon" href="/logos/Logomark.png" />
-
         {/* DNS prefetch for performance */}
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//fonts.gstatic.com" />

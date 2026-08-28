@@ -4,7 +4,7 @@ import { ShieldCheck, ArrowLeft, Lock, Eye, Cpu, Database, UserCheck, Mail } fro
 
 export const metadata = {
   title: 'Privacy Policy | FullstackBrand',
-  description: 'Learn how FullstackBrand collects, protects, and handles user data, AI workflows, and client security across our Agency and AI Lab.',
+  description: 'Learn how FullstackBrand collects, protects, and handles user data, AI workflows, and client security across our Studio and AI Lab.',
 }
 
 export default function PrivacyPolicyPage() {
@@ -18,7 +18,7 @@ export default function PrivacyPolicyPage() {
           href="/agency"
           className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white transition-colors"
         >
-          <ArrowLeft size={14} /> Back to Agency
+          <ArrowLeft size={14} /> Back to Studio
         </Link>
         <span className="text-zinc-300 dark:text-zinc-700">·</span>
         <Link
@@ -38,7 +38,7 @@ export default function PrivacyPolicyPage() {
           Privacy Policy
         </h1>
         <p className="text-zinc-600 dark:text-zinc-400 text-sm md:text-base leading-relaxed">
-          At FullstackBrand, transparency and data integrity are fundamental across our entire ecosystem. This document details how we collect, process, safeguard, and govern personal information and corporate data across our AI Research Lab, agency services, workflow automation pipelines, and web applications.
+          At FullstackBrand, transparency and data integrity are fundamental across our entire ecosystem. This document details how we collect, process, safeguard, and govern personal information and corporate data across our AI Research Lab, engineering studio, workflow automation pipelines, and web applications.
         </p>
         <div className="mt-6 text-xs font-mono text-zinc-400 dark:text-zinc-500">
           Last Updated: {lastUpdated} · Version 3.0
@@ -55,7 +55,7 @@ export default function PrivacyPolicyPage() {
             <h2 className="text-xl font-bold text-zinc-900 dark:text-white">1. Information We Collect</h2>
           </div>
           <p>
-            When you interact with FullstackBrand — via our agency contact forms, AI Lab research portals, project configurators, newsletter subscriptions, or API sandboxes — we collect necessary operational data:
+            When you interact with FullstackBrand — via our studio contact forms, AI Lab research portals, project configurators, newsletter subscriptions, or API sandboxes — we collect necessary operational data:
           </p>
           <ul className="list-disc pl-6 space-y-2 text-zinc-600 dark:text-zinc-400 text-sm">
             <li><strong className="text-zinc-900 dark:text-white">Identity &amp; Contact Data:</strong> Full name, corporate or personal email address, phone number, company name, and job title.</li>
@@ -74,7 +74,7 @@ export default function PrivacyPolicyPage() {
             We process data strictly for legitimate operational, research, and client-delivery purposes:
           </p>
           <ul className="list-disc pl-6 space-y-2 text-zinc-600 dark:text-zinc-400 text-sm">
-            <li>Delivering bespoke digital agency services including brand identity, custom software engineering, and AI automation.</li>
+            <li>Delivering bespoke digital solutions including brand identity, custom software engineering, and AI automation.</li>
             <li>Sending research notifications, technical whitepapers, and software release updates when requested.</li>
             <li>Executing technical proposals, scope-of-work agreements, and scheduled milestone demos.</li>
             <li>Ensuring high performance, security validation, and accessibility telemetry across our web platforms.</li>
@@ -88,7 +88,7 @@ export default function PrivacyPolicyPage() {
             <h2 className="text-xl font-bold text-zinc-900 dark:text-white">3. Artificial Intelligence &amp; Data Sovereignty</h2>
           </div>
           <p>
-            Both our AI Research Lab and Agency Studio adhere to strict data sovereignty protocols:
+            Both our AI Research Lab and Engineering Studio adhere to strict data sovereignty protocols:
           </p>
           <ul className="list-disc pl-6 space-y-2 text-zinc-600 dark:text-zinc-400 text-sm">
             <li><strong className="text-zinc-900 dark:text-white">Zero Public Model Training:</strong> Proprietary client data, codebases, and corporate trade secrets are NEVER used to train public base models.</li>
@@ -119,7 +119,7 @@ export default function PrivacyPolicyPage() {
             <h2 className="text-xl font-bold text-zinc-900 dark:text-white">5. Your Privacy Rights (GDPR, CCPA &amp; Global)</h2>
           </div>
           <p>
-            All users, research participants, and agency clients possess comprehensive data rights:
+            All users, research participants, and studio clients possess comprehensive data rights:
           </p>
           <ul className="list-disc pl-6 space-y-2 text-zinc-600 dark:text-zinc-400 text-sm">
             <li><strong className="text-zinc-900 dark:text-white">Right to Access:</strong> Request a complete export of personal data retained in our systems.</li>

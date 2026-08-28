@@ -4,7 +4,7 @@ import { FileText, ArrowLeft, CheckCircle2, Shield, Scale, HelpCircle } from 'lu
 
 export const metadata = {
   title: 'Terms of Service | FullstackBrand',
-  description: 'Review the legal terms, service agreements, intellectual property rights, and SLA standards governing FullstackBrand services across our Agency and AI Lab.',
+  description: 'Review the legal terms, service agreements, intellectual property rights, and SLA standards governing FullstackBrand services across our Studio and AI Lab.',
 }
 
 export default function TermsOfServicePage() {
@@ -18,7 +18,7 @@ export default function TermsOfServicePage() {
           href="/agency"
           className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white transition-colors"
         >
-          <ArrowLeft size={14} /> Back to Agency
+          <ArrowLeft size={14} /> Back to Studio
         </Link>
         <span className="text-zinc-300 dark:text-zinc-700">·</span>
         <Link
@@ -38,7 +38,7 @@ export default function TermsOfServicePage() {
           Terms of Service
         </h1>
         <p className="text-zinc-600 dark:text-zinc-400 text-sm md:text-base leading-relaxed">
-          These Terms of Service govern the engagement between FullstackBrand (&quot;we&quot;, &quot;our&quot;, or &quot;us&quot;) and users or client entities (&quot;Client&quot;, &quot;User&quot;, &quot;you&quot;). By accessing our website, subscribing to AI Lab research updates, commissioning agency services, or deploying our software, you agree to these terms.
+          These Terms of Service govern the engagement between FullstackBrand (&quot;we&quot;, &quot;our&quot;, or &quot;us&quot;) and users or client entities (&quot;Client&quot;, &quot;User&quot;, &quot;you&quot;). By accessing our website, subscribing to AI Lab research updates, commissioning studio services, or deploying our software, you agree to these terms.
         </p>
         <div className="mt-6 text-xs font-mono text-zinc-400 dark:text-zinc-500">
           Effective Date: {effectiveDate} · Document Ref: FSB-TOS-2026-V3
@@ -59,7 +59,7 @@ export default function TermsOfServicePage() {
           </p>
           <ul className="list-disc pl-6 space-y-2 text-zinc-600 dark:text-zinc-400 text-sm">
             <li><strong className="text-zinc-900 dark:text-white">AI Research Lab:</strong> Exploration of frontier AI architectures, deterministic agent routing, synthetic asset generation (GlyphForge), open-source tooling, and technical publications.</li>
-            <li><strong className="text-zinc-900 dark:text-white">Creative &amp; Digital Agency:</strong> Brand visual identity systems, bespoke web and SaaS platform engineering, workflow automation, and digital strategy.</li>
+            <li><strong className="text-zinc-900 dark:text-white">Creative &amp; Digital Studio:</strong> Brand visual identity systems, bespoke web and SaaS platform engineering, workflow automation, and digital strategy.</li>
           </ul>
         </section>
 
@@ -85,7 +85,7 @@ export default function TermsOfServicePage() {
             <h2 className="text-xl font-bold text-zinc-900 dark:text-white">3. Commercial Terms &amp; Engagements</h2>
           </div>
           <p>
-            Agency engagements are governed by custom Statements of Work (SOW):
+            Studio engagements are governed by custom Statements of Work (SOW):
           </p>
           <ul className="list-disc pl-6 space-y-2 text-zinc-600 dark:text-zinc-400 text-sm">
             <li>Fixed-price milestone agreements are executed in phased sprints (e.g. deposit / intermediate milestone / final release).</li>
