@@ -70,14 +70,14 @@ const TOPOLOGY_NODES: TopologyNode[] = [
   {
     id: 'router',
     title: 'LLM Router & Orchestrator',
-    subtitle: 'Claude 3.5 Sonnet / Gemini 1.5 Flash',
+    subtitle: 'Dynamic Tier Routing · SLM + Frontier',
     tag: 'Step 3',
     icon: Cpu,
     color: '#6366F1',
     glow: 'rgba(99,102,241,0.4)',
     latency: '24.5ms',
     throughput: 'Dynamic Routing',
-    description: 'Autonomous model dispatcher evaluating task complexity. Directs fast token queries to Gemini Flash and complex neuro-symbolic reasoning workflows to Claude Sonnet.',
+    description: 'Autonomous model dispatcher evaluating task complexity. Directs high-throughput triage queries to low-latency quantized SLMs and deep multi-step reasoning workflows to specialized frontier model clusters.',
     telemetry: [
       'Task Triage SLA: < 15ms',
       'Model Concurrency: 128 streams',
@@ -151,10 +151,13 @@ export default function ArchitectureVisualizer() {
             const Icon = node.icon
             const isActive = activeNodeId === node.id
             return (
-              <button
+              <motion.button
                 key={node.id}
                 onClick={() => setActiveNodeId(node.id)}
-                className={`p-4 rounded-2xl border text-left transition-all duration-300 relative ${
+                whileHover={{ x: 3 }}
+                whileTap={{ x: 0 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+                className={`p-4 rounded-2xl border text-left transition-colors relative ${
                   isActive
                     ? 'border-violet-500 bg-violet-500/15 dark:bg-violet-500/20 shadow-lg scale-105 z-10'
                     : 'border-zinc-200 dark:border-white/10 bg-white/60 dark:bg-zinc-900/40 hover:bg-zinc-100 dark:hover:bg-zinc-900'
@@ -188,7 +191,7 @@ export default function ArchitectureVisualizer() {
                 <div className="text-[10px] font-mono text-zinc-500 dark:text-zinc-400 mt-1">
                   {node.latency}
                 </div>
-              </button>
+              </motion.button>
             )
           })}
         </div>

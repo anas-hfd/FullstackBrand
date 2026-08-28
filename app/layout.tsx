@@ -124,6 +124,7 @@ const jsonLd = {
       },
       telephone: '+1-945-997-2019',
       sameAs: [
+        'https://www.linkedin.com/company/fullstackbrand/',
         'https://www.instagram.com/fullstackbrand_agency',
         'https://www.threads.com/@fullstackbrand_agency',
         'https://web.facebook.com/FullstackBrand',

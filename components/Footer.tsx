@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useTheme } from 'next-themes'
 import { useState, useEffect } from 'react'
-import { Instagram, ArrowUpRight, Mail, MapPin, Phone, MessageCircle } from 'lucide-react'
+import { Instagram, ArrowUpRight, Mail, MapPin, Phone, MessageCircle, Linkedin } from 'lucide-react'
 
 const footerLinks = {
   'Agency Services': [
@@ -18,7 +18,7 @@ const footerLinks = {
     { label: 'AI Research Lab (Root)', href: '/' },
     { label: 'FullstackBrand Agency', href: '/agency' },
     { label: 'How We Work', href: '/agency#process' },
-    { label: 'Start a Project', href: '/agency#start' },
+    { label: 'Start a Project', href: '/agency#contact' },
   ],
   Legal: [
     { label: 'Privacy Policy', href: '/privacy' },
@@ -47,6 +47,11 @@ function ThreadsIcon({ size = 15 }: { size?: number }) {
 }
 
 const socials = [
+  {
+    IconComponent: Linkedin,
+    label: 'LinkedIn',
+    href: 'https://www.linkedin.com/company/fullstackbrand/',
+  },
   {
     IconComponent: Instagram,
     label: 'Instagram',
@@ -79,8 +84,12 @@ export default function Footer() {
   return (
     <footer className="relative mt-8 border-t border-slate-200/50 dark:border-white/10 overflow-hidden">
       {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-brand-light/5 dark:to-brand-dark/5 pointer-events-none" />
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] rounded-full bg-brand-light/5 dark:bg-brand-dark/5 blur-[80px] pointer-events-none" />
+      <div className={`absolute inset-0 bg-gradient-to-b from-transparent pointer-events-none ${
+        isAgency ? 'to-emerald-500/5 dark:to-emerald-500/5' : 'to-violet-500/5 dark:to-violet-500/5'
+      }`} />
+      <div className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] rounded-full blur-[80px] pointer-events-none ${
+        isAgency ? 'bg-emerald-500/5 dark:bg-emerald-500/5' : 'bg-violet-500/5 dark:bg-violet-500/5'
+      }`} />
 
       <div className="relative max-w-7xl mx-auto px-6 pt-16 pb-8">
         {/* Top section */}
@@ -133,9 +142,20 @@ export default function Footer() {
                     href={href}
                     target={href.startsWith('http') ? '_blank' : undefined}
                     rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                    className="flex items-start gap-3 text-sm text-slate-500 dark:text-slate-400 hover:text-brand-light dark:hover:text-brand-dark transition-colors duration-200 group"
+                    className={`flex items-start gap-3 text-sm text-slate-500 dark:text-slate-400 transition-colors duration-200 group ${
+                      isAgency
+                        ? 'hover:text-emerald-600 dark:hover:text-emerald-400'
+                        : 'hover:text-violet-600 dark:hover:text-violet-400'
+                    }`}
                   >
-                    <Icon size={14} className="text-brand-light dark:text-brand-dark flex-shrink-0 mt-0.5" />
+                    <Icon
+                      size={14}
+                      className={`flex-shrink-0 mt-0.5 transition-colors ${
+                        isAgency
+                          ? 'text-emerald-600 dark:text-emerald-400'
+                          : 'text-violet-600 dark:text-violet-400'
+                      }`}
+                    />
                     <span className="whitespace-pre-line leading-snug">{text}</span>
                   </a>
                 ))}
@@ -160,7 +180,11 @@ export default function Footer() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="group flex items-center gap-1 text-sm text-slate-500 dark:text-slate-400 hover:text-brand-light dark:hover:text-brand-dark transition-colors duration-200"
+                      className={`group flex items-center gap-1 text-sm text-slate-500 dark:text-slate-400 transition-colors duration-200 ${
+                        isAgency
+                          ? 'hover:text-emerald-600 dark:hover:text-emerald-400'
+                          : 'hover:text-violet-600 dark:hover:text-violet-400'
+                      }`}
                     >
                       {link.label}
                       <ArrowUpRight
@@ -214,7 +238,11 @@ export default function Footer() {
                 aria-label={label}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-9 h-9 rounded-full glass flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-brand-light dark:hover:text-brand-dark hover:border-brand-light/50 dark:hover:border-brand-dark/50 transition-all duration-200 hover:scale-110"
+                className={`w-9 h-9 rounded-full glass flex items-center justify-center text-slate-500 dark:text-slate-400 transition-all duration-200 hover:scale-110 ${
+                  isAgency
+                    ? 'hover:text-emerald-600 dark:hover:text-emerald-400 hover:border-emerald-500/50'
+                    : 'hover:text-violet-600 dark:hover:text-violet-400 hover:border-violet-500/50'
+                }`}
               >
                 <Icon size={15} />
               </a>

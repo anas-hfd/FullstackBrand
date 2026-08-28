@@ -30,81 +30,81 @@ interface ModelBenchmark {
 const BENCHMARKS: Record<'hybrid' | 'fp16' | 'q4', ModelBenchmark[]> = {
   hybrid: [
     {
-      name: 'FullstackBrand Hybrid Swarm v3',
-      provider: 'Proprietary Router',
-      ttft: 28,
-      throughput: 168,
-      vram: '14.2 GB',
-      quantization: 'Dynamic INT4/FP8',
-      accuracy: 99.8,
-      costPer1k: '$0.0003',
+      name: 'FullstackBrand Multi-Tier Dynamic Router',
+      provider: 'Proprietary Routing Architecture',
+      ttft: 38,
+      throughput: 145,
+      vram: '16.4 GB',
+      quantization: 'Dynamic FP8 / INT4',
+      accuracy: 99.2,
+      costPer1k: '$0.0004',
       highlight: true,
     },
     {
-      name: 'Standard Foundation LLM (Claude 3.5/Gemini 1.5)',
-      provider: 'Public Cloud API',
-      ttft: 340,
-      throughput: 72,
+      name: 'Monolithic Cloud LLM Endpoint (Dense)',
+      provider: 'Standard Cloud API (Dense)',
+      ttft: 280,
+      throughput: 75,
       vram: 'Cloud Managed',
       quantization: 'FP16 Dense',
-      accuracy: 98.4,
-      costPer1k: '$0.0030',
+      accuracy: 98.8,
+      costPer1k: '$0.0025',
     },
     {
-      name: 'Self-Hosted Llama-3 70B',
-      provider: 'Vanilla vLLM Cluster',
-      ttft: 185,
-      throughput: 64,
-      vram: '140 GB (4x A100)',
-      quantization: 'FP16',
-      accuracy: 97.9,
-      costPer1k: '$0.0018',
+      name: 'Unoptimized Self-Hosted Open Cluster',
+      provider: 'Baseline Open Weights Stack',
+      ttft: 160,
+      throughput: 62,
+      vram: '120 GB (Cluster Node)',
+      quantization: 'FP16 Standard',
+      accuracy: 98.1,
+      costPer1k: '$0.0016',
     },
   ],
   fp16: [
     {
-      name: 'FullstackBrand Fine-Tuned FP16 Speculative',
-      provider: 'Proprietary Speculative',
-      ttft: 42,
-      throughput: 142,
-      vram: '28.4 GB',
-      quantization: 'FP16 + Draft Head',
-      accuracy: 99.9,
-      costPer1k: '$0.0006',
+      name: 'FullstackBrand Speculative Decoding Stack',
+      provider: 'Speculative Draft Engine',
+      ttft: 48,
+      throughput: 130,
+      vram: '32.0 GB',
+      quantization: 'FP16 + Speculative Head',
+      accuracy: 99.4,
+      costPer1k: '$0.0007',
       highlight: true,
     },
     {
-      name: 'Standard Llama-3 70B FP16',
-      provider: 'Unoptimized Baseline',
-      ttft: 210,
-      throughput: 58,
-      vram: '140 GB',
+      name: 'Baseline FP16 Autoregressive Pipeline',
+      provider: 'Standard Autoregressive Pipeline',
+      ttft: 190,
+      throughput: 54,
+      vram: '128 GB',
       quantization: 'FP16',
-      accuracy: 98.1,
-      costPer1k: '$0.0022',
+      accuracy: 98.2,
+      costPer1k: '$0.0020',
     },
   ],
   q4: [
     {
-      name: 'FullstackBrand AWQ-v4 Quantized Mesh',
-      provider: 'Edge & Sovereign Core',
-      ttft: 19,
-      throughput: 210,
-      vram: '8.1 GB (Single RTX 4090)',
-      quantization: 'AWQ 4-bit SmoothQuant',
-      accuracy: 99.4,
-      costPer1k: '$0.0001',
+      name: 'FullstackBrand Quantized Edge Runtime',
+      provider: 'Edge & Local Sovereign Core',
+      ttft: 24,
+      throughput: 185,
+      vram: '8.5 GB (Single GPU)',
+      quantization: 'AWQ 4-Bit SmoothQuant',
+      accuracy: 98.9,
+      costPer1k: '$0.0002',
       highlight: true,
     },
     {
-      name: 'Generic GGUF Q4_K_M',
-      provider: 'Ollama Standard',
-      ttft: 95,
-      throughput: 88,
-      vram: '11.5 GB',
-      quantization: 'Q4_K_M',
-      accuracy: 95.8,
-      costPer1k: '$0.0008',
+      name: 'Generic 4-Bit Local Baseline',
+      provider: 'Standard Local Runtime',
+      ttft: 85,
+      throughput: 82,
+      vram: '12.0 GB',
+      quantization: 'Standard 4-Bit Quant',
+      accuracy: 96.2,
+      costPer1k: '$0.0007',
     },
   ],
 }
@@ -156,10 +156,13 @@ export default function ResearchBenchmarks() {
                 { id: 'q4', label: 'AWQ 4-Bit Edge' },
               ] as const
             ).map((tab) => (
-              <button
+              <motion.button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-200 ${
+                whileHover={{ x: 2 }}
+                whileTap={{ x: 0 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors duration-200 ${
                   activeTab === tab.id
                     ? 'bg-violet-600 text-white shadow-md shadow-violet-600/20'
                     : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white'
@@ -167,7 +170,7 @@ export default function ResearchBenchmarks() {
                 id={`benchmark-tab-${tab.id}`}
               >
                 {tab.label}
-              </button>
+              </motion.button>
             ))}
           </div>
         </div>

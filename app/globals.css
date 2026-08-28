@@ -33,19 +33,43 @@
   }
 
   body {
-    @apply antialiased;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   .glass {
-    @apply bg-white/40 dark:bg-zinc-950/40 backdrop-blur-xl border border-zinc-200/50 dark:border-white/10;
+    background-color: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(228, 228, 231, 0.5);
+  }
+  :is(.dark .glass) {
+    background-color: rgba(12, 13, 17, 0.45);
+    border-color: rgba(255, 255, 255, 0.1);
   }
 
   .glass-lab {
-    @apply bg-white/40 dark:bg-zinc-950/45 backdrop-blur-xl border border-violet-500/20 dark:border-violet-500/25 shadow-xl;
+    background-color: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  }
+  :is(.dark .glass-lab) {
+    background-color: rgba(12, 13, 17, 0.55);
+    border-color: rgba(139, 92, 246, 0.25);
   }
 
   .glass-agency {
-    @apply bg-white/40 dark:bg-zinc-950/45 backdrop-blur-xl border border-emerald-500/20 dark:border-emerald-500/25 shadow-xl;
+    background-color: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  }
+  :is(.dark .glass-agency) {
+    background-color: rgba(12, 13, 17, 0.55);
+    border-color: rgba(16, 185, 129, 0.25);
   }
 
   /* Default Agency Emerald Glow */

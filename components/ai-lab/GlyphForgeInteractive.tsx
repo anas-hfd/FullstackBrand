@@ -121,30 +121,36 @@ export default function GlyphForgeInteractive() {
                   placeholder="e.g., Cyberpunk Neomorphic Dev Directory"
                   className="w-full bg-white/90 dark:bg-zinc-900/90 border border-zinc-300 dark:border-white/10 rounded-2xl px-4 py-3.5 text-sm text-zinc-900 dark:text-white placeholder:text-zinc-400 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 shadow-inner"
                 />
-                <button
+                <motion.button
                   onClick={handleGenerate}
                   disabled={isGenerating}
-                  className="absolute right-2 top-2 bottom-2 px-4 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold flex items-center gap-1.5 transition-all shadow-md shadow-violet-600/20 disabled:opacity-50"
+                  whileHover={{ x: 3 }}
+                  whileTap={{ x: 0 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+                  className="absolute right-2 top-2 bottom-2 px-4 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold flex items-center gap-1.5 transition-colors shadow-md shadow-violet-600/20 disabled:opacity-50"
                   id="generate-glyph-btn"
                 >
                   {isGenerating ? <RefreshCw size={13} className="animate-spin" /> : <Wand2 size={13} />}
                   <span>Generate</span>
-                </button>
+                </motion.button>
               </div>
 
               {/* Quick Presets */}
               <div className="flex flex-wrap gap-1.5 pt-1">
                 {PRESET_EXAMPLES.map((ex, i) => (
-                  <button
+                  <motion.button
                     key={i}
                     onClick={() => {
                       setPrompt(ex)
                       handleGenerate()
                     }}
+                    whileHover={{ x: 2 }}
+                    whileTap={{ x: 0 }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 20 }}
                     className="px-2.5 py-1 rounded-lg text-[11px] font-medium bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:bg-violet-500/10 hover:text-violet-600 dark:hover:text-violet-400 transition-colors"
                   >
                     {ex}
-                  </button>
+                  </motion.button>
                 ))}
               </div>
             </div>
@@ -163,10 +169,13 @@ export default function GlyphForgeInteractive() {
                   const Icon = os.icon
                   const active = osPreset === os.id
                   return (
-                    <button
+                    <motion.button
                       key={os.id}
                       onClick={() => setOsPreset(os.id as OSPreset)}
-                      className={`p-3 rounded-2xl border text-left transition-all ${
+                      whileHover={{ x: 3 }}
+                      whileTap={{ x: 0 }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+                      className={`p-3 rounded-2xl border text-left transition-colors duration-200 ${
                         active
                           ? 'border-violet-500 bg-violet-500/10 dark:bg-violet-500/20 shadow-sm'
                           : 'border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-zinc-900/50 hover:bg-zinc-100 dark:hover:bg-zinc-900'
@@ -178,7 +187,7 @@ export default function GlyphForgeInteractive() {
                         <span className="text-xs font-bold text-zinc-900 dark:text-white">{os.label}</span>
                       </div>
                       <span className="text-[10px] text-zinc-500 dark:text-zinc-400 block">{os.sub}</span>
-                    </button>
+                    </motion.button>
                   )
                 })}
               </div>
@@ -191,10 +200,13 @@ export default function GlyphForgeInteractive() {
               </label>
               <div className="flex flex-wrap gap-2">
                 {TONES.map((tone) => (
-                  <button
+                  <motion.button
                     key={tone.id}
                     onClick={() => setSelectedTone(tone)}
-                    className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all ${
+                    whileHover={{ y: -2 }}
+                    whileTap={{ y: 0 }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+                    className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border text-xs font-bold transition-colors duration-200 ${
                       selectedTone.id === tone.id
                         ? 'border-zinc-950 dark:border-white bg-zinc-100 dark:bg-white/10 text-zinc-950 dark:text-white scale-105 shadow-sm'
                         : 'border-zinc-200 dark:border-white/10 bg-transparent text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-white/5'
@@ -203,7 +215,7 @@ export default function GlyphForgeInteractive() {
                   >
                     <span className="w-3 h-3 rounded-full" style={{ backgroundColor: tone.accent }} />
                     <span>{tone.name}</span>
-                  </button>
+                  </motion.button>
                 ))}
               </div>
             </div>
@@ -224,10 +236,13 @@ export default function GlyphForgeInteractive() {
                   const Icon = b.icon
                   const active = badge === b.id
                   return (
-                    <button
+                    <motion.button
                       key={b.id}
                       onClick={() => setBadge(b.id as BadgeType)}
-                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all ${
+                      whileHover={{ x: 3 }}
+                      whileTap={{ x: 0 }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold transition-colors duration-200 ${
                         active
                           ? 'border-violet-500 bg-violet-500/15 text-violet-600 dark:text-violet-300 font-bold'
                           : 'border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-white/5'
@@ -236,7 +251,7 @@ export default function GlyphForgeInteractive() {
                     >
                       <Icon size={13} />
                       <span>{b.label}</span>
-                    </button>
+                    </motion.button>
                   )
                 })}
               </div>
@@ -368,25 +383,31 @@ export default function GlyphForgeInteractive() {
             <div className="relative z-10 w-full mt-6 pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-2 text-xs">
               <div className="flex items-center gap-1.5">
                 {(['icns', 'ico', 'svg', 'png'] as const).map((fmt) => (
-                  <button
+                  <motion.button
                     key={fmt}
                     onClick={() => handleExport(fmt)}
+                    whileHover={{ y: -2 }}
+                    whileTap={{ y: 0 }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 20 }}
                     className="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white font-mono uppercase text-[10px] font-bold transition-colors"
                     id={`export-${fmt}`}
                   >
                     .{fmt}
-                  </button>
+                  </motion.button>
                 ))}
               </div>
 
-              <button
+              <motion.button
                 onClick={handleCopySVG}
+                whileHover={{ x: 3 }}
+                whileTap={{ x: 0 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 20 }}
                 className="flex items-center gap-1 text-[11px] text-white/70 hover:text-white font-mono bg-white/5 hover:bg-white/15 px-3 py-1 rounded-lg border border-white/10 transition-colors"
                 id="copy-svg-btn"
               >
                 {copied ? <Check size={12} className="text-emerald-400" /> : <Copy size={12} />}
                 <span>{copied ? 'Copied' : 'Copy SVG'}</span>
-              </button>
+              </motion.button>
             </div>
 
             {/* Feedback notification toast */}

@@ -11,11 +11,11 @@ export default {
     extend: {
       colors: {
         canvas: {
-          dark: '#09090b',
+          dark: '#0c0d11',
           light: '#fafafa',
         },
         surface: {
-          dark: '#18181b',
+          dark: '#16171d',
           light: '#ffffff',
           borderDark: 'rgba(255, 255, 255, 0.08)',
           borderLight: '#e4e4e7',
@@ -24,7 +24,7 @@ export default {
           light: '#00CC60',
           dark: '#00CC60',
           electric: '#22C55E',
-          obsidian: '#09090b',
+          obsidian: '#0c0d11',
           offwhite: '#fafafa',
         },
         agency: {
@@ -48,8 +48,8 @@ export default {
           dark: '#7C3AED',
           deep: '#6D28D9',
           electric: '#9333EA',
-          obsidian: '#09090b',
-          surface: '#18181b',
+          obsidian: '#0c0d11',
+          surface: '#16171d',
         },
       },
       animation: {

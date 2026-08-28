@@ -43,7 +43,7 @@ export default function ThemeToggle({ className = '' }: { className?: string }) 
             transition={{ duration: 0.2, ease: 'easeOut' }}
             className="flex items-center justify-center"
           >
-            <Moon size={16} className="text-violet-400" />
+            <Moon size={16} className="text-white" />
           </motion.div>
         ) : (
           <motion.div
@@ -54,7 +54,7 @@ export default function ThemeToggle({ className = '' }: { className?: string }) 
             transition={{ duration: 0.2, ease: 'easeOut' }}
             className="flex items-center justify-center"
           >
-            <Sun size={16} className="text-amber-500" />
+            <Sun size={16} className="text-zinc-950" />
           </motion.div>
         )}
       </AnimatePresence>

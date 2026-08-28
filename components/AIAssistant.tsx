@@ -153,8 +153,8 @@ export default function AIAssistant() {
         aria-label={isOpen ? 'Close AI Assistant' : 'Open AI Assistant'}
         className={`fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-all ${
           isAgency
-            ? 'bg-emerald-600 shadow-emerald-500/40'
-            : 'bg-gradient-to-tr from-lab-dark to-lab-DEFAULT shadow-lab-DEFAULT/40'
+            ? 'bg-emerald-600 shadow-[0_0_20px_rgba(16,185,129,0.45)] hover:shadow-[0_0_28px_rgba(16,185,129,0.65)]'
+            : 'bg-violet-600 shadow-[0_0_20px_rgba(139,92,246,0.45)] hover:shadow-[0_0_28px_rgba(139,92,246,0.65)]'
         }`}
       >
         <AnimatePresence mode="wait" initial={false}>
@@ -179,13 +179,13 @@ export default function AIAssistant() {
             exit={{ opacity: 0, y: 24, scale: 0.92 }}
             transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
             className={`fixed bottom-24 right-6 z-50 w-[92vw] max-w-[400px] h-[520px] glass rounded-2xl flex flex-col overflow-hidden shadow-2xl border ${
-              isAgency ? 'border-emerald-500/30' : 'border-lab-DEFAULT/30'
+              isAgency ? 'border-emerald-500/30' : 'border-violet-500/30'
             }`}
           >
             {/* Header */}
             <div className="flex items-center gap-3 px-4 py-3 border-b border-slate-200/50 dark:border-white/10 bg-slate-50/50 dark:bg-white/[0.03] flex-shrink-0">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                isAgency ? 'bg-emerald-500/15 text-emerald-500' : 'bg-lab-DEFAULT/15 text-lab-DEFAULT'
+                isAgency ? 'bg-emerald-500/15 text-emerald-500' : 'bg-violet-500/15 text-violet-500 dark:text-violet-400'
               }`}>
                 <Sparkles size={14} />
               </div>
@@ -213,7 +213,7 @@ export default function AIAssistant() {
                       msg.role === 'user'
                         ? isAgency
                           ? 'bg-emerald-600 text-white rounded-br-sm'
-                          : 'bg-gradient-to-r from-lab-DEFAULT to-lab-dark text-white rounded-br-sm'
+                          : 'bg-violet-600 text-white rounded-br-sm'
                         : 'glass rounded-bl-sm text-slate-800 dark:text-slate-100'
                     }`}
                   >
@@ -240,7 +240,6 @@ export default function AIAssistant() {
               </AnimatePresence>
             </div>
 
-
             {/* Input bar */}
             <div className="p-3 flex gap-2 border-t border-slate-200/50 dark:border-white/10 flex-shrink-0">
               <input
@@ -252,7 +251,7 @@ export default function AIAssistant() {
                 disabled={isThinking}
                 aria-label="Type your message"
                 className={`flex-1 px-3 py-2 rounded-xl bg-transparent border border-slate-200 dark:border-white/10 outline-none text-sm placeholder:text-slate-400 disabled:opacity-50 transition-colors ${
-                  isAgency ? 'focus:border-emerald-500' : 'focus:border-lab-DEFAULT'
+                  isAgency ? 'focus:border-emerald-500' : 'focus:border-violet-500'
                 }`}
               />
               <motion.button
@@ -262,7 +261,7 @@ export default function AIAssistant() {
                 whileTap={{ scale: 0.95 }}
                 aria-label="Send message"
                 className={`p-2.5 rounded-xl disabled:opacity-40 transition-opacity flex-shrink-0 text-white ${
-                  isAgency ? 'bg-emerald-600' : 'bg-lab-DEFAULT'
+                  isAgency ? 'bg-emerald-600' : 'bg-violet-600'
                 }`}
               >
                 <Send size={15} />

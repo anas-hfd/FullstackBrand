@@ -21,21 +21,16 @@ export default function CursorLight() {
   const animate = useCallback(() => {
     const blob = blobRef.current
     const dot = dotRef.current
-    if (!blob || !dot) {
-      rafRef.current = requestAnimationFrame(animate)
-      return
+
+    if (hasMoved.current && blob && dot) {
+      // Responsive lerp for smooth trailing glow (0.18 = fast, fluid, zero sluggishness)
+      curPosRef.current.x = lerp(curPosRef.current.x, posRef.current.x, 0.18)
+      curPosRef.current.y = lerp(curPosRef.current.y, posRef.current.y, 0.18)
+
+      // GPU hardware transform — zero layout thrashing or reflows
+      blob.style.transform = `translate3d(${curPosRef.current.x}px, ${curPosRef.current.y}px, 0) translate(-50%, -50%)`
+      dot.style.transform = `translate3d(${posRef.current.x}px, ${posRef.current.y}px, 0) translate(-50%, -50%)`
     }
-
-    // Smooth lerp for blob
-    curPosRef.current.x = lerp(curPosRef.current.x, posRef.current.x, 0.08)
-    curPosRef.current.y = lerp(curPosRef.current.y, posRef.current.y, 0.08)
-
-    blob.style.left = `${curPosRef.current.x}px`
-    blob.style.top = `${curPosRef.current.y}px`
-
-    // Dot snaps instantly to cursor
-    dot.style.left = `${posRef.current.x}px`
-    dot.style.top = `${posRef.current.y}px`
 
     rafRef.current = requestAnimationFrame(animate)
   }, [])
@@ -51,14 +46,15 @@ export default function CursorLight() {
     }
 
     checkMobile()
-    window.addEventListener('resize', checkMobile)
+    window.addEventListener('resize', checkMobile, { passive: true })
 
     const handleMouseMove = (e: MouseEvent) => {
-      posRef.current = { x: e.clientX, y: e.clientY }
+      posRef.current.x = e.clientX
+      posRef.current.y = e.clientY
 
-      // On first move, also snap the lerp position so dot appears immediately
       if (!hasMoved.current) {
-        curPosRef.current = { x: e.clientX, y: e.clientY }
+        curPosRef.current.x = e.clientX
+        curPosRef.current.y = e.clientY
         hasMoved.current = true
         if (dotRef.current) dotRef.current.style.opacity = '1'
         if (blobRef.current) blobRef.current.style.opacity = '1'
@@ -78,8 +74,8 @@ export default function CursorLight() {
   if (!mounted || isMobile) return null
 
   const blobBg = isAgency
-    ? 'radial-gradient(circle, rgba(16,185,129,0.18) 0%, rgba(16,185,129,0.06) 40%, transparent 70%)'
-    : 'radial-gradient(circle, rgba(139,92,246,0.22) 0%, rgba(139,92,246,0.08) 40%, transparent 70%)'
+    ? 'radial-gradient(circle, rgba(16,185,129,0.18) 0%, rgba(16,185,129,0.06) 45%, transparent 70%)'
+    : 'radial-gradient(circle, rgba(139,92,246,0.22) 0%, rgba(139,92,246,0.08) 45%, transparent 70%)'
 
   const dotBg = isAgency ? '#10B981' : '#8B5CF6'
   const dotShadow = isAgency
@@ -88,48 +84,47 @@ export default function CursorLight() {
 
   return (
     <>
-      {/* Glowing orb — follows with lag */}
+      {/* Glowing orb — hardware-composited */}
       <div
         ref={blobRef}
         aria-hidden="true"
         className="cursor-blob"
         style={{
           position: 'fixed',
-          left: -500,
-          top: -500,
-          width: 400,
-          height: 400,
+          top: 0,
+          left: 0,
+          width: 380,
+          height: 380,
           borderRadius: '50%',
           background: blobBg,
-          transform: 'translate(-50%, -50%)',
+          transform: 'translate3d(-500px, -500px, 0) translate(-50%, -50%)',
           pointerEvents: 'none',
           zIndex: 9998,
-          mixBlendMode: 'screen',
-          willChange: 'left, top',
+          willChange: 'transform',
           opacity: 0,
-          transition: 'opacity 0.3s ease, background 0.4s ease',
+          transition: 'opacity 0.2s ease, background 0.3s ease',
         }}
       />
-      {/* Precise dot — snaps to cursor */}
+      {/* Precise dot — instantaneous 120fps tracking */}
       <div
         ref={dotRef}
         aria-hidden="true"
         className="cursor-dot"
         style={{
           position: 'fixed',
-          left: -500,
-          top: -500,
+          top: 0,
+          left: 0,
           width: 7,
           height: 7,
           borderRadius: '50%',
           background: dotBg,
-          transform: 'translate(-50%, -50%)',
+          transform: 'translate3d(-500px, -500px, 0) translate(-50%, -50%)',
           pointerEvents: 'none',
           zIndex: 9999,
           boxShadow: dotShadow,
-          willChange: 'left, top',
+          willChange: 'transform',
           opacity: 0,
-          transition: 'opacity 0.3s ease, background 0.4s ease, box-shadow 0.4s ease',
+          transition: 'opacity 0.2s ease, background 0.3s ease, box-shadow 0.3s ease',
         }}
       />
     </>

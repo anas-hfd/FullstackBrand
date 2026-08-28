@@ -54,9 +54,12 @@ export default function SovereigntySection() {
 
           {/* Toggle Button */}
           <div className="flex items-center p-1 rounded-2xl bg-zinc-200/80 dark:bg-zinc-900 border border-zinc-300/80 dark:border-white/10 shadow-inner">
-            <button
+            <motion.button
               onClick={() => setDeploymentMode('sovereign')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+              whileHover={{ x: 2 }}
+              whileTap={{ x: 0 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-colors duration-200 ${
                 isSovereign
                   ? 'bg-violet-600 text-white shadow-md shadow-violet-600/30'
                   : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white'
@@ -65,10 +68,13 @@ export default function SovereigntySection() {
             >
               <Lock size={13} />
               <span>Air-Gapped Sovereign Cluster</span>
-            </button>
-            <button
+            </motion.button>
+            <motion.button
               onClick={() => setDeploymentMode('public')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+              whileHover={{ x: 2 }}
+              whileTap={{ x: 0 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-colors duration-200 ${
                 !isSovereign
                   ? 'bg-zinc-800 text-white shadow-md'
                   : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white'
@@ -77,7 +83,7 @@ export default function SovereigntySection() {
             >
               <Cloud size={13} />
               <span>Standard Public Cloud</span>
-            </button>
+            </motion.button>
           </div>
         </div>
 

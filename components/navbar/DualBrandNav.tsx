@@ -11,13 +11,13 @@ import {
   Layers,
   Menu,
   X,
-  Zap,
   ChevronRight,
   Sparkles,
   GitBranch,
   ShieldCheck,
   Cpu,
   Bot,
+  Bell,
 } from 'lucide-react'
 import BrandSwitcher from './BrandSwitcher'
 import ThemeToggle from '@/components/theme/ThemeToggle'
@@ -65,20 +65,21 @@ export default function DualBrandNav() {
   useEffect(() => {
     setMobileOpen(false)
 
-    // Dynamic Favicon Switcher: Asset 25-8.png for Lab, Logomark.png for Agency
     const faviconHref = isLab ? '/logos/Asset 25-8.png' : '/logos/Logomark.png'
-    let link: HTMLLinkElement | null = document.querySelector("link[rel~='icon']")
-    if (!link) {
-      link = document.createElement('link')
+    const iconLinks: NodeListOf<HTMLLinkElement> = document.querySelectorAll("link[rel*='icon']")
+    if (iconLinks.length > 0) {
+      iconLinks.forEach((link) => {
+        link.href = faviconHref
+      })
+    } else {
+      const link = document.createElement('link')
       link.rel = 'icon'
-      document.getElementsByTagName('head')[0].appendChild(link)
+      link.type = 'image/png'
+      link.href = faviconHref
+      document.head.appendChild(link)
     }
-    link.href = faviconHref
   }, [pathname, isLab])
 
-  // Logo selection based on route and light/dark theme:
-  // Lab Page: Asset 24-8.png (Light), Asset 28-8.png (Dark)
-  // Agency Page: Horizontal-BlackTXT.png (Light), Horizontal-WhiteTXT.png (Dark)
   const logoSrc = isLab
     ? isDark
       ? '/logos/Asset 28-8.png'
@@ -87,20 +88,20 @@ export default function DualBrandNav() {
     ? '/logos/Horizontal-WhiteTXT.png'
     : '/logos/Horizontal-BlackTXT.png'
 
+  const actionHref = isLab ? '#updates' : isAgency ? '#contact' : '/agency#contact'
+
   return (
     <>
-      {/* Floating Navbar Container */}
       <header className="fixed top-0 left-0 right-0 z-50 pt-3 sm:pt-4 px-3 sm:px-6 pointer-events-none">
         <div className="max-w-7xl mx-auto flex items-center justify-center">
           <nav
             aria-label="Main Navigation"
-            className={`pointer-events-auto w-full flex items-center justify-between gap-2 sm:gap-4 xl:gap-6 px-3.5 sm:px-6 py-2 rounded-2xl sm:rounded-full transition-all duration-300 backdrop-blur-xl border shadow-2xl flex-nowrap ${
+            className={`pointer-events-auto w-full flex items-center justify-between gap-2 sm:gap-4 xl:gap-6 px-3.5 sm:px-6 py-2 rounded-2xl sm:rounded-full transition-all duration-300 backdrop-blur-xl border shadow-xl flex-nowrap ${
               scrolled
-                ? 'bg-white/55 dark:bg-zinc-950/60 border-zinc-300/60 dark:border-white/15 shadow-zinc-950/20'
-                : 'bg-white/40 dark:bg-zinc-950/45 border-zinc-200/50 dark:border-white/10 shadow-zinc-950/10'
+                ? 'bg-white/35 dark:bg-[#0c0d11]/45 border-zinc-300/40 dark:border-white/10 shadow-zinc-950/15'
+                : 'bg-white/20 dark:bg-[#0c0d11]/25 border-zinc-200/40 dark:border-white/10 shadow-zinc-950/5'
             }`}
           >
-            {/* 1. Dynamic Logo */}
             <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
               <Link
                 href={isLab ? '/' : '/agency'}
@@ -124,37 +125,28 @@ export default function DualBrandNav() {
               </Link>
             </div>
 
-            {/* 2. Desktop Navigation Links */}
             <div className="hidden lg:flex items-center gap-1 xl:gap-2 flex-shrink-0">
               {navItems.map((item) => {
-                const Icon = item.icon
                 return (
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white hover:bg-white/50 dark:hover:bg-white/10 transition-colors whitespace-nowrap"
+                    className="px-3 py-1.5 rounded-lg text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white hover:bg-white/50 dark:hover:bg-white/10 transition-colors whitespace-nowrap"
                     id={`nav-item-${item.label.toLowerCase().replace(/\s+/g, '-')}`}
                   >
-                    <Icon
-                      size={13}
-                      className={isLab ? 'text-violet-600 dark:text-violet-400' : 'text-emerald-600 dark:text-emerald-400'}
-                    />
                     <span>{item.label}</span>
                   </Link>
                 )
               })}
             </div>
 
-            {/* 3. Utility Cluster */}
             <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-              {/* Brand Switcher */}
               <div className="hidden sm:block">
                 <BrandSwitcher brand={brand} />
               </div>
 
-              {/* Action Button: Join Waitlist (Lab) / Start Project (Agency) */}
               <a
-                href={isLab ? '#waitlist' : '/agency#contact'}
+                href={actionHref}
                 className={`hidden md:inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold text-white transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] shadow-md ${
                   isLab
                     ? 'bg-gradient-to-r from-violet-600 to-indigo-600 hover:shadow-violet-500/25 hover:shadow-lg'
@@ -164,8 +156,8 @@ export default function DualBrandNav() {
               >
                 {isLab ? (
                   <>
-                    <Zap size={13} />
-                    <span>Join Waitlist</span>
+                    <Bell size={13} />
+                    <span>Get Updates</span>
                   </>
                 ) : (
                   <>
@@ -175,10 +167,8 @@ export default function DualBrandNav() {
                 )}
               </a>
 
-              {/* Theme Toggle */}
               <ThemeToggle />
 
-              {/* Mobile Hamburger Button */}
               <button
                 onClick={() => setMobileOpen(!mobileOpen)}
                 className="lg:hidden w-9 h-9 rounded-xl flex items-center justify-center text-zinc-700 dark:text-zinc-200 hover:text-zinc-950 dark:hover:text-white bg-white/50 dark:bg-white/10 border border-zinc-200 dark:border-white/10 transition-colors"
@@ -193,7 +183,6 @@ export default function DualBrandNav() {
         </div>
       </header>
 
-      {/* 4. Mobile Drawer */}
       <AnimatePresence>
         {mobileOpen && (
           <>
@@ -210,7 +199,7 @@ export default function DualBrandNav() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', stiffness: 350, damping: 35 }}
-              className="fixed top-0 right-0 bottom-0 z-50 w-[85%] max-w-[320px] bg-white/95 dark:bg-zinc-950/95 backdrop-blur-2xl border-l border-zinc-200 dark:border-white/10 p-6 flex flex-col justify-between shadow-2xl lg:hidden overflow-y-auto"
+              className="fixed top-0 right-0 bottom-0 z-50 w-[85%] max-w-[320px] bg-white/95 dark:bg-[#0c0d11]/95 backdrop-blur-2xl border-l border-zinc-200 dark:border-white/10 p-6 flex flex-col justify-between shadow-2xl lg:hidden overflow-y-auto"
               role="dialog"
               aria-label="Mobile Navigation"
             >
@@ -245,18 +234,13 @@ export default function DualBrandNav() {
                     Navigation
                   </span>
                   {navItems.map((item) => {
-                    const Icon = item.icon
                     return (
                       <Link
                         key={item.href}
                         href={item.href}
                         onClick={() => setMobileOpen(false)}
-                        className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/10 transition-colors"
+                        className="flex items-center px-3.5 py-2.5 rounded-xl text-sm font-semibold text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/10 transition-colors"
                       >
-                        <Icon
-                          size={16}
-                          className={isLab ? 'text-violet-600 dark:text-violet-400' : 'text-emerald-600 dark:text-emerald-400'}
-                        />
                         <span>{item.label}</span>
                       </Link>
                     )
@@ -265,7 +249,7 @@ export default function DualBrandNav() {
               </div>
               <div className="pt-6 border-t border-zinc-200 dark:border-white/10 space-y-3">
                 <a
-                  href={isLab ? '#waitlist' : '/agency#contact'}
+                  href={actionHref}
                   onClick={() => setMobileOpen(false)}
                   className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold text-white transition-all shadow-md ${
                     isLab
@@ -273,7 +257,7 @@ export default function DualBrandNav() {
                       : 'bg-gradient-to-r from-emerald-600 to-teal-600 hover:shadow-emerald-500/25'
                   }`}
                 >
-                  {isLab ? <><Zap size={14} /> Join Waitlist</> : <><ChevronRight size={14} /> Start Project</>}
+                  {isLab ? <><Bell size={14} /> Get Updates</> : <><ChevronRight size={14} /> Start Project</>}
                 </a>
                 <div className="flex items-center justify-between px-2 pt-1 text-xs text-zinc-500">
                   <span>Theme Mode</span>

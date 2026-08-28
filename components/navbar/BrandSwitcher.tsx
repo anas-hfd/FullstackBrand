@@ -1,8 +1,9 @@
 'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { FlaskConical, Layers } from 'lucide-react'
+import { useEffect } from 'react'
 
 interface BrandSwitcherProps {
   brand: 'lab' | 'agency'
@@ -11,7 +12,14 @@ interface BrandSwitcherProps {
 }
 
 export default function BrandSwitcher({ brand, onSelect, className = '' }: BrandSwitcherProps) {
+  const router = useRouter()
   const isLab = brand === 'lab'
+
+  // Pre-warm routes for fast seamless navigation
+  useEffect(() => {
+    router.prefetch('/')
+    router.prefetch('/agency')
+  }, [router])
 
   return (
     <div
@@ -22,8 +30,9 @@ export default function BrandSwitcher({ brand, onSelect, className = '' }: Brand
       {/* AI Lab Option */}
       <Link
         href="/"
+        prefetch={true}
         onClick={onSelect}
-        className={`relative z-10 flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-full transition-colors duration-200 ${
+        className={`relative z-10 flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-full transition-colors duration-200 ${
           isLab
             ? 'text-white'
             : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-200'
@@ -33,19 +42,27 @@ export default function BrandSwitcher({ brand, onSelect, className = '' }: Brand
         {isLab && (
           <motion.div
             layoutId="brand-pill-active"
-            className="absolute inset-0 rounded-full bg-violet-600/90 shadow-[0_0_12px_rgba(139,92,246,0.6)] border border-violet-400/30"
-            transition={{ type: 'spring', stiffness: 420, damping: 32 }}
+            className="absolute inset-0 rounded-full bg-violet-600 shadow-[0_0_14px_rgba(139,92,246,0.65)] border border-violet-400/30"
+            transition={{ type: 'spring', stiffness: 450, damping: 30 }}
           />
         )}
-        <FlaskConical size={13} className={`relative z-10 ${isLab ? 'text-white' : 'text-violet-500 dark:text-violet-400'}`} />
+        <span
+          className={`relative z-10 w-2.5 h-2.5 rounded-full flex-shrink-0 transition-colors duration-200 ${
+            isLab
+              ? 'bg-white shadow-[0_0_8px_rgba(255,255,255,0.9)]'
+              : 'bg-violet-500 shadow-[0_0_8px_rgba(139,92,246,0.7)]'
+          }`}
+          aria-hidden="true"
+        />
         <span className="relative z-10 tracking-tight">AI Lab</span>
       </Link>
 
       {/* Agency Option */}
       <Link
         href="/agency"
+        prefetch={true}
         onClick={onSelect}
-        className={`relative z-10 flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-full transition-colors duration-200 ${
+        className={`relative z-10 flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-full transition-colors duration-200 ${
           !isLab
             ? 'text-white'
             : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-200'
@@ -55,11 +72,18 @@ export default function BrandSwitcher({ brand, onSelect, className = '' }: Brand
         {!isLab && (
           <motion.div
             layoutId="brand-pill-active"
-            className="absolute inset-0 rounded-full bg-emerald-600/90 shadow-[0_0_12px_rgba(16,185,129,0.6)] border border-emerald-400/30"
-            transition={{ type: 'spring', stiffness: 420, damping: 32 }}
+            className="absolute inset-0 rounded-full bg-emerald-600 shadow-[0_0_14px_rgba(16,185,129,0.65)] border border-emerald-400/30"
+            transition={{ type: 'spring', stiffness: 450, damping: 30 }}
           />
         )}
-        <Layers size={13} className={`relative z-10 ${!isLab ? 'text-white' : 'text-emerald-500 dark:text-emerald-400'}`} />
+        <span
+          className={`relative z-10 w-2.5 h-2.5 rounded-full flex-shrink-0 transition-colors duration-200 ${
+            !isLab
+              ? 'bg-white shadow-[0_0_8px_rgba(255,255,255,0.9)]'
+              : 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.7)]'
+          }`}
+          aria-hidden="true"
+        />
         <span className="relative z-10 tracking-tight">Agency</span>
       </Link>
     </div>

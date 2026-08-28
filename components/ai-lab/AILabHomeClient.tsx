@@ -10,6 +10,7 @@ import {
   GitBranch,
   Compass,
   Mail,
+  Bell,
 } from 'lucide-react'
 import ResearchBenchmarks from '@/components/ai-lab/ResearchBenchmarks'
 import GlyphForgeInteractive from '@/components/ai-lab/GlyphForgeInteractive'
@@ -83,7 +84,7 @@ export default function AILabHomeClient() {
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass border border-violet-500/30 text-xs font-semibold text-violet-700 dark:text-violet-300 mb-8 shadow-sm"
           >
             <Sparkles size={14} className="text-violet-500 animate-pulse" />
-            <span>AI Software & Generative Systems Studio · TRL-7 Ready · Non-Egress Architecture</span>
+            <span>AI Software &amp; Generative Systems Studio · TRL-7 Ready · Non-Egress Architecture</span>
           </motion.div>
 
           {/* Hero Title */}
@@ -93,7 +94,7 @@ export default function AILabHomeClient() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight leading-[1.08] max-w-5xl mx-auto mb-8 text-zinc-900 dark:text-white"
           >
-            Next-Generation Autonomous Systems &{' '}
+            Next-Generation Autonomous Systems &amp;{' '}
             <span className="bg-gradient-to-r from-violet-600 via-indigo-500 to-purple-500 bg-clip-text text-transparent glow-text-violet">
               Generative Tooling.
             </span>
@@ -116,24 +117,30 @@ export default function AILabHomeClient() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16"
           >
-            <a
+            <motion.a
               href="#saas-development"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-violet-600 via-indigo-600 to-purple-600 text-white px-8 py-4 rounded-full font-bold text-base shadow-lg shadow-violet-600/30 hover:shadow-violet-600/50 hover:scale-[1.03] active:scale-[0.98] transition-all duration-300"
+              whileHover={{ x: 6 }}
+              whileTap={{ x: 0 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-violet-600 via-indigo-600 to-purple-600 text-white px-8 py-4 rounded-full font-bold text-base shadow-lg shadow-violet-600/30 hover:shadow-violet-600/50 overflow-hidden"
               id="hero-cta-saas"
             >
               <Sparkles size={18} />
               <span>Launch GlyphForge AI Demo</span>
-            </a>
+            </motion.a>
 
-            <a
+            <motion.a
               href="#architecture"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 glass px-8 py-4 rounded-full font-bold text-base text-zinc-800 dark:text-white hover:bg-zinc-100 dark:hover:bg-white/10 border border-zinc-300 dark:border-white/15 hover:border-violet-500/50 hover:text-violet-600 dark:hover:text-violet-300 transition-all duration-300 group"
+              whileHover={{ x: -6 }}
+              whileTap={{ x: 0 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 glass px-8 py-4 rounded-full font-bold text-base text-zinc-800 dark:text-white hover:bg-zinc-100 dark:hover:bg-white/10 border border-zinc-300 dark:border-white/15 hover:border-violet-500/50 hover:text-violet-600 dark:hover:text-violet-300 transition-colors duration-300 group"
               id="hero-cta-architecture"
             >
               <GitBranch size={18} />
               <span>Explore Topology Blueprint</span>
               <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" />
-            </a>
+            </motion.a>
           </motion.div>
 
           {/* Technical Benchmarks / Grant Vetting Grid */}
@@ -179,9 +186,10 @@ export default function AILabHomeClient() {
       <SovereigntySection />
 
       {/* ══════════════════════════════════════════════════════════════════════
-          WAITLIST / CONTACT (#waitlist)
+          GET UPDATES / NEWSLETTER (#updates)
       ══════════════════════════════════════════════════════════════════════ */}
-      <section id="waitlist" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <section id="updates" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative scroll-mt-24">
+        <span id="waitlist" className="absolute -top-28" />
         <div
           className="rounded-3xl p-8 md:p-16 text-center relative overflow-hidden"
           style={{
@@ -193,52 +201,55 @@ export default function AILabHomeClient() {
 
           <div className="relative z-10 max-w-2xl mx-auto space-y-6">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-violet-600/15 border border-violet-500/30 text-xs font-mono font-bold text-violet-700 dark:text-violet-300">
-              <Zap size={12} className="animate-pulse" />
-              Early Access · Research Partners & Grant Evaluators Welcome
+              <Bell size={12} className="animate-pulse" />
+              Direct Updates · Research Briefings &amp; Software Releases
             </div>
 
             <h2 className="text-3xl md:text-5xl font-black text-zinc-900 dark:text-white tracking-tight">
-              Get Early Access to{' '}
+              Get Updates from{' '}
               <span className="bg-gradient-to-r from-violet-600 to-purple-500 bg-clip-text text-transparent">
                 FullstackBrand AI Lab
               </span>
             </h2>
 
             <p className="text-zinc-600 dark:text-zinc-300 text-base md:text-lg leading-relaxed">
-              Join our research waitlist for early access to GlyphForge AI, our multi-agent orchestration APIs, and technical architecture reviews. Priority onboarding for enterprise teams, grant evaluators, and strategic partners.
+              Subscribe to receive new research publications, GlyphForge release notes, deterministic multi-agent updates, and developer preview invitations.
             </p>
 
             <form
               action="https://formsubmit.co/contact@fullstackbrand.co"
               method="POST"
               className="flex flex-col sm:flex-row gap-3 max-w-xl mx-auto"
-              aria-label="AI Lab waitlist signup form"
+              aria-label="AI Lab updates signup form"
             >
-              <input type="hidden" name="_subject" value="FullstackBrand AI Lab — Waitlist Request" />
+              <input type="hidden" name="_subject" value="FullstackBrand AI Lab — Research Updates Request" />
               <input type="hidden" name="_captcha" value="false" />
               <input type="hidden" name="_template" value="table" />
 
-              <label htmlFor="waitlist-email" className="sr-only">Email address</label>
+              <label htmlFor="updates-email" className="sr-only">Email address</label>
               <input
-                id="waitlist-email"
+                id="updates-email"
                 type="email"
                 name="email"
                 required
                 placeholder="your@company.com"
                 className="flex-1 bg-white/90 dark:bg-zinc-900/90 border border-zinc-300 dark:border-white/12 rounded-xl px-5 py-3.5 text-sm text-zinc-900 dark:text-white placeholder:text-zinc-400 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all shadow-inner"
               />
-              <button
+              <motion.button
                 type="submit"
-                className="flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-sm font-bold text-white flex-shrink-0 transition-all hover:scale-[1.03] active:scale-[0.98] hover:shadow-lg hover:shadow-violet-600/30 bg-gradient-to-r from-violet-600 to-indigo-600"
-                id="waitlist-submit-btn"
+                whileHover={{ x: 4 }}
+                whileTap={{ x: 0 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+                className="flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-sm font-bold text-white flex-shrink-0 hover:shadow-lg hover:shadow-violet-600/30 bg-gradient-to-r from-violet-600 to-indigo-600"
+                id="updates-submit-btn"
               >
-                <Mail size={14} />
-                <span>Join Waitlist</span>
-              </button>
+                <Bell size={14} />
+                <span>Get Updates</span>
+              </motion.button>
             </form>
 
             <p className="text-zinc-500 dark:text-zinc-400 text-xs">
-              No spam. Research updates, early API access keys, and technical briefings only.
+              Zero spam. Verified technical releases, open whitepapers, and software update logs only.
             </p>
           </div>
         </div>
@@ -254,21 +265,28 @@ export default function AILabHomeClient() {
               <Compass size={14} /> FullstackBrand Ecosystem
             </div>
             <h3 className="text-2xl md:text-3xl font-black text-zinc-900 dark:text-white">
-              Looking for Client Agency Solutions & Brand Identity?
+              Looking for Client Agency Solutions &amp; Brand Identity?
             </h3>
             <p className="text-zinc-600 dark:text-zinc-300 text-sm md:text-base leading-relaxed">
               Explore our full-service digital agency branch providing brand design, high-performance web engineering, custom AI agent deployments, and digital marketing.
             </p>
           </div>
 
-          <Link
-            href="/agency"
-            className="flex-shrink-0 inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-8 py-4 rounded-full shadow-lg shadow-emerald-500/20 hover:scale-105 active:scale-95 transition-all duration-300"
-            id="agency-bridge-cta"
+          <motion.div
+            whileHover={{ x: 6 }}
+            whileTap={{ x: 0 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 20 }}
           >
-            <span>Visit FullstackBrand Agency</span>
-            <ArrowRight size={18} />
-          </Link>
+            <Link
+              href="/agency"
+              prefetch={true}
+              className="flex-shrink-0 inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-8 py-4 rounded-full shadow-lg shadow-emerald-500/20 group"
+              id="agency-bridge-cta"
+            >
+              <span>Visit FullstackBrand Agency</span>
+              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" />
+            </Link>
+          </motion.div>
         </div>
       </section>
     </div>

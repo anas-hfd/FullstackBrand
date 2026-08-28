@@ -1,7 +1,21 @@
 // FullstackBrand
 'use client'
 import { useState } from 'react'
-import { Loader2, CheckCircle, Mail, User, Building2, Clock, DollarSign, Check } from 'lucide-react'
+import {
+  Loader2,
+  CheckCircle,
+  Mail,
+  User,
+  Building2,
+  Clock,
+  DollarSign,
+  Check,
+  Palette,
+  Megaphone,
+  Globe,
+  Bot,
+  Zap,
+} from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const budgetRanges = [
@@ -14,11 +28,11 @@ const budgetRanges = [
 const timelines = ['1–3 Months', '3–6 Months', '6–12 Months', 'Ongoing Retainer']
 
 const serviceOptions = [
-  { id: 'brand-design', label: 'Brand Design & Visual Identity', icon: '🎨' },
-  { id: 'digital-marketing', label: 'Digital Marketing & Brand Strategy', icon: '📣' },
-  { id: 'web-dev', label: 'Web Development', icon: '🌐' },
-  { id: 'ai-automation', label: 'AI Automation', icon: '🤖' },
-  { id: 'full-ecosystem', label: 'Full Ecosystem', icon: '⚡', highlight: true },
+  { id: 'brand-design', label: 'Brand Design & Visual Identity', icon: Palette },
+  { id: 'digital-marketing', label: 'Digital Marketing & Brand Strategy', icon: Megaphone },
+  { id: 'web-dev', label: 'Web Development', icon: Globe },
+  { id: 'ai-automation', label: 'AI Automation', icon: Bot },
+  { id: 'full-ecosystem', label: 'Full Ecosystem', icon: Zap, highlight: true },
 ]
 
 function sanitize(str: string, maxLen = 200) {
@@ -103,8 +117,8 @@ export default function LeadForm() {
   }
 
   return (
-    <section id="contact" className="max-w-4xl mx-auto px-6 py-24 relative">
-      <span id="start" className="absolute -top-24" />
+    <section id="contact" className="max-w-4xl mx-auto px-6 py-24 relative scroll-mt-24">
+      <span id="start" className="absolute -top-28" />
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -212,7 +226,7 @@ export default function LeadForm() {
                 Services Needed *
               </label>
               <div className="flex flex-wrap gap-2.5">
-                {serviceOptions.map(({ id, label, icon, highlight }) => {
+                {serviceOptions.map(({ id, label, icon: Icon, highlight }) => {
                   const active = selectedServices.includes(id)
                   return (
                     <motion.button
@@ -233,8 +247,8 @@ export default function LeadForm() {
                         ${highlight ? 'ring-1 ring-brand-light/30 dark:ring-brand-dark/20' : ''}
                       `}
                     >
-                      <span>{icon}</span>
-                      {label}
+                      <Icon size={14} className={active && highlight ? 'text-white' : active ? 'text-brand-light dark:text-brand-dark' : 'text-slate-400'} />
+                      <span>{label}</span>
                       {active && (
                         <motion.span
                           initial={{ scale: 0 }}
