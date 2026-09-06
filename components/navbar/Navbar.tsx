@@ -35,11 +35,11 @@ const LAB_NAV_ITEMS: NavItem[] = [
   { label: 'Sovereignty', href: '#sovereignty', icon: ShieldCheck },
 ]
 
-const AGENCY_NAV_ITEMS: NavItem[] = [
-  { label: 'Services', href: '/agency#services', icon: Layers },
-  { label: 'AI Showcase', href: '/agency#ai-showcase', icon: Bot },
-  { label: 'Process', href: '/agency#process', icon: Cpu },
-  { label: 'Contact', href: '/agency#contact', icon: ChevronRight },
+const STUDIO_NAV_ITEMS: NavItem[] = [
+  { label: 'Services', href: '/studio#services', icon: Layers },
+  { label: 'AI Showcase', href: '/studio#ai-showcase', icon: Bot },
+  { label: 'Process', href: '/studio#process', icon: Cpu },
+  { label: 'Contact', href: '/studio#contact', icon: ChevronRight },
 ]
 
 export default function Navbar() {
@@ -49,10 +49,10 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
 
-  const isAgency = pathname?.startsWith('/agency')
-  const brand = isAgency ? 'agency' : 'lab'
-  const isLab = !isAgency
-  const navItems = isLab ? LAB_NAV_ITEMS : AGENCY_NAV_ITEMS
+  const isStudio = pathname?.startsWith('/studio') || pathname?.startsWith('/agency')
+  const brand = isStudio ? 'studio' : 'lab'
+  const isLab = !isStudio
+  const navItems = isLab ? LAB_NAV_ITEMS : STUDIO_NAV_ITEMS
   const isDark = resolvedTheme === 'dark'
 
   useEffect(() => {
@@ -65,7 +65,7 @@ export default function Navbar() {
   useEffect(() => {
     setMobileOpen(false)
 
-    // Dynamic Favicon Switcher: Asset 25-8.png for Lab, Logomark.png for Agency
+    // Dynamic Favicon Switcher: Asset 25-8.png for Lab, Logomark.png for Studio
     const faviconHref = isLab ? '/logos/Asset 25-8.png' : '/logos/Logomark.png'
     
     try {
@@ -85,7 +85,7 @@ export default function Navbar() {
 
   // Logo selection based on route and light/dark theme:
   // Lab Page: Asset 24-8.png (Light), Asset 28-8.png (Dark)
-  // Agency Page: Horizontal-BlackTXT.png (Light), Horizontal-WhiteTXT.png (Dark)
+  // Studio Page: Horizontal-BlackTXT.png (Light), Horizontal-WhiteTXT.png (Dark)
   const logoSrc = isLab
     ? isDark
       ? '/logos/Asset 28-8.png'
@@ -94,7 +94,7 @@ export default function Navbar() {
     ? '/logos/Horizontal-WhiteTXT.png'
     : '/logos/Horizontal-BlackTXT.png'
 
-  const actionHref = isLab ? '#updates' : isAgency ? '#contact' : '/agency#contact'
+  const actionHref = isLab ? '#updates' : isStudio ? '#contact' : '/studio#contact'
 
   return (
     <>
@@ -105,14 +105,14 @@ export default function Navbar() {
             aria-label="Main Navigation"
             className={`pointer-events-auto w-full flex items-center justify-between gap-2 sm:gap-4 xl:gap-6 px-3.5 sm:px-6 py-2 rounded-2xl sm:rounded-full transition-all duration-300 backdrop-blur-xl border shadow-xl flex-nowrap ${
               scrolled
-                ? 'bg-white/35 dark:bg-[#0c0d11]/45 border-zinc-300/40 dark:border-white/10 shadow-zinc-950/15'
-                : 'bg-white/20 dark:bg-[#0c0d11]/25 border-zinc-200/40 dark:border-white/10 shadow-zinc-950/5'
+                ? 'bg-white/30 dark:bg-[#1a1a1a]/40 border-zinc-400/40 dark:border-white/10 shadow-zinc-950/10'
+                : 'bg-white/15 dark:bg-[#1a1a1a]/20 border-zinc-300/40 dark:border-white/10 shadow-zinc-950/5'
             }`}
           >
             {/* 1. Dynamic Logo */}
             <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
               <Link
-                href={isLab ? '/' : '/agency'}
+                href={isLab ? '/' : '/studio'}
                 className="flex items-center gap-2 group py-1"
                 id="main-nav-logo"
                 aria-label="FullstackBrand Home"
@@ -156,7 +156,7 @@ export default function Navbar() {
                 <BrandSwitcher brand={brand} />
               </div>
 
-              {/* Action Button: Get Updates (Lab) / Start Project (Agency) */}
+              {/* Action Button: Get Updates (Lab) / Start Project (Studio) */}
               <a
                 href={actionHref}
                 className={`hidden md:inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold text-white transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] shadow-md ${
@@ -217,7 +217,7 @@ export default function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', stiffness: 350, damping: 35 }}
-              className="fixed top-0 right-0 bottom-0 z-50 w-[85%] max-w-[320px] bg-white/95 dark:bg-[#0c0d11]/95 backdrop-blur-2xl border-l border-zinc-200 dark:border-white/10 p-6 flex flex-col justify-between shadow-2xl lg:hidden overflow-y-auto"
+              className="fixed top-0 right-0 bottom-0 z-50 w-[85%] max-w-[320px] bg-[#bfbfbf]/95 dark:bg-[#1a1a1a]/95 backdrop-blur-2xl border-l border-zinc-300 dark:border-white/10 p-6 flex flex-col justify-between shadow-2xl lg:hidden overflow-y-auto"
               role="dialog"
               aria-label="Mobile Navigation"
             >

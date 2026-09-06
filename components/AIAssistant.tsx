@@ -1,4 +1,5 @@
 'use client'
+
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { usePathname } from 'next/navigation'
@@ -8,7 +9,6 @@ interface Message {
   role: 'user' | 'assistant'
   content: string
 }
-
 
 /* Animated thinking dots shown while streaming is pending */
 function ThinkingDots() {
@@ -28,7 +28,7 @@ function ThinkingDots() {
 
 export default function AIAssistant() {
   const pathname = usePathname()
-  const isAgency = pathname?.startsWith('/agency')
+  const isStudio = pathname?.startsWith('/studio') || pathname?.startsWith('/agency')
   const [isOpen, setIsOpen] = useState(false)
   const [input, setInput] = useState('')
   const [messages, setMessages] = useState<Message[]>([
@@ -38,8 +38,12 @@ export default function AIAssistant() {
     },
   ])
   const [isThinking, setIsThinking] = useState(false)
+  const [hasError, setHasError] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const launcherRef = useRef<HTMLButtonElement>(null)
+  const dialogRef = useRef<HTMLDivElement>(null)
+  const abortRef = useRef<AbortController | null>(null)
 
   /* Auto-scroll on new messages */
   useEffect(() => {
@@ -48,27 +52,71 @@ export default function AIAssistant() {
     }
   }, [messages, isThinking])
 
-  /* Focus input when chat opens */
+  /* Focus input when chat opens; return focus to launcher when closed */
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => inputRef.current?.focus(), 150)
+    } else {
+      launcherRef.current?.focus()
     }
+  }, [isOpen])
+
+  /* Escape key closes the dialog */
+  useEffect(() => {
+    if (!isOpen) return
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault()
+        setIsOpen(false)
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [isOpen])
+
+  /* Focus trap: keep Tab/Shift+Tab inside the dialog */
+  useEffect(() => {
+    if (!isOpen || !dialogRef.current) return
+    const focusable = dialogRef.current.querySelectorAll<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    )
+    if (focusable.length === 0) return
+    const first = focusable[0]
+    const last = focusable[focusable.length - 1]
+
+    const trap = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab') return
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last.focus() }
+      } else {
+        if (document.activeElement === last) { e.preventDefault(); first.focus() }
+      }
+    }
+    document.addEventListener('keydown', trap)
+    return () => document.removeEventListener('keydown', trap)
   }, [isOpen])
 
   const handleSend = useCallback(async (prompt?: string) => {
     const text = (prompt ?? input).trim()
     if (!text || isThinking) return
 
+    // Cancel any pending request
+    abortRef.current?.abort()
+    const controller = new AbortController()
+    abortRef.current = controller
+
     const newMessages: Message[] = [...messages, { role: 'user', content: text }]
     setMessages(newMessages)
     setInput('')
     setIsThinking(true)
+    setHasError(false)
 
     try {
       const res = await fetch('/api/agent/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: newMessages }),
+        signal: controller.signal,
       })
 
       if (!res.ok || !res.body) {
@@ -86,13 +134,11 @@ export default function AIAssistant() {
 
         const chunk = decoder.decode(value, { stream: true })
 
-        // Handle both plain-text streaming (Gemini) and SSE (OpenAI)
         const lines = chunk.split('\n')
         for (const line of lines) {
           let token = ''
 
           if (line.startsWith('data: ')) {
-            // OpenAI SSE format
             const jsonStr = line.slice(6).trim()
             if (!jsonStr || jsonStr === '[DONE]') continue
             try {
@@ -102,7 +148,6 @@ export default function AIAssistant() {
               token = jsonStr
             }
           } else {
-            // Plain text (Gemini streaming)
             token = line
           }
 
@@ -111,7 +156,6 @@ export default function AIAssistant() {
           aiContent += token
 
           if (firstChunk) {
-            // Add assistant message on first token
             firstChunk = false
             setIsThinking(false)
             setMessages(prev => [...prev, { role: 'assistant', content: aiContent }])
@@ -125,15 +169,16 @@ export default function AIAssistant() {
         }
       }
 
-      // Ensure we always stop thinking even if no content came through
       if (firstChunk) {
         setMessages(prev => [
           ...prev,
           { role: 'assistant', content: "I'm having a moment — something went wrong on my end. Please try again, or reach out directly at contact@fullstackbrand.co and we'll be happy to help!" },
         ])
       }
-    } catch (error) {
+    } catch (error: unknown) {
+      if (error instanceof Error && error.name === 'AbortError') return
       console.error('Chat error:', error)
+      setHasError(true)
       setMessages(prev => [
         ...prev,
         { role: 'assistant', content: "I'm having a moment — something went wrong on my end. Please try again, or reach out directly at contact@fullstackbrand.co and we'll be happy to help!" },
@@ -143,19 +188,37 @@ export default function AIAssistant() {
     }
   }, [messages, input, isThinking])
 
+  const handleRetry = useCallback(() => {
+    setHasError(false)
+    const lastUser = [...messages].reverse().find(m => m.role === 'user')
+    if (lastUser) {
+      setMessages(prev => prev.slice(0, -1)) // remove error message
+      handleSend(lastUser.content)
+    }
+  }, [messages, handleSend])
+
+  const accentBorder = isStudio ? 'border-emerald-500/30' : 'border-violet-500/30'
+  const accentBg = isStudio ? 'bg-emerald-600' : 'bg-violet-600'
+  const accentFocus = isStudio ? 'focus:border-emerald-500' : 'focus:border-violet-500'
+  const accentIconBg = isStudio ? 'bg-emerald-500/15 text-emerald-500' : 'bg-violet-500/15 text-violet-500 dark:text-violet-400'
+  const launcherColors = isStudio
+    ? 'bg-emerald-600 shadow-[0_0_20px_rgba(16,185,129,0.45)] hover:shadow-[0_0_28px_rgba(16,185,129,0.65)]'
+    : 'bg-violet-600 shadow-[0_0_20px_rgba(139,92,246,0.45)] hover:shadow-[0_0_28px_rgba(139,92,246,0.65)]'
+
   return (
     <>
       {/* Floating toggle button */}
       <motion.button
+        ref={launcherRef}
         onClick={() => setIsOpen(v => !v)}
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.95 }}
         aria-label={isOpen ? 'Close AI Assistant' : 'Open AI Assistant'}
-        className={`fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-all ${
-          isAgency
-            ? 'bg-emerald-600 shadow-[0_0_20px_rgba(16,185,129,0.45)] hover:shadow-[0_0_28px_rgba(16,185,129,0.65)]'
-            : 'bg-violet-600 shadow-[0_0_20px_rgba(139,92,246,0.45)] hover:shadow-[0_0_28px_rgba(139,92,246,0.65)]'
-        }`}
+        aria-expanded={isOpen}
+        aria-haspopup="dialog"
+        className={`fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-all ${launcherColors}`}
+        id="ai-assistant-launcher"
+        style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
       >
         <AnimatePresence mode="wait" initial={false}>
           <motion.span
@@ -174,32 +237,51 @@ export default function AIAssistant() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
+            ref={dialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label="FullstackBrand AI Assistant"
             initial={{ opacity: 0, y: 24, scale: 0.92 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 24, scale: 0.92 }}
             transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-            className={`fixed bottom-24 right-6 z-50 w-[92vw] max-w-[400px] h-[520px] glass rounded-2xl flex flex-col overflow-hidden shadow-2xl border ${
-              isAgency ? 'border-emerald-500/30' : 'border-violet-500/30'
-            }`}
+            className={`fixed z-50 glass rounded-2xl flex flex-col shadow-2xl border ${accentBorder}`}
+            style={{
+              bottom: 'calc(5.5rem + env(safe-area-inset-bottom, 0px))',
+              right: '1.5rem',
+              width: 'min(92vw, 400px)',
+              maxHeight: '85vh',
+            }}
           >
             {/* Header */}
-            <div className="flex items-center gap-3 px-4 py-3 border-b border-slate-200/50 dark:border-white/10 bg-slate-50/50 dark:bg-white/[0.03] flex-shrink-0">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                isAgency ? 'bg-emerald-500/15 text-emerald-500' : 'bg-violet-500/15 text-violet-500 dark:text-violet-400'
-              }`}>
+            <div className="flex items-center gap-3 px-4 py-3 border-b border-slate-200/50 dark:border-white/10 bg-slate-50/50 dark:bg-white/[0.03] flex-shrink-0 rounded-t-2xl">
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${accentIconBg}`}>
                 <Sparkles size={14} />
               </div>
-              <div>
+              <div className="flex-1 min-w-0">
                 <div className="font-bold text-sm leading-tight">Fullstack AI Assistant</div>
                 <div className="flex items-center gap-1.5 mt-0.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
                   <span className="text-xs text-slate-400">Online · Powered by Gemini</span>
                 </div>
               </div>
+              {/* Explicit accessible close button in header */}
+              <button
+                onClick={() => setIsOpen(false)}
+                aria-label="Close AI Assistant"
+                className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-500 hover:text-slate-900 dark:hover:text-white bg-slate-100 dark:bg-white/10 hover:bg-slate-200 dark:hover:bg-white/20 transition-colors flex-shrink-0"
+              >
+                <X size={15} />
+              </button>
             </div>
 
-            {/* Messages */}
-            <div ref={scrollRef} className="flex-1 p-4 overflow-y-auto space-y-3">
+            {/* Messages — scrollable interior */}
+            <div
+              ref={scrollRef}
+              className="flex-1 p-4 overflow-y-auto space-y-3 min-h-0"
+              aria-live="polite"
+              aria-label="Conversation messages"
+            >
               {messages.map((msg, i) => (
                 <motion.div
                   key={i}
@@ -209,11 +291,9 @@ export default function AIAssistant() {
                   className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
-                    className={`max-w-[85%] px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed ${
+                    className={`max-w-[85%] px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed break-words ${
                       msg.role === 'user'
-                        ? isAgency
-                          ? 'bg-emerald-600 text-white rounded-br-sm'
-                          : 'bg-violet-600 text-white rounded-br-sm'
+                        ? `${accentBg} text-white rounded-br-sm`
                         : 'glass rounded-bl-sm text-slate-800 dark:text-slate-100'
                     }`}
                   >
@@ -231,6 +311,7 @@ export default function AIAssistant() {
                     exit={{ opacity: 0, y: 4 }}
                     transition={{ duration: 0.18 }}
                     className="flex justify-start"
+                    aria-label="Assistant is thinking"
                   >
                     <div className="glass rounded-2xl rounded-bl-sm">
                       <ThinkingDots />
@@ -238,11 +319,32 @@ export default function AIAssistant() {
                   </motion.div>
                 )}
               </AnimatePresence>
+
+              {/* Error retry state */}
+              <AnimatePresence>
+                {hasError && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    className="flex justify-center"
+                  >
+                    <button
+                      onClick={handleRetry}
+                      className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white underline transition-colors"
+                    >
+                      Retry last message
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             {/* Input bar */}
             <div className="p-3 flex gap-2 border-t border-slate-200/50 dark:border-white/10 flex-shrink-0">
+              <label htmlFor="ai-chat-input" className="sr-only">Type your message</label>
               <input
+                id="ai-chat-input"
                 ref={inputRef}
                 value={input}
                 onChange={e => setInput(e.target.value)}
@@ -250,9 +352,8 @@ export default function AIAssistant() {
                 placeholder="Ask about our services or AI research…"
                 disabled={isThinking}
                 aria-label="Type your message"
-                className={`flex-1 px-3 py-2 rounded-xl bg-transparent border border-slate-200 dark:border-white/10 outline-none text-sm placeholder:text-slate-400 disabled:opacity-50 transition-colors ${
-                  isAgency ? 'focus:border-emerald-500' : 'focus:border-violet-500'
-                }`}
+                maxLength={500}
+                className={`flex-1 min-w-0 px-3 py-2 rounded-xl bg-transparent border border-slate-200 dark:border-white/10 outline-none text-sm placeholder:text-slate-400 disabled:opacity-50 transition-colors ${accentFocus}`}
               />
               <motion.button
                 onClick={() => handleSend()}
@@ -260,9 +361,7 @@ export default function AIAssistant() {
                 whileHover={{ scale: 1.06 }}
                 whileTap={{ scale: 0.95 }}
                 aria-label="Send message"
-                className={`p-2.5 rounded-xl disabled:opacity-40 transition-opacity flex-shrink-0 text-white ${
-                  isAgency ? 'bg-emerald-600' : 'bg-violet-600'
-                }`}
+                className={`p-2.5 rounded-xl disabled:opacity-40 transition-opacity flex-shrink-0 text-white min-w-[2.5rem] min-h-[2.5rem] flex items-center justify-center ${accentBg}`}
               >
                 <Send size={15} />
               </motion.button>

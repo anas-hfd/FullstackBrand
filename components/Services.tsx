@@ -34,16 +34,16 @@ const pillars = [
     number: '02',
     icon: Megaphone,
     title: 'Digital Marketing & Brand Strategy',
-    tagline: 'Growth engineered, not guessed',
+    tagline: 'Data-informed growth strategy',
     description:
-      'We build brands that resonate and run campaigns that convert. From positioning strategy to paid media execution, we connect your business to the right audience at the right moment — with data-driven precision.',
+      'We help organisations build brand presence and connect with target audiences through positioning strategy, content, paid media, and acquisition systems — grounded in analytics rather than guesswork.',
     accent: '#F59E0B',
     gradient: 'from-amber-500/20 via-amber-500/8 to-transparent',
     borderColor: 'rgba(245,158,11,0.5)',
     services: [
       { icon: Target,      label: 'Brand Positioning & Strategy', desc: 'Market differentiation, messaging, and narrative' },
       { icon: Search,      label: 'SEO & Content Strategy',       desc: 'Organic visibility and long-term authority building' },
-      { icon: BarChart2,   label: 'Paid Advertising',             desc: 'ROI-focused Google, Meta, and LinkedIn campaigns' },
+      { icon: BarChart2,   label: 'Paid Advertising',             desc: 'Performance-focused Google, Meta, and LinkedIn campaigns' },
       { icon: TrendingUp,  label: 'Growth & Retention Marketing', desc: 'Full-funnel acquisition and lifecycle systems' },
     ],
   },
@@ -69,18 +69,18 @@ const pillars = [
     id: 4,
     number: '04',
     icon: Bot,
-    title: 'AI Automation',
-    tagline: 'Intelligence that works while you sleep',
+    title: 'AI Integration & Automation',
+    tagline: 'AI Lab R&D applied commercially',
     description:
-      'We integrate cutting-edge AI into your operations — automating repetitive workflows, building intelligent agents, and creating custom AI products that give your business an unfair advantage.',
+      'We deploy AI capabilities developed in the FullstackBrand Lab — language model integration, multi-agent pipelines, RAG retrieval systems, and workflow automation — into client products and operations.',
     accent: '#8B5CF6',
     gradient: 'from-purple-500/20 via-purple-500/8 to-transparent',
     borderColor: 'rgba(139,92,246,0.5)',
     services: [
-      { icon: Workflow,          label: 'Workflow Automation',         desc: 'End-to-end process automation across your stack' },
-      { icon: Sparkles,          label: 'AI Agents Integration',       desc: 'Autonomous agents that execute complex tasks' },
-      { icon: MessageSquareCode, label: 'Chatbots & Voice Agents',     desc: 'Conversational AI for support, sales, and ops' },
-      { icon: Mic,               label: 'Custom AI Products & SaaS',   desc: 'Tailored AI models and AI-native applications' },
+      { icon: Workflow,          label: 'Workflow Automation',            desc: 'Process automation across your existing stack' },
+      { icon: Sparkles,          label: 'AI Agent Integration',           desc: 'Multi-step agent pipelines and tool-calling' },
+      { icon: MessageSquareCode, label: 'Chatbots & Conversational AI',   desc: 'Language model interfaces for support and sales' },
+      { icon: Mic,               label: 'Custom AI Products & SaaS',      desc: 'LLM-integrated applications and RAG pipelines' },
     ],
   },
 ]
@@ -277,9 +277,20 @@ export default function Services() {
       }
     }
 
-    window.addEventListener('scroll', handleScroll, { passive: true })
+    let ticking = false
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          handleScroll()
+          ticking = false
+        })
+        ticking = true
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true })
     handleScroll()
-    return () => window.removeEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
   return (
@@ -292,7 +303,7 @@ export default function Services() {
         className="text-center mb-16"
       >
         <span className="text-xs uppercase tracking-[0.2em] text-brand-light dark:text-brand-dark font-semibold mb-3 block">
-          Our Services
+          Studio Services
         </span>
         <h2
           className="text-5xl md:text-7xl font-black mb-4 tracking-tight text-slate-900 dark:text-white"
@@ -300,17 +311,17 @@ export default function Services() {
             textShadow: '0 0 40px rgba(0,255,102,0.35), 0 0 80px rgba(0,255,102,0.15)',
           }}
         >
-          Branding, Design, Web Dev,{' '}
+          Design, Engineering,{' '}
           <span
             className="text-brand-light dark:text-brand-dark"
             style={{ textShadow: '0 0 30px rgba(0,255,102,0.6), 0 0 60px rgba(0,255,102,0.25)' }}
           >
             AI
           </span>{' '}
-          &amp; Automation
+          &amp; Growth
         </h2>
         <p className="text-slate-500 dark:text-slate-400 max-w-lg mx-auto">
-          Four disciplines. One seamless ecosystem. Everything your brand needs to stand out, scale up, and dominate the digital era.
+          Four practice areas. One coordinated delivery team. The Studio applies AI Lab engineering capabilities to client products and commercial deployments.
         </p>
       </motion.div>
 

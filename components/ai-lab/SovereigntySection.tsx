@@ -21,7 +21,7 @@ export default function SovereigntySection() {
   const isSovereign = deploymentMode === 'sovereign'
 
   return (
-    <section id="sovereignty" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <section id="sovereignty" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 scroll-mt-24">
       {/* Section Header */}
       <div className="text-center max-w-3xl mx-auto mb-16">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-violet-500/10 border border-violet-500/20 text-xs font-mono font-bold uppercase tracking-widest text-violet-600 dark:text-violet-400 mb-4">
@@ -35,7 +35,7 @@ export default function SovereigntySection() {
           </span>
         </h2>
         <p className="text-zinc-600 dark:text-zinc-400 text-sm sm:text-base md:text-lg leading-relaxed">
-          Complete cryptographic data isolation. We guarantee zero training on customer data, automated real-time PII anonymization, and private on-premise foundation model clusters for HIPAA, SOC2, and GDPR workloads.
+          Our architecture is designed to minimize data exposure: inference runs on customer-controlled infrastructure in sovereign mode, with PII pre-processing and no model fine-tuning on customer payloads. Sovereignty capabilities are architecture design targets; compliance readiness depends on specific deployment configuration.
         </p>
       </div>
 
@@ -48,7 +48,7 @@ export default function SovereigntySection() {
               Architecture Security Scaffolding
             </span>
             <h3 className="text-xl sm:text-2xl font-black text-zinc-900 dark:text-white">
-              Sovereignty Mode Comparison
+              Deployment Mode Comparison
             </h3>
           </div>
 
@@ -91,15 +91,15 @@ export default function SovereigntySection() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
           {[
             {
-              label: 'Data Egress Rate',
-              sovereignValue: '0.00% (Strict Air-Gap)',
-              publicValue: '100% (Third-Party API Egress)',
+              label: 'Data Egress to External APIs',
+              sovereignValue: '0% in Sovereign Mode (when configured on customer infrastructure)',
+              publicValue: '100% — prompts sent to Third-Party API',
               status: isSovereign ? 'secure' : 'risk',
             },
             {
-              label: 'Model Training On Customer Data',
-              sovereignValue: 'Guaranteed ZERO (Legal SLA)',
-              publicValue: 'Possible via Model Telemetry',
+              label: 'Model Training on Customer Data',
+              sovereignValue: 'No fine-tuning on customer payloads in sovereign mode (architecture design)',
+              publicValue: 'Depends on provider terms — may vary',
               status: isSovereign ? 'secure' : 'risk',
             },
             {
@@ -144,9 +144,9 @@ export default function SovereigntySection() {
         <div className="mt-8 pt-6 border-t border-zinc-200 dark:border-white/10 flex flex-wrap items-center justify-between gap-4">
           <div className="flex flex-wrap items-center gap-3">
             <span className="text-xs font-mono font-bold uppercase text-zinc-400">
-              Audit & Compliance Scaffolding:
+              Compliance Scaffolding (architecture design targets):
             </span>
-            {['SOC-2 Type II Ready', 'HIPAA BAA Capable', 'GDPR Compliant', 'ISO/IEC 27001 Aligned'].map((badge, idx) => (
+            {['SOC-2 Type II Ready', 'HIPAA BAA Capable', 'GDPR-Aligned', 'ISO/IEC 27001 Aligned'].map((badge, idx) => (
               <div
                 key={idx}
                 className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-100 dark:bg-white/[0.05] border border-zinc-300 dark:border-white/10 text-xs font-mono font-bold text-zinc-700 dark:text-zinc-300"
@@ -157,11 +157,17 @@ export default function SovereigntySection() {
             ))}
           </div>
 
+          <div className="w-full mt-4 p-3 rounded-xl bg-zinc-100/80 dark:bg-white/[0.03] border border-zinc-200 dark:border-white/8">
+            <p className="text-[11px] text-zinc-500 dark:text-zinc-400 leading-relaxed">
+              <span className="font-bold text-zinc-700 dark:text-zinc-300">Important:</span> Sovereign deployment requires customer-controlled infrastructure configuration. Data sovereignty guarantees apply only when the system is deployed in an isolated, customer-managed environment. These are architecture design capabilities, not universal guarantees.
+            </p>
+          </div>
+
           <a
             href="#waitlist"
             className="inline-flex items-center gap-2 text-xs font-bold text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 transition-colors group"
           >
-            <span>Request Security Whitepaper</span>
+            <span>Request Architecture Whitepaper</span>
             <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform" />
           </a>
         </div>

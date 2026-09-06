@@ -41,8 +41,8 @@ export default function ParticleField({ color = 'emerald', className = '' }: Par
     const initParticles = () => {
       particles = []
       const isMobile = width < 768
-      const maxCount = isMobile ? 18 : 45
-      const count = Math.min(Math.floor((width * height) / 22000), maxCount)
+      const maxCount = isMobile ? 22 : 54 // +20% (previously 18 : 45)
+      const count = Math.min(Math.floor((width * height) / 18300), maxCount) // +20% density (previously 22000)
       for (let i = 0; i < count; i++) {
         const vx = (Math.random() - 0.5) * 0.4
         const vy = (Math.random() - 0.5) * 0.4
@@ -73,7 +73,15 @@ export default function ParticleField({ color = 'emerald', className = '' }: Par
             const proximity = Math.min(aDist, bDist)
             const boost = proximity < REPEL_RADIUS ? 2.5 : 1
             const alpha = (1 - dist / CONNECT_DIST) * 0.3 * boost
-            ctx.strokeStyle = `rgba(${rgbBase}, ${Math.min(alpha, 1)})`
+
+            // Smooth bottom fade to eliminate any hard line between sections
+            const avgY = (particles[a].y + particles[b].y) / 2
+            const bottomDist = height - avgY
+            const bottomFade = bottomDist < 120 ? Math.max(0, bottomDist / 120) : 1
+            const effectiveAlpha = Math.min(alpha, 1) * bottomFade
+            if (effectiveAlpha <= 0.01) continue
+
+            ctx.strokeStyle = `rgba(${rgbBase}, ${effectiveAlpha})`
             ctx.lineWidth = proximity < REPEL_RADIUS ? 1.2 : 0.5
             ctx.beginPath()
             ctx.moveTo(particles[a].x, particles[a].y)
@@ -123,9 +131,15 @@ export default function ParticleField({ color = 'emerald', className = '' }: Par
         const particleAlpha = nearMouse ? 1 : 0.7
         const glowRadius = nearMouse ? p.size * 2.5 : p.size
 
+        // Smooth bottom fade to eliminate any hard line between sections
+        const bottomDist = height - p.y
+        const bottomFade = bottomDist < 120 ? Math.max(0, bottomDist / 120) : 1
+        const effectiveParticleAlpha = particleAlpha * bottomFade
+        if (effectiveParticleAlpha <= 0.01) return
+
         if (nearMouse) {
           const grd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, glowRadius * 4)
-          grd.addColorStop(0, `rgba(${rgbBase}, 0.6)`)
+          grd.addColorStop(0, `rgba(${rgbBase}, ${0.6 * bottomFade})`)
           grd.addColorStop(1, `rgba(${rgbBase}, 0)`)
           ctx.fillStyle = grd
           ctx.beginPath()
@@ -133,7 +147,7 @@ export default function ParticleField({ color = 'emerald', className = '' }: Par
           ctx.fill()
         }
 
-        ctx.fillStyle = `rgba(${rgbBase}, ${particleAlpha})`
+        ctx.fillStyle = `rgba(${rgbBase}, ${effectiveParticleAlpha})`
         ctx.beginPath()
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
         ctx.fill()

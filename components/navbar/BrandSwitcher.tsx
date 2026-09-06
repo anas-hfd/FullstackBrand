@@ -6,7 +6,7 @@ import { motion } from 'framer-motion'
 import { useEffect } from 'react'
 
 interface BrandSwitcherProps {
-  brand: 'lab' | 'agency'
+  brand: 'lab' | 'studio' | 'agency'
   onSelect?: () => void
   className?: string
 }
@@ -18,12 +18,12 @@ export default function BrandSwitcher({ brand, onSelect, className = '' }: Brand
   // Pre-warm routes for fast seamless navigation
   useEffect(() => {
     router.prefetch('/')
-    router.prefetch('/agency')
+    router.prefetch('/studio')
   }, [router])
 
   return (
     <div
-      className={`relative inline-flex items-center p-1 rounded-full bg-zinc-200/80 dark:bg-zinc-900/90 border border-zinc-300/80 dark:border-white/10 shadow-inner ${className}`}
+      className={`relative inline-flex items-center p-1 rounded-full bg-zinc-300/80 dark:bg-[#1a1a1a]/90 border border-zinc-400/80 dark:border-white/10 shadow-inner ${className}`}
       role="group"
       aria-label="Brand Switcher"
     >
@@ -35,7 +35,7 @@ export default function BrandSwitcher({ brand, onSelect, className = '' }: Brand
         className={`relative z-10 flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-full transition-colors duration-200 ${
           isLab
             ? 'text-white'
-            : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-200'
+            : 'text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white'
         }`}
         id="brand-switch-lab"
       >
@@ -57,17 +57,17 @@ export default function BrandSwitcher({ brand, onSelect, className = '' }: Brand
         <span className="relative z-10 tracking-tight">AI Lab</span>
       </Link>
 
-      {/* Agency Option */}
+      {/* Studio Option */}
       <Link
-        href="/agency"
+        href="/studio"
         prefetch={true}
         onClick={onSelect}
         className={`relative z-10 flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-full transition-colors duration-200 ${
           !isLab
             ? 'text-white'
-            : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-200'
+            : 'text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white'
         }`}
-        id="brand-switch-agency"
+        id="brand-switch-studio"
       >
         {!isLab && (
           <motion.div
@@ -84,7 +84,7 @@ export default function BrandSwitcher({ brand, onSelect, className = '' }: Brand
           }`}
           aria-hidden="true"
         />
-        <span className="relative z-10 tracking-tight">Agency</span>
+        <span className="relative z-10 tracking-tight">Studio</span>
       </Link>
     </div>
   )

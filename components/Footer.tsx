@@ -58,22 +58,22 @@ const socials = [
 export default function Footer() {
   const { theme } = useTheme()
   const pathname = usePathname()
-  const isAgency = pathname?.startsWith('/agency')
+  const isStudio = pathname?.startsWith('/studio') || pathname?.startsWith('/agency')
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
 
   const footerLinks = {
-    [isAgency ? 'Agency Services' : 'Services']: [
-      { label: 'Brand Design & Identity', href: '/agency#services' },
-      { label: 'Marketing & Strategy', href: '/agency#services' },
-      { label: 'Web & SaaS Platforms', href: '/agency#services' },
-      { label: 'AI Agent Systems', href: '/agency#ai' },
+    [isStudio ? 'Studio Services' : 'Services']: [
+      { label: 'Brand Design & Identity', href: '/studio#services' },
+      { label: 'Marketing & Strategy', href: '/studio#services' },
+      { label: 'Web & SaaS Platforms', href: '/studio#services' },
+      { label: 'AI Agent Systems', href: '/studio#ai' },
     ],
     Ecosystem: [
       { label: 'AI Research Lab (Root)', href: '/' },
-      { label: isAgency ? 'FullstackBrand Agency' : 'FullstackBrand Studio', href: '/agency' },
-      { label: 'How We Work', href: '/agency#process' },
-      { label: 'Start a Project', href: '/agency#contact' },
+      { label: 'FullstackBrand Studio', href: '/studio' },
+      { label: 'How We Work', href: '/studio#process' },
+      { label: 'Start a Project', href: '/studio#contact' },
     ],
     Legal: [
       { label: 'Privacy Policy', href: '/privacy' },
@@ -82,18 +82,10 @@ export default function Footer() {
   }
 
   return (
-    <footer className="relative mt-8 border-t border-slate-200/50 dark:border-white/10 overflow-hidden">
-      {/* Background gradient */}
-      <div className={`absolute inset-0 bg-gradient-to-b from-transparent pointer-events-none ${
-        isAgency ? 'to-emerald-500/5 dark:to-emerald-500/5' : 'to-violet-500/5 dark:to-violet-500/5'
-      }`} />
-      <div className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] rounded-full blur-[80px] pointer-events-none ${
-        isAgency ? 'bg-emerald-500/5 dark:bg-emerald-500/5' : 'bg-violet-500/5 dark:bg-violet-500/5'
-      }`} />
-
+    <footer className="relative mt-8 border-t border-zinc-400/40 dark:border-white/10 overflow-hidden">
       <div className="relative max-w-7xl mx-auto px-6 pt-16 pb-8">
         {/* Top section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 pb-12 border-b border-slate-200/50 dark:border-white/10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 pb-12 border-b border-zinc-400/40 dark:border-white/10">
           {/* Brand column */}
           <div className="lg:col-span-2">
             <motion.div
@@ -102,8 +94,8 @@ export default function Footer() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <Link href={isAgency ? '/agency' : '/'} className="inline-block mb-6">
-                {mounted && (
+              <Link href={isStudio ? '/studio' : '/'} className="inline-block mb-6">
+                {mounted ? (
                   <Image
                     src={theme === 'dark' ? '/logos/Asset 27-8.png' : '/logos/Asset 26-8.png'}
                     alt="FullstackBrand"
@@ -111,6 +103,8 @@ export default function Footer() {
                     height={80}
                     className="object-contain"
                   />
+                ) : (
+                  <div className="w-[200px] h-[80px]" />
                 )}
               </Link>
 
@@ -143,7 +137,7 @@ export default function Footer() {
                     target={href.startsWith('http') ? '_blank' : undefined}
                     rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
                     className={`flex items-start gap-3 text-sm text-slate-500 dark:text-slate-400 transition-colors duration-200 group ${
-                      isAgency
+                      isStudio
                         ? 'hover:text-emerald-600 dark:hover:text-emerald-400'
                         : 'hover:text-violet-600 dark:hover:text-violet-400'
                     }`}
@@ -151,7 +145,7 @@ export default function Footer() {
                     <Icon
                       size={14}
                       className={`flex-shrink-0 mt-0.5 transition-colors ${
-                        isAgency
+                        isStudio
                           ? 'text-emerald-600 dark:text-emerald-400'
                           : 'text-violet-600 dark:text-violet-400'
                       }`}
@@ -181,7 +175,7 @@ export default function Footer() {
                     <Link
                       href={link.href}
                       className={`group flex items-center gap-1 text-sm text-slate-500 dark:text-slate-400 transition-colors duration-200 ${
-                        isAgency
+                        isStudio
                           ? 'hover:text-emerald-600 dark:hover:text-emerald-400'
                           : 'hover:text-violet-600 dark:hover:text-violet-400'
                       }`}
@@ -209,7 +203,7 @@ export default function Footer() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="flex items-center gap-3"
           >
-            {mounted && (
+            {mounted ? (
               <Image
                 src={theme === 'dark' ? '/logos/Logomark-White.png' : '/logos/Logomark-Black.png'}
                 alt="FullstackBrand Reserved Rights"
@@ -217,6 +211,8 @@ export default function Footer() {
                 height={28}
                 className="object-contain opacity-80"
               />
+            ) : (
+              <div className="w-7 h-7" />
             )}
             <span className="text-xs text-slate-400 dark:text-slate-500">
               © 2026 Fullstack Brand LLC. All rights reserved.
@@ -239,7 +235,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`w-9 h-9 rounded-full glass flex items-center justify-center text-slate-500 dark:text-slate-400 transition-all duration-200 hover:scale-110 ${
-                  isAgency
+                  isStudio
                     ? 'hover:text-emerald-600 dark:hover:text-emerald-400 hover:border-emerald-500/50'
                     : 'hover:text-violet-600 dark:hover:text-violet-400 hover:border-violet-500/50'
                 }`}

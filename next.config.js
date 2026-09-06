@@ -7,7 +7,7 @@ const securityHeaders = [
   },
   {
     key: 'X-Frame-Options',
-    value: 'SAMEORIGIN',
+    value: 'DENY',
   },
   {
     key: 'X-Content-Type-Options',
@@ -56,6 +56,20 @@ const nextConfig = {
       {
         source: '/(.*)',
         headers: securityHeaders,
+      },
+    ]
+  },
+  async redirects() {
+    return [
+      {
+        source: '/agency',
+        destination: '/studio',
+        permanent: true,
+      },
+      {
+        source: '/agency/:path*',
+        destination: '/studio/:path*',
+        permanent: true,
       },
     ]
   },

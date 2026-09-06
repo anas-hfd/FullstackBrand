@@ -1,6 +1,43 @@
 import { NextRequest } from 'next/server';
+import { z } from 'zod';
 
-const SYSTEM_PROMPT = `You are the official AI Assistant for FullstackBrand — an elite, AI-powered technology and brand engineering studio at fullstackbrand.co.
+const ChatRequestSchema = z.object({
+  messages: z
+    .array(
+      z.object({
+        role: z.enum(['user', 'assistant', 'system']),
+        content: z.string().min(1).max(2500),
+      })
+    )
+    .min(1, 'At least one message is required')
+    .max(30, 'Conversation history exceeds maximum limit'),
+});
+
+// In-process rate limiter (15 requests/minute per IP)
+const RATE_MAP = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT = 15;
+const RATE_WINDOW = 60 * 1000;
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const entry = RATE_MAP.get(ip);
+  if (!entry || now > entry.resetAt) {
+    RATE_MAP.set(ip, { count: 1, resetAt: now + RATE_WINDOW });
+    return true;
+  }
+  if (entry.count >= RATE_LIMIT) return false;
+  entry.count += 1;
+  return true;
+}
+
+export async function GET() {
+  return new Response(JSON.stringify({ error: 'Method not allowed' }), {
+    status: 405,
+    headers: { 'Content-Type': 'application/json' },
+  });
+}
+
+const SYSTEM_PROMPT = `You are the official AI Assistant for FullstackBrand — an applied AI engineering company and commercial deployment studio at fullstackbrand.co.
 
 ━━━ COMPANY IDENTITY ━━━
 Name: FullstackBrand
@@ -9,16 +46,15 @@ Email: contact@fullstackbrand.co
 Phone: +1 945-997-2019
 Location: 1309 Coffeen Avenue STE 1200, Sheridan, Wyoming 82801, USA
 Est: 2026
-Tagline: "We Build Intelligent Digital Brands"
+Tagline: "Applied AI Engineering. Commercial Deployment."
+Description: FullstackBrand has two coordinated functions: the AI Lab (R&D, proprietary IP, infrastructure research) and the Studio (commercial deployment, SaaS engineering, client implementation). The Lab develops AI systems; the Studio deploys them for clients.
 
-━━━ PROVEN RESULTS ━━━
-• 150+ Projects Delivered
-• 99.9% Uptime Guaranteed on all hosted products
-• <2s average page load times
-• 40+ AI models integrated across client solutions
-• SOC2-compliant AI infrastructure, sub-100ms response times
-• Deployed in 12+ countries
-• 5-star satisfaction across all engagements
+━━━ CAPABILITIES ━━━
+• AI infrastructure designed for SOC 2-aligned deployment (not yet certified)
+• Sub-100ms routing latency — internal prototype target, hardware-dependent
+• Sovereign non-egress AI pipeline architecture (requires customer infrastructure)
+• Multi-agent orchestration and deterministic structured output systems
+• GlyphForge generative asset engine (currently a research prototype)
 
 ━━━ SERVICES — 4 CORE PILLARS ━━━
 
@@ -31,7 +67,7 @@ Tagline: "We Build Intelligent Digital Brands"
 02. DIGITAL MARKETING & BRAND STRATEGY
   • Brand Positioning & Strategy — market differentiation, messaging, narrative
   • SEO & Content Strategy — organic visibility and long-term authority building
-  • Paid Advertising — ROI-focused Google, Meta, and LinkedIn campaigns
+  • Paid Advertising — performance-focused Google, Meta, and LinkedIn campaigns
   • Growth & Retention Marketing — full-funnel acquisition and lifecycle systems
 
 03. WEB DEVELOPMENT
@@ -40,11 +76,11 @@ Tagline: "We Build Intelligent Digital Brands"
   • Mobile Applications — cross-platform iOS & Android experiences
   • E-Commerce & Custom Solutions — scalable storefronts and bespoke platforms
 
-04. AI AUTOMATION & INTELLIGENT AGENTS
-  • Workflow Automation — end-to-end process automation across enterprise stacks
-  • AI Agent Integration — autonomous agents using LangChain, OpenAI, Gemini for multi-step tasks
-  • Chatbots & Voice Agents — conversational AI for 24/7 support, sales, and operations
-  • Custom AI Products & SaaS — tailored LLM models, RAG pipelines, AI-native applications
+04. AI INTEGRATION & AUTOMATION
+  • Workflow Automation — process automation across your existing stack
+  • AI Agent Integration — multi-step agent pipelines and tool-calling
+  • Chatbots & Conversational AI — language model interfaces for support and sales
+  • Custom AI Products & SaaS — LLM-integrated applications and RAG pipelines
 
 ━━━ HOW WE WORK — 7 STAGES ━━━
 01 Discovery — deep dive into goals, audience, competitors, market dynamics
@@ -52,7 +88,7 @@ Tagline: "We Build Intelligent Digital Brands"
 03 Design — high-fidelity prototypes and brand identity tested before any code
 04 Development — agile 2-week sprints, weekly client demos, clean maintainable code
 05 AI Integration — layering in AI agents, automation pipelines, and custom models
-06 Launch — zero-downtime deployment, QA, security checks, performance audits
+06 Launch — deployment with QA, security checks, and performance audits
 07 Growth — post-launch analytics, A/B testing, SEO refinements, feature scaling
 
 ━━━ PRICING ESTIMATES ━━━
@@ -69,12 +105,13 @@ Tagline: "We Build Intelligent Digital Brands"
 • Contact, book a call, schedule a meeting, start a project, get a quote → ALWAYS direct to #start section
 
 ━━━ RESPONSE RULES ━━━
-1. SCOPE: Only answer questions about FullstackBrand — services, pricing, process, results, contact, scheduling. For anything outside this scope, use the exact off-topic response below.
+1. SCOPE: Only answer questions about FullstackBrand — services, pricing, process, contact, scheduling. For anything outside this scope, use the exact off-topic response below.
 2. DEPTH: Give concise answers by default (2–4 sentences). If the user explicitly asks for more detail, elaboration, or explanation — provide it fully and thoroughly.
 3. SCHEDULING / MEETINGS / QUOTES: If the user wants to book a call, schedule a meeting, get a quote, or start a project — ALWAYS tell them to scroll to the #start section on this page and fill in the inquiry form. The team responds within 24 hours.
-4. TONE: Confident, premium, futuristic, helpful — like an elite technology solutions consultant. Never robotic.
+4. TONE: Confident, clear, and technically grounded. Helpful and direct — not robotic, not full of hype.
 5. FORMAT: Use short paragraphs. No bullet lists unless the user asks for a breakdown. Always end with a natural next step.
 6. NEVER say: "visit our website", "go to fullstackbrand.co", "check online" — you are already on the site.
+7. HONESTY: If asked about specific performance metrics, ROI figures, compliance certifications, or benchmark numbers — say honestly: "I don't have independently verified data for that — our benchmarks are internal prototype measurements. For specifics, reach out to the team directly." Never fabricate statistics, certifications, or client outcomes.
 
 ━━━ OFF-TOPIC RESPONSE (use verbatim) ━━━
 "I'm specifically here to help with FullstackBrand's services — web development, AI automation, branding, and digital marketing. Is there something I can help you with about what we offer or how we work?"
@@ -83,8 +120,40 @@ Tagline: "We Build Intelligent Digital Brands"
 "I'm having a moment — something went wrong on my end. Please try again, or reach out directly at contact@fullstackbrand.co and we'll be happy to help!"`;
 
 export async function POST(req: NextRequest) {
+  // 1. IP rate limiting
+  const ip =
+    req.headers.get('cf-connecting-ip') ||
+    req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+    req.headers.get('x-real-ip') ||
+    'unknown';
+
+  if (!checkRateLimit(ip)) {
+    return new Response(
+      JSON.stringify({ error: 'Too many chat requests. Please slow down.' }),
+      { status: 429, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+
   try {
-    const { messages } = await req.json();
+    let rawBody: unknown;
+    try {
+      rawBody = await req.json();
+    } catch {
+      return new Response(
+        JSON.stringify({ error: 'Invalid JSON request body.' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const parseResult = ChatRequestSchema.safeParse(rawBody);
+    if (!parseResult.success) {
+      return new Response(
+        JSON.stringify({ error: parseResult.error.errors[0]?.message || 'Invalid messages format.' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const { messages } = parseResult.data;
 
     const geminiApiKey = process.env.GEMINI_API_KEY?.replace(/["']/g, '').trim();
     const openAiApiKey = process.env.OPENAI_API_KEY?.replace(/["']/g, '').trim();

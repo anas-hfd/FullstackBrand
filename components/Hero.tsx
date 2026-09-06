@@ -1,15 +1,16 @@
 // FullstackBrand
 'use client'
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion'
-import { ArrowRight, Sparkles, ChevronDown } from 'lucide-react'
+import { ArrowRight, FlaskConical, ChevronDown } from 'lucide-react'
 import ParticleField from './ParticleField'
 import { useRef, useEffect } from 'react'
 
-const stats = [
-  { metric: '4–6 Wks', label: 'Average MVP Launch' },
-  { metric: '100%', label: 'Bespoke Code Ownership' },
-  { metric: '< 50ms', label: 'Edge Global Latency' },
-  { metric: 'Zero-Lock', label: 'Sovereign Architecture' },
+// Honest, architecture-level indicators — no fabricated business metrics
+const indicators = [
+  { metric: '4–6 Wks', label: 'Typical MVP Timeline' },
+  { metric: '100%', label: 'Code Ownership' },
+  { metric: 'R&D → Deploy', label: 'AI Lab to Studio Pipeline' },
+  { metric: 'On-Premise', label: 'Sovereign Mode Available' },
 ]
 
 export default function Hero() {
@@ -18,13 +19,6 @@ export default function Hero() {
   const y = useTransform(scrollYProgress, [0, 1], ['0%', '20%'])
   const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0])
 
-  // Cursor-reactive glow position
-  const glowX = useMotionValue(50) // percent
-  const glowY = useMotionValue(50)
-  const smoothX = useSpring(glowX, { stiffness: 60, damping: 20 })
-  const smoothY = useSpring(glowY, { stiffness: 60, damping: 20 })
-
-  // Cursor-reactive tilt for the headline block
   const tiltX = useMotionValue(0)
   const tiltY = useMotionValue(0)
   const smoothTiltX = useSpring(tiltX, { stiffness: 80, damping: 20 })
@@ -35,13 +29,6 @@ export default function Hero() {
     if (!el) return
 
     const onMove = (e: MouseEvent) => {
-      const rect = el.getBoundingClientRect()
-      const px = ((e.clientX - rect.left) / rect.width) * 100
-      const py = ((e.clientY - rect.top) / rect.height) * 100
-      glowX.set(px)
-      glowY.set(py)
-
-      // Subtle tilt: -6 to 6 deg
       const nx = (e.clientX / window.innerWidth - 0.5) * 2
       const ny = (e.clientY / window.innerHeight - 0.5) * 2
       tiltX.set(-ny * 4)
@@ -49,8 +36,6 @@ export default function Hero() {
     }
 
     const onLeave = () => {
-      glowX.set(50)
-      glowY.set(50)
       tiltX.set(0)
       tiltY.set(0)
     }
@@ -61,45 +46,11 @@ export default function Hero() {
       el.removeEventListener('mousemove', onMove as EventListener)
       el.removeEventListener('mouseleave', onLeave)
     }
-  }, [glowX, glowY, tiltX, tiltY])
+  }, [tiltX, tiltY])
 
   return (
     <section ref={ref} className="relative min-h-[95vh] flex items-center justify-center overflow-hidden">
       <ParticleField />
-
-      {/* Cursor-reactive radial glow — follows mouse */}
-      {/* Cursor-reactive large glow blob */}
-      <motion.div
-        className="absolute pointer-events-none"
-        style={{
-          zIndex: 1,
-          left: smoothX,
-          top: smoothY,
-          translateX: '-50%',
-          translateY: '-50%',
-          width: 700,
-          height: 700,
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(0,255,102,0.11) 0%, rgba(16,185,129,0.05) 40%, transparent 70%)',
-        }}
-      />
-
-      {/* Second smaller accent glow — offset for depth */}
-      <motion.div
-        className="absolute pointer-events-none"
-        style={{
-          zIndex: 1,
-          left: smoothX,
-          top: smoothY,
-          translateX: '-30%',
-          translateY: '-60%',
-          width: 300,
-          height: 300,
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(0,255,102,0.06) 0%, transparent 70%)',
-          filter: 'blur(20px)',
-        }}
-      />
 
       {/* Top horizontal line accent */}
       <motion.div
@@ -110,7 +61,7 @@ export default function Hero() {
         style={{ zIndex: 2 }}
       />
 
-      {/* Content — subtle 3D tilt with cursor */}
+      {/* Content */}
       <motion.div
         style={{
           y,
@@ -130,13 +81,8 @@ export default function Hero() {
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           className="mb-8 inline-flex items-center gap-2 px-5 py-2 rounded-full glass text-sm font-medium"
         >
-          <motion.span
-            animate={{ rotate: [0, 15, -15, 0] }}
-            transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
-          >
-            <Sparkles size={14} className="text-brand-light dark:text-brand-dark" />
-          </motion.span>
-          Brand Experience · AI-Powered Digital Agency
+          <FlaskConical size={14} className="text-brand-light dark:text-brand-dark" />
+          Commercial AI Deployment Studio · Powered by AI Lab R&amp;D
           <span className="w-1.5 h-1.5 rounded-full bg-brand-light dark:bg-brand-dark animate-pulse" />
         </motion.div>
 
@@ -148,9 +94,9 @@ export default function Hero() {
           className="text-5xl sm:text-6xl md:text-8xl font-black tracking-tighter mb-6 leading-[0.9]"
           style={{ transform: 'translateZ(30px)' }}
         >
-          We Build{' '}
+          Applied AI{' '}
           <span className="relative inline-block">
-            <span className="text-brand-light dark:text-brand-dark glow-text">Intelligent</span>
+            <span className="text-brand-light dark:text-brand-dark glow-text">Engineering.</span>
             <motion.span
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
@@ -159,7 +105,7 @@ export default function Hero() {
             />
           </span>
           <br />
-          <span className="text-slate-900 dark:text-white">Digital Brands.</span>
+          <span className="text-slate-900 dark:text-white">Commercial Deployment.</span>
         </motion.h1>
 
         {/* Subtext */}
@@ -170,12 +116,7 @@ export default function Hero() {
           className="text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto mb-12 leading-relaxed"
           style={{ transform: 'translateZ(15px)' }}
         >
-          Iconic brands. Intelligent systems. Experiences that convert.
-          We craft{' '}
-          <span className="text-brand-light dark:text-brand-dark font-semibold">bold visual identities</span>,
-          automate with AI, build high-performance web platforms, and run marketing that delivers —
-          all under one roof, all built to{' '}
-          <span className="text-brand-light dark:text-brand-dark font-semibold">scale without limits</span>.
+          The Studio applies FullstackBrand&apos;s AI Lab research — routing architectures, agent orchestration, and sovereign inference systems — to client products, SaaS platforms, and enterprise integrations.
         </motion.p>
 
         {/* CTA buttons */}
@@ -194,7 +135,7 @@ export default function Hero() {
             className="group relative flex items-center justify-center gap-2 bg-brand-light dark:bg-brand-dark text-white px-8 py-4 rounded-full font-bold text-base shadow-lg shadow-brand-light/25 dark:shadow-brand-dark/20 overflow-hidden"
           >
             <span className="relative z-10 flex items-center gap-2">
-              Start Your Project
+              Discuss a Project
               <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" />
             </span>
           </motion.a>
@@ -206,18 +147,18 @@ export default function Hero() {
             transition={{ type: 'spring', stiffness: 400, damping: 20 }}
             className="flex items-center justify-center gap-2 glass px-8 py-4 rounded-full font-bold text-base hover:bg-slate-100 dark:hover:bg-white/10 transition-colors duration-300"
           >
-            Explore Our Services
+            Explore Studio Services
           </motion.a>
         </motion.div>
 
-        {/* Stats row */}
+        {/* Architecture indicators — no fabricated business metrics */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.6 }}
           className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-px bg-slate-200/50 dark:bg-white/10 rounded-2xl overflow-hidden max-w-3xl mx-auto"
         >
-          {stats.map((item, i) => (
+          {indicators.map((item, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0 }}

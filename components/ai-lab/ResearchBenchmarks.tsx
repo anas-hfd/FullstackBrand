@@ -113,12 +113,12 @@ export default function ResearchBenchmarks() {
   const [activeTab, setActiveTab] = useState<'hybrid' | 'fp16' | 'q4'>('hybrid')
 
   return (
-    <section id="research" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <section id="research" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 scroll-mt-24">
       {/* Section Header */}
       <div className="text-center max-w-3xl mx-auto mb-16">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-violet-500/10 border border-violet-500/20 text-xs font-mono font-bold uppercase tracking-widest text-violet-600 dark:text-violet-400 mb-4">
           <Cpu size={14} />
-          <span>Applied Deep Model Optimization · TRL-7 Validated</span>
+          <span>Applied Deep Model Optimization · Internal Prototype Research</span>
         </div>
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-zinc-900 dark:text-white mb-4">
           Hybrid Inference Routing &{' '}
@@ -127,23 +127,20 @@ export default function ResearchBenchmarks() {
           </span>
         </h2>
         <p className="text-zinc-600 dark:text-zinc-400 text-sm sm:text-base md:text-lg leading-relaxed">
-          We combine low-latency small quantized models (SLMs) for instant task triage with high-reasoning frontier models for deep execution, slashing compute costs by 84% while maintaining 99.8% structured precision.
+          We combine small quantized models (SLMs) for task routing with larger frontier models for deep execution. Internal prototype measurements suggest significantly lower compute cost and reduced latency versus a monolithic cloud LLM approach. Results require independent validation.
         </p>
       </div>
 
       {/* Interactive Benchmarks Engine */}
       <div className="glass-lab p-6 sm:p-8 md:p-10 rounded-3xl border border-violet-500/20 shadow-2xl relative overflow-hidden">
-        {/* Background glow */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-violet-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
-
         {/* Tab Controls */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-zinc-200 dark:border-white/10">
           <div>
             <span className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 block mb-1">
-              Live Latency & Throughput Matrix
+              Internal Prototype Benchmarks — Not Independently Validated
             </span>
             <h3 className="text-xl sm:text-2xl font-black text-zinc-900 dark:text-white">
-              Real-Time Compute & Optimization Benchmarks
+              Architecture Measurement Targets
             </h3>
           </div>
 
@@ -181,12 +178,12 @@ export default function ResearchBenchmarks() {
             <thead>
               <tr className="border-b border-zinc-200/80 dark:border-white/10 text-[11px] font-mono uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
                 <th className="py-3 px-4">Architecture / Pipeline</th>
-                <th className="py-3 px-4">Time to 1st Token (TTFT)</th>
-                <th className="py-3 px-4">Throughput</th>
-                <th className="py-3 px-4">VRAM Footprint</th>
+                <th className="py-3 px-4">TTFT (prototype test)</th>
+                <th className="py-3 px-4">Throughput (observed)</th>
+                <th className="py-3 px-4">VRAM (single-run)</th>
                 <th className="py-3 px-4">Quantization</th>
-                <th className="py-3 px-4">Accuracy</th>
-                <th className="py-3 px-4 text-right">Cost / 1K Tokens</th>
+                <th className="py-3 px-4">Schema Accuracy</th>
+                <th className="py-3 px-4 text-right">Est. Cost / 1K Tokens</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-200/50 dark:divide-white/5 text-xs sm:text-sm">
@@ -242,36 +239,47 @@ export default function ResearchBenchmarks() {
           </table>
         </div>
 
-        {/* 3 Highlight Metric Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8 pt-6 border-t border-zinc-200 dark:border-white/10">
+        {/* Methodology notice + 3 metric summary cards */}
+        <div className="mt-8 pt-6 border-t border-zinc-200 dark:border-white/10">
+          {/* Disclaimer */}
+          <div className="mb-6 p-4 rounded-xl bg-amber-500/8 border border-amber-500/20 flex items-start gap-3">
+            <span className="text-amber-500 text-lg leading-none flex-shrink-0">⚠</span>
+            <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
+              <span className="font-bold text-zinc-800 dark:text-zinc-200">Internal Prototype Benchmarks.</span>{' '}
+              All measurements above were conducted in our internal test environment on specific hardware configurations under controlled workloads. They have <span className="font-bold">not been independently validated</span> by a third party. Performance varies significantly by model, hardware, concurrency, and workload characteristics. These figures represent prototype-stage observations, not production guarantees.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="p-4 rounded-2xl bg-zinc-100/80 dark:bg-white/[0.03] border border-zinc-200/80 dark:border-white/10">
             <div className="flex items-center gap-2 text-violet-600 dark:text-violet-400 mb-1">
               <Zap size={16} />
-              <span className="text-xs font-mono font-bold uppercase">Sub-30ms Latency</span>
+              <span className="text-xs font-mono font-bold uppercase">Router Stage: &lt;28ms (internal)</span>
             </div>
             <p className="text-xs text-zinc-600 dark:text-zinc-400">
-              Low-latency edge SLM pre-routing reduces Time to First Token (TTFT) by up to 92% compared to monolithic public APIs.
+              Observed routing-decision latency in prototype tests. End-to-end TTFT measured at 38ms for the full hybrid pipeline. These are internal measurements on a single hardware configuration.
             </p>
           </div>
 
           <div className="p-4 rounded-2xl bg-zinc-100/80 dark:bg-white/[0.03] border border-zinc-200/80 dark:border-white/10">
             <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 mb-1">
               <TrendingDown size={16} />
-              <span className="text-xs font-mono font-bold uppercase">84% Compute Savings</span>
+              <span className="text-xs font-mono font-bold uppercase">~84% Lower Compute (observed)</span>
             </div>
             <p className="text-xs text-zinc-600 dark:text-zinc-400">
-              Domain LoRA adapters and quantized speculative execution cut VRAM demands, enabling 16+ concurrent agents per consumer GPU.
+              Approximate compute reduction versus a monolithic FP16 cloud baseline, observed in prototype tests. Not a production cost guarantee. Actual savings depend on workload mix and concurrency.
             </p>
           </div>
 
           <div className="p-4 rounded-2xl bg-zinc-100/80 dark:bg-white/[0.03] border border-zinc-200/80 dark:border-white/10">
             <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 mb-1">
               <CheckCircle2 size={16} />
-              <span className="text-xs font-mono font-bold uppercase">99.8% Determinism</span>
+              <span className="text-xs font-mono font-bold uppercase">99.8% Schema Conformance (test set)</span>
             </div>
             <p className="text-xs text-zinc-600 dark:text-zinc-400">
-              Neuro-symbolic constraint layers enforce strict JSON schema guarantees, eliminating output format hallucinations.
+              JSON schema guardrail accuracy measured on an internal benchmark dataset. Not a general determinism guarantee. Results vary by prompt complexity and model version.
             </p>
+          </div>
           </div>
         </div>
       </div>

@@ -16,7 +16,7 @@ export default function AILabBridgeCard() {
             Looking for Frontier AI Research &amp; Generative Systems?
           </h3>
           <p className="text-zinc-600 dark:text-zinc-300 text-sm md:text-base leading-relaxed">
-            Explore our deep-tech applied research branch — engineering deterministic multi-agent architectures, GlyphForge icon synthesis, and sovereign non-egress AI pipelines.
+            Explore our deep-tech applied research branch — engineering hybrid inference routing architectures, multi-agent orchestration systems, and the GlyphForge generative asset prototype.
           </p>
         </div>
 

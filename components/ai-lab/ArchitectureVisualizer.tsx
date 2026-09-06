@@ -125,12 +125,12 @@ export default function ArchitectureVisualizer() {
   const activeNode = TOPOLOGY_NODES.find((n) => n.id === activeNodeId) || TOPOLOGY_NODES[2]
 
   return (
-    <section id="architecture" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <section id="architecture" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 scroll-mt-24">
       {/* Section Header */}
       <div className="text-center max-w-3xl mx-auto mb-16">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-violet-500/10 border border-violet-500/20 text-xs font-mono font-bold uppercase tracking-widest text-violet-600 dark:text-violet-400 mb-4">
           <GitBranch size={14} />
-          <span>High-Throughput Enterprise Data Topology · TRL-7</span>
+          <span>High-Throughput Enterprise Data Topology · Advancing Toward TRL-7</span>
         </div>
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-zinc-900 dark:text-white mb-4">
           Distributed Pipeline &{' '}

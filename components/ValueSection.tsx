@@ -1,58 +1,45 @@
 'use client'
 import { motion } from 'framer-motion'
-import { ArrowRight, TrendingUp, Clock, Users, Zap, Shield, Globe2, Star } from 'lucide-react'
+import { ArrowRight, Code2, Bot, Layers, ShieldCheck, Globe2, Cpu } from 'lucide-react'
 
-const outcomes = [
+// What the Studio actually offers — capability statements, not fabricated outcome metrics
+const capabilities = [
   {
-    icon: TrendingUp,
-    stat: '3–5×',
-    label: 'Revenue Growth',
-    desc: 'Brands we build and market consistently see 3–5× revenue uplift within 12 months.',
-    accent: '#10B981',
-  },
-  {
-    icon: Clock,
-    stat: '60%',
-    label: 'Faster to Market',
-    desc: 'Our integrated stack ships faster — cutting average time-to-launch by more than half.',
+    icon: Code2,
+    label: 'SaaS Engineering',
+    desc: 'Full-stack product development using Next.js, TypeScript, and modern cloud infrastructure. From prototype to deployed product.',
     accent: '#3B82F6',
   },
   {
-    icon: Zap,
-    stat: '80%',
-    label: 'Ops Automated',
-    desc: 'AI workflows eliminate repetitive manual tasks, freeing your team for high-impact work.',
+    icon: Bot,
+    label: 'AI Integration',
+    desc: 'Integration of language models, retrieval-augmented generation, and agent workflows into client products and internal tooling.',
     accent: '#8B5CF6',
   },
   {
-    icon: Users,
-    stat: '2×',
-    label: 'More Qualified Leads',
-    desc: 'Conversion-optimized design and targeted strategy double qualified pipeline on average.',
-    accent: '#F59E0B',
+    icon: Layers,
+    label: 'Brand & Digital Systems',
+    desc: 'Visual identity, design systems, and conversion-oriented web platforms. Consistent presentation across touchpoints.',
+    accent: '#EC4899',
+  },
+  {
+    icon: Cpu,
+    label: 'Applied AI Infrastructure',
+    desc: 'Deployment of routing, orchestration, and inference systems developed in the AI Lab — into real customer environments.',
+    accent: '#10B981',
   },
 ]
 
-const proof = [
-  { icon: Shield,  label: 'Enterprise-grade security & compliance' },
-  { icon: Globe2,  label: 'Deployed in 12+ countries' },
-  { icon: Star,    label: '5-star satisfaction across 150+ projects' },
-  { icon: Zap,     label: 'Sub-2s page load times, always' },
+const trustIndicators = [
+  { icon: ShieldCheck, label: 'Security-conscious architecture by design' },
+  { icon: Globe2,     label: 'Remote-first delivery, accepting global clients' },
+  { icon: Code2,      label: 'Full code ownership transferred on delivery' },
+  { icon: Cpu,        label: 'AI Lab R&D applied to every commercial engagement' },
 ]
 
 export default function ValueSection() {
   return (
     <section className="relative py-28 overflow-hidden">
-      {/* Subtle ambient glow */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            'radial-gradient(ellipse 80% 60% at 50% 50%, rgba(16,185,129,0.05) 0%, transparent 70%)',
-        }}
-      />
-
       <div className="relative max-w-7xl mx-auto px-6">
         {/* Section header */}
         <motion.div
@@ -63,20 +50,20 @@ export default function ValueSection() {
           className="text-center mb-20"
         >
           <span className="text-xs uppercase tracking-[0.2em] text-brand-light dark:text-brand-dark font-semibold mb-3 block">
-            What you gain
+            Studio Capabilities
           </span>
           <h2 className="text-4xl md:text-5xl font-black tracking-tight mb-4">
-            With{' '}
-            <span className="text-brand-light dark:text-brand-dark glow-text">FullstackBrand</span>
+            What the{' '}
+            <span className="text-brand-light dark:text-brand-dark glow-text">Studio Delivers</span>
           </h2>
           <p className="text-slate-500 dark:text-slate-400 max-w-xl mx-auto">
-            We don&apos;t just deliver projects — we engineer measurable outcomes. Here&apos;s what our clients consistently achieve when they partner with us.
+            The Studio is the commercial deployment arm of FullstackBrand — taking AI Lab engineering capabilities and applying them to client products, platforms, and implementations.
           </p>
         </motion.div>
 
-        {/* Outcome cards */}
+        {/* Capability cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-16">
-          {outcomes.map(({ icon: Icon, stat, label, desc, accent }, i) => (
+          {capabilities.map(({ icon: Icon, label, desc, accent }, i) => (
             <motion.div
               key={label}
               initial={{ opacity: 0, y: 30 }}
@@ -101,19 +88,13 @@ export default function ValueSection() {
                 <Icon className="w-5 h-5" style={{ color: accent }} />
               </div>
 
-              <div
-                className="text-4xl font-black mb-1 relative"
-                style={{ color: accent }}
-              >
-                {stat}
-              </div>
-              <div className="text-sm font-bold text-slate-900 dark:text-white mb-2">{label}</div>
-              <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{desc}</p>
+              <div className="text-sm font-bold text-slate-900 dark:text-white mb-2 relative">{label}</div>
+              <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed relative">{desc}</p>
             </motion.div>
           ))}
         </div>
 
-        {/* Proof strip */}
+        {/* Trust indicators — honest, architecture-level */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -121,7 +102,7 @@ export default function ValueSection() {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="glass rounded-2xl px-8 py-5 flex flex-wrap gap-5 justify-between items-center"
         >
-          {proof.map(({ icon: Icon, label }) => (
+          {trustIndicators.map(({ icon: Icon, label }) => (
             <div key={label} className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-lg bg-brand-light/10 dark:bg-brand-dark/15 flex items-center justify-center flex-shrink-0">
                 <Icon className="w-4 h-4 text-brand-light dark:text-brand-dark" />
@@ -146,7 +127,7 @@ export default function ValueSection() {
             transition={{ type: 'spring', stiffness: 400, damping: 20 }}
             className="inline-flex items-center gap-2 bg-brand-light dark:bg-brand-dark text-white px-8 py-4 rounded-full font-bold text-sm shadow-lg shadow-brand-light/20 dark:shadow-brand-dark/20 group"
           >
-            Start your transformation
+            Discuss a Pilot or Project
             <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
           </motion.a>
         </motion.div>
@@ -154,4 +135,3 @@ export default function ValueSection() {
     </section>
   )
 }
-

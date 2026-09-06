@@ -10,7 +10,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 export default function Navbar() {
   const { theme, setTheme } = useTheme()
   const pathname = usePathname()
-  const isAgency = pathname?.startsWith('/agency')
+  const isStudio = pathname?.startsWith('/studio') || pathname?.startsWith('/agency')
 
   const [mounted, setMounted] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -23,36 +23,36 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const navLinks = isAgency
+  const navLinks = isStudio
     ? [
-        { label: 'Services', href: '/agency#services' },
-        { label: 'Process', href: '/agency#process' },
-        { label: 'AI Automation', href: '/agency#ai' },
+        { label: 'Services', href: '/studio#services' },
+        { label: 'Process', href: '/studio#process' },
+        { label: 'AI Automation', href: '/studio#ai' },
         { label: 'AI Lab', href: '/' },
-        { label: 'Contact', href: '/agency#start' },
+        { label: 'Contact', href: '/studio#start' },
       ]
     : [
         { label: 'AI Research', href: '/#research' },
-        { label: 'Fullstack Studio', href: '/agency' },
-        { label: 'Solutions', href: '/agency#services' },
-        { label: 'Start a Project', href: '/agency#start' },
+        { label: 'Fullstack Studio', href: '/studio' },
+        { label: 'Solutions', href: '/studio#services' },
+        { label: 'Start a Project', href: '/studio#start' },
       ]
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-40 p-4">
+    <header className="fixed top-0 left-0 right-0 z-40 p-4 bg-transparent pointer-events-none">
       <motion.nav
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className={`max-w-7xl mx-auto flex items-center justify-between p-3 px-6 rounded-2xl transition-all duration-500 ${
+        className={`pointer-events-auto max-w-7xl mx-auto flex items-center justify-between p-3 px-6 rounded-2xl transition-all duration-500 ${
           scrolled
-            ? 'glass shadow-xl shadow-black/10 dark:shadow-black/30'
+            ? 'glass shadow-lg shadow-black/5 dark:shadow-black/20'
             : 'bg-transparent border border-transparent'
         }`}
       >
         {/* Logo and Route Switcher Badge */}
         <div className="flex items-center gap-3">
-          <Link href={isAgency ? '/agency' : '/'} className="flex items-center gap-2 group">
+          <Link href={isStudio ? '/studio' : '/'} className="flex items-center gap-2 group">
             {mounted && (
               <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                 <Image
@@ -69,7 +69,7 @@ export default function Navbar() {
 
           {/* Ecosystem Route Indicator Badge */}
           <div className="hidden lg:flex items-center text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-full border border-slate-200 dark:border-white/10 glass">
-            {isAgency ? (
+            {isStudio ? (
               <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
                 <Building2 size={12} /> Technology Studio
               </span>
@@ -88,7 +88,7 @@ export default function Navbar() {
               key={link.label}
               href={link.href}
               className={`relative transition-colors duration-200 group text-slate-600 dark:text-slate-300 ${
-                isAgency
+                isStudio
                   ? 'hover:text-emerald-500 dark:hover:text-emerald-400'
                   : 'hover:text-lab-DEFAULT dark:hover:text-lab-light'
               }`}
@@ -96,7 +96,7 @@ export default function Navbar() {
               {link.label}
               <span
                 className={`absolute -bottom-0.5 left-0 right-0 h-px scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-full ${
-                  isAgency ? 'bg-emerald-500' : 'bg-lab-DEFAULT'
+                  isStudio ? 'bg-emerald-500' : 'bg-lab-DEFAULT'
                 }`}
               />
             </Link>
@@ -129,15 +129,15 @@ export default function Navbar() {
           {/* CTA button */}
           <motion.div whileHover={{ x: 3 }} whileTap={{ x: 0 }}>
             <Link
-              href={isAgency ? '/agency#start' : '/agency#start'}
+              href={isStudio ? '/studio#start' : '/studio#start'}
               className={`hidden sm:flex items-center gap-2 text-white px-4 py-2 rounded-full text-sm font-bold shadow-md transition-all ${
-                isAgency
+                isStudio
                   ? 'bg-emerald-600 hover:bg-emerald-500 shadow-emerald-500/25'
                   : 'bg-gradient-to-r from-lab-DEFAULT to-lab-dark hover:from-purple-500 hover:to-lab-DEFAULT shadow-lab-DEFAULT/30'
               }`}
             >
-              {isAgency ? <Rocket size={14} /> : <Sparkles size={14} />}
-              <span>{isAgency ? 'Start a Project' : 'Work With Us'}</span>
+              {isStudio ? <Rocket size={14} /> : <Sparkles size={14} />}
+              <span>{isStudio ? 'Start a Project' : 'Work With Us'}</span>
             </Link>
           </motion.div>
 
@@ -168,7 +168,7 @@ export default function Navbar() {
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
                 className={`block py-3 px-2 text-sm font-medium border-b border-slate-200/30 dark:border-white/10 last:border-0 transition-colors ${
-                  isAgency
+                  isStudio
                     ? 'hover:text-emerald-500 dark:hover:text-emerald-400'
                     : 'hover:text-lab-DEFAULT dark:hover:text-lab-light'
                 }`}
@@ -177,16 +177,16 @@ export default function Navbar() {
               </Link>
             ))}
             <Link
-              href="/agency#start"
+              href="/studio#start"
               onClick={() => setMobileOpen(false)}
               className={`mt-3 flex items-center justify-center gap-2 text-white px-4 py-2.5 rounded-full text-sm font-bold w-full ${
-                isAgency
+                isStudio
                   ? 'bg-emerald-600'
                   : 'bg-gradient-to-r from-lab-DEFAULT to-lab-dark'
               }`}
             >
-              {isAgency ? <Rocket size={14} /> : <Sparkles size={14} />}
-              <span>{isAgency ? 'Start a Project' : 'Work With Us'}</span>
+              {isStudio ? <Rocket size={14} /> : <Sparkles size={14} />}
+              <span>{isStudio ? 'Start a Project' : 'Work With Us'}</span>
             </Link>
           </motion.div>
         )}

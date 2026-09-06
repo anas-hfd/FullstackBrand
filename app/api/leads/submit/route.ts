@@ -3,18 +3,64 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 
 const LeadSchema = z.object({
-  name: z.string().min(2),
-  email: z.string().email(),
-  company: z.string().optional().default('N/A'),
-  services: z.string(),
-  budget: z.string().optional().default('N/A'),
-  timeline: z.string().optional().default('N/A'),
-  message: z.string().optional().default('N/A'),
+  name: z.string().min(2).max(100),
+  email: z.string().email().max(254),
+  company: z.string().max(200).optional().default('N/A'),
+  services: z.string().max(500),
+  budget: z.string().max(50).optional().default('N/A'),
+  timeline: z.string().max(50).optional().default('N/A'),
+  message: z.string().max(2000).optional().default('N/A'),
 })
+
+// Escape HTML to prevent XSS in email body
+function esc(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
 
 const TARGET_EMAIL = process.env.TARGET_EMAIL || 'contact@fullstackbrand.co'
 
+// Rate limiter: max 5 submissions per 10 minutes per IP
+const RATE_MAP = new Map<string, { count: number; resetAt: number }>()
+const RATE_LIMIT = 5
+const RATE_WINDOW = 10 * 60 * 1000
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now()
+  const entry = RATE_MAP.get(ip)
+  if (!entry || now > entry.resetAt) {
+    RATE_MAP.set(ip, { count: 1, resetAt: now + RATE_WINDOW })
+    return true
+  }
+  if (entry.count >= RATE_LIMIT) return false
+  entry.count += 1
+  return true
+}
+
+// Block non-POST methods
+export async function GET() {
+  return NextResponse.json({ error: 'Method not allowed' }, { status: 405 })
+}
+
 export async function POST(req: NextRequest) {
+  // IP rate limiting
+  const ip =
+    req.headers.get('cf-connecting-ip') ||
+    req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+    req.headers.get('x-real-ip') ||
+    'unknown'
+
+  if (!checkRateLimit(ip)) {
+    return NextResponse.json(
+      { success: false, error: 'Too many project inquiries from this address. Please try again later.' },
+      { status: 429 }
+    )
+  }
+
   try {
     const body = await req.json()
     const validated = LeadSchema.parse(body)
@@ -32,13 +78,13 @@ export async function POST(req: NextRequest) {
         <h2 style="color: #00CC60; margin-top: 0;">⚡ New Project Inquiry</h2>
         <p style="color: #888;">Ref: ${projectId}</p>
         <hr style="border: 0; border-top: 1px solid #333;" />
-        <p><strong>Client Name:</strong> ${validated.name}</p>
-        <p><strong>Email:</strong> <a href="mailto:${validated.email}" style="color: #00CC60;">${validated.email}</a></p>
-        <p><strong>Company:</strong> ${validated.company}</p>
-        <p><strong>Services:</strong> <span style="color: #00CC60;">${validated.services}</span></p>
-        <p><strong>Budget Range:</strong> ${validated.budget}</p>
-        <p><strong>Timeline:</strong> ${validated.timeline}</p>
-        <p><strong>Message / Notes:</strong> ${validated.message}</p>
+        <p><strong>Client Name:</strong> ${esc(validated.name)}</p>
+        <p><strong>Email:</strong> <a href="mailto:${esc(validated.email)}" style="color: #00CC60;">${esc(validated.email)}</a></p>
+        <p><strong>Company:</strong> ${esc(validated.company)}</p>
+        <p><strong>Services:</strong> <span style="color: #00CC60;">${esc(validated.services)}</span></p>
+        <p><strong>Budget Range:</strong> ${esc(validated.budget)}</p>
+        <p><strong>Timeline:</strong> ${esc(validated.timeline)}</p>
+        <p><strong>Message / Notes:</strong> ${esc(validated.message)}</p>
         <hr style="border: 0; border-top: 1px solid #333;" />
         <p style="font-size: 12px; color: #666;">Submitted via FullstackBrand website on ${timestamp} UTC</p>
       </div>
@@ -145,13 +191,10 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    // Return minimal success response (no sensitive internal data)
     return NextResponse.json({
       success: true,
       projectId,
-      emailSent,
-      providerUsed,
-      recipient: TARGET_EMAIL,
-      lead: { ...validated, projectId, createdAt: new Date().toISOString() },
     })
   } catch (error) {
     console.error('[Lead Submission Error]', error)

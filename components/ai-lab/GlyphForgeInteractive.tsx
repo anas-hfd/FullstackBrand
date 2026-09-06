@@ -84,12 +84,12 @@ export default function GlyphForgeInteractive() {
   }
 
   return (
-    <section id="saas-development" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <section id="saas-development" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 scroll-mt-24">
       {/* Section Header */}
       <div className="text-center max-w-3xl mx-auto mb-16">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-violet-500/10 border border-violet-500/20 text-xs font-mono font-bold uppercase tracking-widest text-violet-600 dark:text-violet-400 mb-4">
           <Sparkles size={14} />
-          <span>Generative OS Toolsets & Enterprise SaaS Suite</span>
+          <span>Generative Asset Research · Prototype Stage</span>
         </div>
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-zinc-900 dark:text-white mb-4">
           GlyphForge AI &{' '}
@@ -98,8 +98,13 @@ export default function GlyphForgeInteractive() {
           </span>
         </h2>
         <p className="text-zinc-600 dark:text-zinc-400 text-sm sm:text-base md:text-lg leading-relaxed">
-          GlyphForge AI converts natural language prompts into production-ready, OS-native icon hierarchies and vector suites for macOS, Windows 11, and Linux systems with zero manual asset slicing.
+          GlyphForge is an experimental generative asset system exploring AI-assisted production of structured vector assets for OS-native environments. The interactive demo below is a design prototype — it renders CSS/SVG previews based on your prompt inputs. Full AI model integration is on the development roadmap.
         </p>
+        {/* Prototype status indicator */}
+        <div className="mt-4 inline-flex items-center gap-3 px-4 py-2 rounded-xl bg-amber-500/10 border border-amber-500/25">
+          <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+          <span className="text-xs font-mono font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider">Status: Research Prototype · UI Demo Only · AI Model Not Yet Connected</span>
+        </div>
       </div>
 
       {/* Main Interactive Studio Box */}
@@ -441,23 +446,26 @@ export default function GlyphForgeInteractive() {
             Multi-agent task decomposition pipelines with self-correcting validation loops, structured tool calling, and high-concurrency event brokers.
           </p>
           <div className="flex items-center gap-2 text-xs font-mono font-bold text-violet-600 dark:text-violet-400">
-            <span>SaaS Core · Active Pilot</span>
+            <span>SaaS Core · In Development</span>
             <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform" />
           </div>
         </div>
 
-        <div className="glass p-8 rounded-3xl border border-violet-500/20 hover:border-violet-500/40 transition-all group">
+        {/* GlyphForge Card */}
+        <div
+          className="group p-8 rounded-3xl bg-zinc-100/80 dark:bg-white/[0.02] border border-zinc-200/80 dark:border-white/8 hover:border-indigo-500/40 transition-all"
+        >
           <div className="w-12 h-12 rounded-2xl bg-indigo-600/10 dark:bg-indigo-500/15 flex items-center justify-center text-indigo-600 dark:text-indigo-400 mb-6 group-hover:scale-110 transition-transform">
             <Database size={24} />
           </div>
           <h3 className="text-xl font-bold text-zinc-900 dark:text-white mb-2">
-            Real-Time Vector Token Synthesizer
+            GlyphForge Generative Engine
           </h3>
           <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mb-4">
-            Distributed vector indexing engine with private in-memory HNSW graphs and sub-5ms semantic similarity retrieval across millions of tokens.
+            Experimental vector asset generation system. UI prototype demonstrates the intended interaction model; AI model integration is in active development.
           </p>
           <div className="flex items-center gap-2 text-xs font-mono font-bold text-indigo-600 dark:text-indigo-400">
-            <span>RAG Infrastructure · TRL-7</span>
+            <span>GlyphForge · Advancing Toward TRL-7</span>
             <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform" />
           </div>
         </div>

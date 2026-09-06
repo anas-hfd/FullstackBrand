@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 
 export default function CursorLight() {
   const pathname = usePathname()
-  const isAgency = pathname?.startsWith('/agency')
+  const isStudio = pathname?.startsWith('/studio') || pathname?.startsWith('/agency')
 
   const blobRef = useRef<HTMLDivElement>(null)
   const dotRef = useRef<HTMLDivElement>(null)
@@ -73,12 +73,12 @@ export default function CursorLight() {
 
   if (!mounted || isMobile) return null
 
-  const blobBg = isAgency
+  const blobBg = isStudio
     ? 'radial-gradient(circle, rgba(16,185,129,0.18) 0%, rgba(16,185,129,0.06) 45%, transparent 70%)'
     : 'radial-gradient(circle, rgba(139,92,246,0.22) 0%, rgba(139,92,246,0.08) 45%, transparent 70%)'
 
-  const dotBg = isAgency ? '#10B981' : '#8B5CF6'
-  const dotShadow = isAgency
+  const dotBg = isStudio ? '#10B981' : '#8B5CF6'
+  const dotShadow = isStudio
     ? '0 0 10px 2px rgba(16,185,129,0.65)'
     : '0 0 12px 3px rgba(139,92,246,0.7)'
 

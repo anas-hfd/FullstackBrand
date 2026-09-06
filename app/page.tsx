@@ -5,13 +5,14 @@ import AILabHomeClient from '@/components/ai-lab/AILabHomeClient'
 const SITE_URL = 'https://www.fullstackbrand.co'
 
 export const metadata: Metadata = {
-  title: 'FullstackBrand AI Lab | AI Software & Generative Systems Studio · Frontier Deep Tech',
+  title: 'FullstackBrand AI Lab | Applied AI Engineering · Sovereign Infrastructure · Generative Systems',
   description:
-    'FullstackBrand AI Lab is an applied AI Software & Generative Systems Studio engineering autonomous multi-agent orchestration, neural architecture synthesis, foundation model fine-tuning, enterprise AI sovereignty, and deterministic cognitive workflows. TRL-7 validated systems architecture with non-egress air-gapped pipelines for scalable commercialization.',
+    'FullstackBrand AI Lab is the R&D branch of FullstackBrand, an applied AI engineering company. We engineer deployable AI infrastructure: deterministic multi-agent orchestration, sovereign non-egress pipelines, hybrid LLM routing, and generative asset systems. Architecture advancing toward TRL-7.',
   keywords: [
-    'AI Software & Generative Systems Studio',
+    'Applied AI Engineering',
+    'AI Research Lab',
     'AI Software Studio',
-    'Generative Systems Studio',
+    'Generative Systems',
     'Frontier AI Research',
     'Applied Artificial Intelligence',
     'Deep Tech Innovation',
@@ -24,7 +25,6 @@ export const metadata: Metadata = {
     'RAG Vector Systems',
     'Technology Readiness Level TRL-7',
     'Non-Egress Air-Gapped Pipelines',
-    'AI Research Lab',
     'Computational Intelligence',
     'FullstackBrand AI Lab',
     'GlyphForge AI Engine',
@@ -33,11 +33,11 @@ export const metadata: Metadata = {
     canonical: SITE_URL,
   },
   openGraph: {
-    title: 'FullstackBrand AI Lab | AI Software & Generative Systems Studio',
+    title: 'FullstackBrand AI Lab | Applied AI Engineering · Sovereign Infrastructure',
     description:
-      'Applied deep-tech AI software studio engineering deterministic multi-agent orchestration, sovereign enterprise AI infrastructure, neural architecture synthesis, and commercialized cognitive workflows. TRL-7 validated · Non-Egress Air-Gapped Pipelines.',
+      'R&D branch of FullstackBrand: engineering deterministic multi-agent orchestration, sovereign enterprise AI infrastructure, hybrid model routing, and generative asset systems. Architecture advancing toward TRL-7.',
     url: SITE_URL,
-    siteName: 'FullstackBrand AI Software & Generative Systems Studio',
+    siteName: 'FullstackBrand AI Lab',
     type: 'website',
     locale: 'en_US',
     images: [
@@ -45,15 +45,15 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'FullstackBrand AI Lab — AI Software & Generative Systems Studio',
+        alt: 'FullstackBrand AI Lab — Applied AI Engineering & Sovereign Infrastructure',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'FullstackBrand AI Lab | AI Software & Generative Systems Studio',
+    title: 'FullstackBrand AI Lab | Applied AI Engineering',
     description:
-      'Pioneering deterministic multi-agent systems, sovereign AI pipelines, RAG vector systems, and commercialized cognitive infrastructure. TRL-7 · Air-Gapped · Grant-Vetted.',
+      'Deployable AI infrastructure: deterministic multi-agent systems, sovereign non-egress pipelines, hybrid LLM routing, and generative asset engines. Advancing toward TRL-7.',
     images: ['/og-image.png'],
     site: '@fullstackbrand',
     creator: '@fullstackbrand',

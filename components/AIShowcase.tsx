@@ -2,18 +2,35 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Bot, Workflow, CheckCircle2, Zap, Brain, Shield, ArrowRight } from 'lucide-react'
+import { Bot, Workflow, Zap, Brain, GitBranch, ArrowRight } from 'lucide-react'
 
 interface AgentStep {
   action: string
   duration: string
 }
 
+// Capability descriptions — honest prototype-stage framing
 const capabilities = [
-  { icon: Brain, label: 'Best-in-Class LLM', desc: 'The best model selected for your specific task' },
-  { icon: Workflow, label: 'Agent Orchestration', desc: 'Complex multi-step agent pipelines' },
-  { icon: Zap, label: 'Real-time', desc: 'Sub-100ms response times' },
-  { icon: Shield, label: 'Enterprise', desc: 'SOC2 compliant infrastructure' },
+  {
+    icon: Brain,
+    label: 'Hybrid LLM Routing',
+    desc: 'SLM pre-routing architecture to direct tasks to appropriate model tiers',
+  },
+  {
+    icon: Workflow,
+    label: 'Agent Orchestration',
+    desc: 'Multi-step agent pipelines with structured tool-calling and validation loops',
+  },
+  {
+    icon: Zap,
+    label: 'Low-Latency Design',
+    desc: 'Architecture optimized for reduced routing latency — currently prototype-stage',
+  },
+  {
+    icon: GitBranch,
+    label: 'Sovereign Deployment',
+    desc: 'Inference within customer-controlled infrastructure — optional deployment mode',
+  },
 ]
 
 export default function AIShowcase() {
@@ -47,16 +64,16 @@ export default function AIShowcase() {
         className="text-center mb-16"
       >
         <span className="text-xs uppercase tracking-[0.2em] text-brand-light dark:text-brand-dark font-semibold mb-3 block">
-          AI Infrastructure
+          AI Systems Architecture
         </span>
-        <h2 className="text-4xl md:text-5xl font-black mb-4 tracking-tight">AI Automation</h2>
+        <h2 className="text-4xl md:text-5xl font-black mb-4 tracking-tight">Agent Orchestration</h2>
         <p className="text-slate-500 dark:text-slate-400 max-w-lg mx-auto">
-          We deploy intelligent agents that don&apos;t just answer questions — they execute tasks and connect to your entire enterprise stack.
+          We design and deploy multi-agent systems that connect language models to enterprise workflows — integrating with existing stacks through structured tool-calling and retrieval pipelines.
         </p>
       </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-        {/* Left: text + capability cards */}
+        {/* Left: capability cards */}
         <motion.div
           initial={{ opacity: 0, x: -30 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -82,33 +99,19 @@ export default function AIShowcase() {
             ))}
           </div>
 
-          {/* Stats bar */}
+          {/* Architecture status — honest framing */}
           <div className="glass p-5 rounded-2xl">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-              <span className="text-sm font-semibold">Agent Network — Online</span>
+              <div className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+              <span className="text-sm font-semibold">Architecture Status — Active Prototype Development</span>
             </div>
-            {[
-              { label: 'Tasks Automated Daily', value: '12,450', width: '82%' },
-              { label: 'Avg. Resolution Time', value: '1.4s', width: '94%' },
-              { label: 'Human Escalation Rate', value: '2.1%', width: '12%' },
-            ].map(({ label, value, width }) => (
-              <div key={label} className="mb-3 last:mb-0">
-                <div className="flex justify-between text-xs mb-1">
-                  <span className="text-slate-500 dark:text-slate-400">{label}</span>
-                  <span className="font-bold text-brand-light dark:text-brand-dark">{value}</span>
-                </div>
-                <div className="h-1.5 rounded-full bg-slate-200 dark:bg-white/10 overflow-hidden">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    whileInView={{ width }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1, delay: 0.3, ease: 'easeOut' }}
-                    className="h-full rounded-full bg-gradient-to-r from-brand-light to-brand-dark"
-                  />
-                </div>
-              </div>
-            ))}
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mb-3">
+              The multi-agent routing and orchestration system is in active development. Internal prototype tests have demonstrated routing behavior and tool-calling mechanics. External validation has not yet been conducted.
+            </p>
+            <div className="flex items-center gap-2 pt-2 border-t border-slate-200/50 dark:border-white/10">
+              <span className="text-xs font-mono px-2 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold">PROTOTYPE</span>
+              <span className="text-xs text-slate-400">Benchmarks are internal measurements — not independently validated</span>
+            </div>
           </div>
         </motion.div>
 
@@ -127,13 +130,13 @@ export default function AIShowcase() {
               <div className="w-3 h-3 rounded-full bg-yellow-400/70" />
               <div className="w-3 h-3 rounded-full bg-green-400/70" />
             </div>
-            <span className="text-xs text-slate-400 dark:text-slate-500">FSB-Agent — Live Session</span>
+            <span className="text-xs text-slate-400 dark:text-slate-500">FSB-Agent — Demo Simulation</span>
             <Bot size={14} className="text-brand-light dark:text-brand-dark" />
           </div>
 
           <div className="p-6 space-y-3 min-h-[280px]">
             <div className="text-slate-400 dark:text-slate-500 text-xs mb-4">
-              <span className="text-brand-light dark:text-brand-dark">$</span> agent.run(&#123;task: &quot;process_lead&quot;&#125;)
+              <span className="text-brand-light dark:text-brand-dark">$</span> agent.run(&#123;task: &quot;process_inquiry&quot;&#125;)
             </div>
 
             {steps.map((step, i) => (
@@ -144,7 +147,7 @@ export default function AIShowcase() {
                 transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                 className="flex items-start gap-3"
               >
-                <CheckCircle2 size={15} className="text-brand-light dark:text-brand-dark flex-shrink-0 mt-0.5" />
+                <div className="w-3 h-3 rounded-full bg-brand-light/50 dark:bg-brand-dark/50 flex-shrink-0 mt-0.5" />
                 <div>
                   <span className="text-slate-400 dark:text-slate-500 text-xs">[{step.duration}] </span>
                   <span className="text-slate-800 dark:text-slate-200">{step.action}</span>
@@ -178,7 +181,7 @@ export default function AIShowcase() {
               transition={{ type: 'spring', stiffness: 400, damping: 20 }}
               className="flex items-center gap-2 text-xs font-semibold text-brand-light dark:text-brand-dark hover:gap-3 transition-all duration-200"
             >
-              Deploy an AI Agent for your business <ArrowRight size={12} />
+              Discuss an AI integration for your organisation <ArrowRight size={12} />
             </motion.a>
           </div>
         </motion.div>

@@ -15,11 +15,11 @@ const SITE_NAME = 'FullstackBrand'
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Fullstack Brand | Creative Brand Experience · AI Technology Studio',
+    default: 'FullstackBrand | Applied AI Engineering · AI Lab & Commercial Studio',
     template: '%s | FullstackBrand',
   },
   description:
-    'Your brand deserves more than a logo — FullstackBrand is a full branding ecosystem studio delivering bold visual identities, AI-powered automation, high-performance web development, and growth-driven digital systems. One partner. Infinite impact.',
+    'FullstackBrand is an applied AI engineering company with an integrated research and commercialization model. The AI Lab develops proprietary AI infrastructure — deterministic multi-agent systems, sovereign pipelines, generative toolsets. The Studio deploys them commercially through SaaS engineering, enterprise integration, and brand engineering.',
   keywords: [
     'brand design studio',
     'visual identity design',
@@ -94,7 +94,7 @@ const jsonLd = {
         height: 200,
       },
       description:
-        'FullstackBrand is a Creative Brand Experience & AI Technology Studio specializing in bold visual identities, AI automation, high-performance web development, and growth-driven digital systems.',
+        'FullstackBrand is an applied AI engineering company with an integrated research and commercialization model. The AI Lab (R\u0026D, proprietary IP, generative systems) and the Studio (commercial deployment, SaaS engineering, brand engineering) operate as two coordinated functions of the same company.',
       foundingDate: '2026',
       contactPoint: [
         {
@@ -179,12 +179,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body
-        className={`${inter.className} bg-brand-offwhite dark:bg-brand-obsidian text-slate-900 dark:text-white transition-colors duration-300`}
+        className={`${inter.className} bg-[#bfbfbf] text-zinc-900 dark:bg-[#1a1a1a] dark:text-zinc-100 transition-colors duration-300`}
       >
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <CursorLight />
           <Navbar />
-          <main className="relative min-h-screen overflow-hidden pt-24">
+          <main className="relative min-h-screen overflow-hidden">
             {children}
           </main>
           <Footer />

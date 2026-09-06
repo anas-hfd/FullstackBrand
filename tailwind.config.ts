@@ -11,21 +11,33 @@ export default {
     extend: {
       colors: {
         canvas: {
-          dark: '#0c0d11',
-          light: '#fafafa',
+          dark: '#1a1a1a',
+          light: '#bfbfbf',
         },
         surface: {
-          dark: '#16171d',
-          light: '#ffffff',
+          dark: '#242424',
+          light: '#cfcfcf',
           borderDark: 'rgba(255, 255, 255, 0.08)',
-          borderLight: '#e4e4e7',
+          borderLight: '#a3a3a3',
         },
         brand: {
           light: '#00CC60',
           dark: '#00CC60',
           electric: '#22C55E',
-          obsidian: '#0c0d11',
-          offwhite: '#fafafa',
+          obsidian: '#1a1a1a',
+          offwhite: '#bfbfbf',
+        },
+        studio: {
+          DEFAULT: '#10b981',
+          hover: '#059669',
+          badge: '#34d399',
+          glow: 'rgba(16, 185, 129, 0.35)',
+          light: '#10B981',
+          dark: '#059669',
+          accent: '#00CC60',
+          electric: '#22C55E',
+          emerald: '#10B981',
+          deep: '#047857',
         },
         agency: {
           DEFAULT: '#10b981',
@@ -48,8 +60,8 @@ export default {
           dark: '#7C3AED',
           deep: '#6D28D9',
           electric: '#9333EA',
-          obsidian: '#0c0d11',
-          surface: '#16171d',
+          obsidian: '#1a1a1a',
+          surface: '#242424',
         },
       },
       animation: {
