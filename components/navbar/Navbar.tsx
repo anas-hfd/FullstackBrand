@@ -79,7 +79,11 @@ export default function Navbar() {
       if (existingLinks.length > 0) {
         // Update all existing favicon links and force a browser re-render via clone-replace
         existingLinks.forEach(link => {
-          if (link.href.includes('Asset 25-8') || link.href.includes('Logomark') || link.rel === 'icon' || link.rel === 'shortcut icon') {
+          // link.href is the resolved, percent-encoded URL - compare the decoded form
+          const decodedHref = decodeURIComponent(link.href)
+          const isFaviconLink =
+            link.rel === 'icon' || link.rel === 'shortcut icon' || link.rel === 'apple-touch-icon'
+          if (isFaviconLink || decodedHref.includes('Asset 25-8') || decodedHref.includes('Logomark')) {
             link.href = faviconHref
             // Clone-replace trick: forces browser to acknowledge the new favicon
             const clone = link.cloneNode() as HTMLLinkElement
