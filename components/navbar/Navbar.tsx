@@ -162,7 +162,7 @@ export default function Navbar() {
                 className={`hidden md:inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold text-white transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] shadow-md ${
                   isLab
                     ? 'bg-gradient-to-r from-violet-600 to-indigo-600 hover:shadow-violet-500/25 hover:shadow-lg'
-                    : 'bg-gradient-to-r from-emerald-600 to-teal-600 hover:shadow-emerald-500/25 hover:shadow-lg'
+                    : 'bg-brand-light dark:bg-brand-dark hover:shadow-brand-light/25 dark:hover:shadow-brand-dark/25 hover:shadow-lg'
                 }`}
                 id="nav-action-button"
               >
@@ -185,7 +185,7 @@ export default function Navbar() {
               {/* Mobile Hamburger Button */}
               <button
                 onClick={() => setMobileOpen(!mobileOpen)}
-                className="lg:hidden w-9 h-9 rounded-xl flex items-center justify-center text-zinc-700 dark:text-zinc-200 hover:text-zinc-950 dark:hover:text-white bg-white/50 dark:bg-white/10 border border-zinc-200 dark:border-white/10 transition-colors"
+                className="lg:hidden w-11 h-11 rounded-xl flex items-center justify-center text-zinc-700 dark:text-zinc-200 hover:text-zinc-950 dark:hover:text-white bg-white/50 dark:bg-white/10 border border-zinc-200 dark:border-white/10 transition-colors"
                 aria-label="Toggle navigation menu"
                 aria-expanded={mobileOpen}
                 id="mobile-nav-toggle"
@@ -217,7 +217,7 @@ export default function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', stiffness: 350, damping: 35 }}
-              className="fixed top-0 right-0 bottom-0 z-50 w-[85%] max-w-[320px] bg-[#bfbfbf]/95 dark:bg-[#1a1a1a]/95 backdrop-blur-2xl border-l border-zinc-300 dark:border-white/10 p-6 flex flex-col justify-between shadow-2xl lg:hidden overflow-y-auto"
+              className="fixed top-0 right-0 bottom-0 z-50 w-[85%] max-w-[320px] bg-[#f2f2f2]/95 dark:bg-[#1a1a1a]/95 backdrop-blur-2xl border-l border-zinc-300 dark:border-white/10 p-6 flex flex-col justify-between shadow-2xl lg:hidden overflow-y-auto"
               role="dialog"
               aria-label="Mobile Navigation"
             >
@@ -236,7 +236,7 @@ export default function Navbar() {
                   </div>
                   <button
                     onClick={() => setMobileOpen(false)}
-                    className="w-8 h-8 rounded-lg flex items-center justify-center text-zinc-500 hover:text-zinc-900 dark:hover:text-white bg-zinc-100 dark:bg-white/10"
+                    className="w-11 h-11 rounded-lg flex items-center justify-center text-zinc-500 hover:text-zinc-900 dark:hover:text-white bg-zinc-100 dark:bg-white/10"
                     aria-label="Close menu"
                   >
                     <X size={16} />
@@ -279,7 +279,7 @@ export default function Navbar() {
                   className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold text-white transition-all shadow-md ${
                     isLab
                       ? 'bg-gradient-to-r from-violet-600 to-indigo-600 hover:shadow-violet-500/25'
-                      : 'bg-gradient-to-r from-emerald-600 to-teal-600 hover:shadow-emerald-500/25'
+                      : 'bg-brand-light dark:bg-brand-dark hover:shadow-brand-light/25 dark:hover:shadow-brand-dark/25'
                   }`}
                 >
                   {isLab ? <><Bell size={14} /> Get Updates</> : <><ChevronRight size={14} /> Start Project</>}

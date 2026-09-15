@@ -12,7 +12,7 @@ export default {
       colors: {
         canvas: {
           dark: '#1a1a1a',
-          light: '#bfbfbf',
+          light: '#f2f2f2',
         },
         surface: {
           dark: '#242424',
@@ -25,7 +25,7 @@ export default {
           dark: '#00CC60',
           electric: '#22C55E',
           obsidian: '#1a1a1a',
-          offwhite: '#bfbfbf',
+          offwhite: '#f2f2f2',
         },
         studio: {
           DEFAULT: '#10b981',

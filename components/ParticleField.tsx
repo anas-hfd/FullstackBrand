@@ -41,8 +41,8 @@ export default function ParticleField({ color = 'emerald', className = '' }: Par
     const initParticles = () => {
       particles = []
       const isMobile = width < 768
-      const maxCount = isMobile ? 22 : 54 // +20% (previously 18 : 45)
-      const count = Math.min(Math.floor((width * height) / 18300), maxCount) // +20% density (previously 22000)
+      const maxCount = isMobile ? 28 : 68 // +25% (previously 22 : 54)
+      const count = Math.min(Math.floor((width * height) / 14640), maxCount) // +25% density (previously 18300)
       for (let i = 0; i < count; i++) {
         const vx = (Math.random() - 0.5) * 0.4
         const vy = (Math.random() - 0.5) * 0.4

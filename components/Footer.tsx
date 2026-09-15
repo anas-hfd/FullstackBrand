@@ -138,7 +138,7 @@ export default function Footer() {
                     rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
                     className={`flex items-start gap-3 text-sm text-slate-500 dark:text-slate-400 transition-colors duration-200 group ${
                       isStudio
-                        ? 'hover:text-emerald-600 dark:hover:text-emerald-400'
+                        ? 'hover:text-brand-light dark:hover:text-brand-dark'
                         : 'hover:text-violet-600 dark:hover:text-violet-400'
                     }`}
                   >
@@ -146,7 +146,7 @@ export default function Footer() {
                       size={14}
                       className={`flex-shrink-0 mt-0.5 transition-colors ${
                         isStudio
-                          ? 'text-emerald-600 dark:text-emerald-400'
+                          ? 'text-brand-light dark:text-brand-dark'
                           : 'text-violet-600 dark:text-violet-400'
                       }`}
                     />
@@ -176,7 +176,7 @@ export default function Footer() {
                       href={link.href}
                       className={`group flex items-center gap-1 text-sm text-slate-500 dark:text-slate-400 transition-colors duration-200 ${
                         isStudio
-                          ? 'hover:text-emerald-600 dark:hover:text-emerald-400'
+                          ? 'hover:text-brand-light dark:hover:text-brand-dark'
                           : 'hover:text-violet-600 dark:hover:text-violet-400'
                       }`}
                     >
@@ -236,7 +236,7 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 className={`w-9 h-9 rounded-full glass flex items-center justify-center text-slate-500 dark:text-slate-400 transition-all duration-200 hover:scale-110 ${
                   isStudio
-                    ? 'hover:text-emerald-600 dark:hover:text-emerald-400 hover:border-emerald-500/50'
+                    ? 'hover:text-brand-light dark:hover:text-brand-dark hover:border-brand-light/50'
                     : 'hover:text-violet-600 dark:hover:text-violet-400 hover:border-violet-500/50'
                 }`}
               >

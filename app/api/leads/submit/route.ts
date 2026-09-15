@@ -1,6 +1,7 @@
 // FullstackBrand
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
+import { createRateLimiter, clientIpFrom } from '@/lib/rate-limit'
 
 const LeadSchema = z.object({
   name: z.string().min(2).max(100),
@@ -25,21 +26,7 @@ function esc(str: string): string {
 const TARGET_EMAIL = process.env.TARGET_EMAIL || 'contact@fullstackbrand.co'
 
 // Rate limiter: max 5 submissions per 10 minutes per IP
-const RATE_MAP = new Map<string, { count: number; resetAt: number }>()
-const RATE_LIMIT = 5
-const RATE_WINDOW = 10 * 60 * 1000
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now()
-  const entry = RATE_MAP.get(ip)
-  if (!entry || now > entry.resetAt) {
-    RATE_MAP.set(ip, { count: 1, resetAt: now + RATE_WINDOW })
-    return true
-  }
-  if (entry.count >= RATE_LIMIT) return false
-  entry.count += 1
-  return true
-}
+const checkRateLimit = createRateLimiter({ limit: 5, windowMs: 10 * 60 * 1000 })
 
 // Block non-POST methods
 export async function GET() {
@@ -48,22 +35,26 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   // IP rate limiting
-  const ip =
-    req.headers.get('cf-connecting-ip') ||
-    req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-    req.headers.get('x-real-ip') ||
-    'unknown'
+  const ip = clientIpFrom(req.headers)
 
-  if (!checkRateLimit(ip)) {
+  const rate = checkRateLimit(ip)
+  if (!rate.allowed) {
     return NextResponse.json(
       { success: false, error: 'Too many project inquiries from this address. Please try again later.' },
-      { status: 429 }
+      { status: 429, headers: { 'Retry-After': String(rate.retryAfterSeconds) } }
     )
   }
 
   try {
     const body = await req.json()
-    const validated = LeadSchema.parse(body)
+    const parsed = LeadSchema.safeParse(body)
+    if (!parsed.success) {
+      return NextResponse.json(
+        { success: false, error: parsed.error.errors[0]?.message || 'Invalid submission format' },
+        { status: 400 }
+      )
+    }
+    const validated = parsed.data
 
     const projectId = `FSB-${Date.now().toString(36).toUpperCase()}`
     const timestamp = new Date().toLocaleString('en-US', { timeZone: 'UTC' })
@@ -157,44 +148,28 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // 3. HTTP Fallback via FormSubmit (Guarantees 100% delivery on Cloudflare Edge)
+    // No third-party redirect endpoints: delivery relies solely on the configured
+    // transactional email providers (Brevo → Resend). If none is configured or all
+    // fail, we return a structured error the client can surface honestly.
     if (!emailSent) {
-      try {
-        const res = await fetch(`https://formsubmit.co/ajax/${TARGET_EMAIL}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify({
-            _subject: `⚡ New Project Inquiry: ${validated.name} (${projectId})`,
-            _template: 'table',
-            _captcha: 'false',
-            "Project ID": projectId,
-            "Client Name": validated.name,
-            "Client Email": validated.email,
-            "Company": validated.company,
-            "Services": validated.services,
-            "Budget": validated.budget,
-            "Timeline": validated.timeline,
-            "Message": validated.message,
-            "Timestamp": `${timestamp} UTC`,
-          }),
-        })
-
-        if (res.ok) {
-          emailSent = true
-          providerUsed = 'formsubmit'
-          console.log('[Email Sent via FormSubmit API to', TARGET_EMAIL, ']')
-        } else {
-          console.error('[FormSubmit API Error]', await res.text())
-        }
-      } catch (httpErr) {
-        console.error('[HTTP Mail Fallback Error]', httpErr)
-      }
+      console.error('[Lead Delivery Failed] No email provider succeeded. Providers configured:', {
+        brevo: Boolean(brevoApiKey),
+        resend: Boolean(resendApiKey),
+      })
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'We could not deliver your inquiry right now. Please email us directly at contact@fullstackbrand.co.',
+        },
+        { status: 502 }
+      )
     }
 
     // Return minimal success response (no sensitive internal data)
     return NextResponse.json({
       success: true,
       projectId,
+      provider: providerUsed,
     })
   } catch (error) {
     console.error('[Lead Submission Error]', error)

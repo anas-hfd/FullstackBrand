@@ -16,7 +16,7 @@ export default function ThemeToggle({ className = '' }: { className?: string }) 
   if (!mounted) {
     return (
       <div
-        className={`w-9 h-9 rounded-xl flex items-center justify-center border border-zinc-200/80 dark:border-white/10 bg-white/70 dark:bg-zinc-900/60 ${className}`}
+        className={`w-11 h-11 rounded-xl flex items-center justify-center border border-zinc-200/80 dark:border-white/10 bg-white/70 dark:bg-zinc-900/60 ${className}`}
         aria-hidden="true"
       >
         <span className="w-4 h-4 rounded-full bg-zinc-300 dark:bg-zinc-700 animate-pulse" />
@@ -29,7 +29,7 @@ export default function ThemeToggle({ className = '' }: { className?: string }) 
   return (
     <button
       onClick={() => setTheme(isDark ? 'light' : 'dark')}
-      className={`relative w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-300 border border-zinc-200/80 dark:border-white/10 bg-white/80 dark:bg-zinc-900/80 hover:bg-zinc-100 dark:hover:bg-white/10 text-zinc-700 dark:text-zinc-200 hover:text-zinc-950 dark:hover:text-white shadow-sm hover:scale-105 active:scale-95 ${className}`}
+      className={`relative w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300 border border-zinc-200/80 dark:border-white/10 bg-white/80 dark:bg-zinc-900/80 hover:bg-zinc-100 dark:hover:bg-white/10 text-zinc-700 dark:text-zinc-200 hover:text-zinc-950 dark:hover:text-white shadow-sm hover:scale-105 active:scale-95 ${className}`}
       aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
       id="theme-toggle-btn"
     >

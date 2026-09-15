@@ -1,6 +1,6 @@
 // FullstackBrand Terms of Service
 import Link from 'next/link'
-import { FileText, ArrowLeft, CheckCircle2, Shield, Scale, HelpCircle } from 'lucide-react'
+import { FileText, ArrowLeft, CheckCircle2, Shield, Scale, HelpCircle, Building2 } from 'lucide-react'
 
 export const metadata = {
   title: 'Terms of Service | FullstackBrand',
@@ -117,6 +117,37 @@ export default function TermsOfServicePage() {
           <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
             To the maximum extent permitted by law, FullstackBrand shall not be liable for indirect, consequential, or exemplary damages resulting from third-party cloud outages, model API provider disruptions, or client-side infrastructure modifications. Maximum aggregate liability is limited to fees received in the preceding three (3) months.
           </p>
+        </section>
+
+        {/* Legal entity & contact — placeholder slots pending registered details */}
+        <section className="glass p-8 rounded-3xl border border-dashed border-zinc-400/60 dark:border-white/25">
+          <div className="flex items-center gap-3 mb-4">
+            <Building2 className="w-5 h-5 text-zinc-900 dark:text-white flex-shrink-0" />
+            <h2 className="text-xl font-bold text-zinc-900 dark:text-white">Legal Entity &amp; Contact</h2>
+          </div>
+          <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 font-mono text-xs md:text-sm">
+            <div>
+              <dt className="uppercase tracking-wider text-zinc-400 dark:text-zinc-500">Registered Legal Entity</dt>
+              <dd className="mt-1 text-zinc-900 dark:text-white">Fullstack Brand LLC</dd>
+            </div>
+            <div>
+              <dt className="uppercase tracking-wider text-zinc-400 dark:text-zinc-500">Registered Address</dt>
+              <dd className="mt-1 text-zinc-900 dark:text-white">[Registered Address]</dd>
+            </div>
+            <div>
+              <dt className="uppercase tracking-wider text-zinc-400 dark:text-zinc-500">Jurisdiction of Incorporation</dt>
+              <dd className="mt-1 text-zinc-900 dark:text-white">[Jurisdiction of Incorporation]</dd>
+            </div>
+            <div>
+              <dt className="uppercase tracking-wider text-zinc-400 dark:text-zinc-500">Contact Email</dt>
+              <dd className="mt-1">
+                <a href="mailto:contact@fullstackbrand.co" className="text-zinc-900 dark:text-white underline underline-offset-4">
+                  contact@fullstackbrand.co
+                </a>
+              </dd>
+            </div>
+          </dl>
+          <p className="mt-4 text-xs text-zinc-400 dark:text-zinc-500">Placeholder slots — to be completed with registered entity details before institutional or grant diligence review.</p>
         </section>
 
         {/* Section 6 */}

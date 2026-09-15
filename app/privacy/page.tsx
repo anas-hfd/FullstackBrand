@@ -1,6 +1,6 @@
 // FullstackBrand Privacy Policy
 import Link from 'next/link'
-import { ShieldCheck, ArrowLeft, Lock, Eye, Cpu, Database, UserCheck, Mail } from 'lucide-react'
+import { ShieldCheck, ArrowLeft, Lock, Eye, Cpu, Database, UserCheck, Mail, Scale } from 'lucide-react'
 
 export const metadata = {
   title: 'Privacy Policy | FullstackBrand',
@@ -45,9 +45,39 @@ export default function PrivacyPolicyPage() {
         </div>
       </div>
 
+      {/* Legal entity & contact — placeholder slots pending registered details */}
+      <section className="glass p-8 rounded-3xl border border-dashed border-zinc-400/60 dark:border-white/25">
+        <div className="flex items-center gap-3 mb-4">
+          <Scale className="w-5 h-5 text-zinc-900 dark:text-white flex-shrink-0" />
+          <h2 className="text-xl font-bold text-zinc-900 dark:text-white">Legal Entity &amp; Contact</h2>
+        </div>
+        <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 font-mono text-xs md:text-sm">
+          <div>
+            <dt className="uppercase tracking-wider text-zinc-400 dark:text-zinc-500">Registered Legal Entity</dt>
+            <dd className="mt-1 text-zinc-900 dark:text-white">Fullstack Brand LLC</dd>
+          </div>
+          <div>
+            <dt className="uppercase tracking-wider text-zinc-400 dark:text-zinc-500">Registered Address</dt>
+            <dd className="mt-1 text-zinc-900 dark:text-white">[Registered Address]</dd>
+          </div>
+          <div>
+            <dt className="uppercase tracking-wider text-zinc-400 dark:text-zinc-500">Jurisdiction of Incorporation</dt>
+            <dd className="mt-1 text-zinc-900 dark:text-white">[Jurisdiction of Incorporation]</dd>
+          </div>
+          <div>
+            <dt className="uppercase tracking-wider text-zinc-400 dark:text-zinc-500">Contact Email</dt>
+            <dd className="mt-1">
+              <a href="mailto:contact@fullstackbrand.co" className="text-zinc-900 dark:text-white underline underline-offset-4">
+                contact@fullstackbrand.co
+              </a>
+            </dd>
+          </div>
+        </dl>
+        <p className="mt-4 text-xs text-zinc-400 dark:text-zinc-500">Placeholder slots — to be completed with registered entity details before institutional or grant diligence review.</p>
+      </section>
+
       {/* Content Sections */}
       <div className="space-y-8 text-zinc-700 dark:text-zinc-300 text-sm md:text-base leading-relaxed">
-        
         {/* Section 1 */}
         <section className="glass p-8 rounded-3xl space-y-4 border border-zinc-200/80 dark:border-white/10">
           <div className="flex items-center gap-3 mb-2">

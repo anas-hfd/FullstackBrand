@@ -5,7 +5,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 75%;
+    --background: 0 0% 95%;
     --accent-primary: #8B5CF6;
     --accent-glow: rgba(139, 92, 246, 0.4);
     --selection-bg: rgba(139, 92, 246, 0.25);
@@ -78,6 +78,15 @@
   :is(.dark .glass-agency) {
     background-color: rgba(26, 26, 26, 0.6);
     border-color: rgba(16, 185, 129, 0.22);
+  }
+
+  /* AI Assistant panel surface — white in light mode, and 30% darker than the
+     dark canvas in dark mode (each channel x 0.70:  #1a1a1a -> #121212) */
+  .chat-surface {
+    background-color: #ffffff;
+  }
+  :is(.dark .chat-surface) {
+    background-color: #121212;
   }
 
   /* Default Studio Emerald Glow */

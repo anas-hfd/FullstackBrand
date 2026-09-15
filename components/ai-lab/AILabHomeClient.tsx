@@ -1,15 +1,13 @@
 'use client'
 
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import {
   Sparkles,
-  Zap,
   ArrowRight,
   GitBranch,
   Compass,
-  Mail,
   Bell,
   CheckCircle2,
   AlertCircle,
@@ -127,33 +125,10 @@ function NewsletterForm() {
 
 export default function AILabHomeClient() {
   const heroRef = useRef<HTMLDivElement>(null)
-  const [mousePos, setMousePos] = useState({ x: 600, y: 300 })
 
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
   const y = useTransform(scrollYProgress, [0, 1], ['0%', '20%'])
   const opacity = useTransform(scrollYProgress, [0, 0.75], [1, 0])
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (heroRef.current) {
-        const rect = heroRef.current.getBoundingClientRect()
-        setMousePos({
-          x: e.clientX - rect.left,
-          y: e.clientY - rect.top,
-        })
-      }
-    }
-
-    const heroEl = heroRef.current
-    if (heroEl) {
-      heroEl.addEventListener('mousemove', handleMouseMove)
-    }
-    return () => {
-      if (heroEl) {
-        heroEl.removeEventListener('mousemove', handleMouseMove)
-      }
-    }
-  }, [])
 
   return (
     <div className="relative pb-24 bg-canvas-light dark:bg-canvas-dark text-zinc-900 dark:text-white w-full overflow-x-hidden min-h-screen" data-theme-route="lab">
@@ -341,9 +316,9 @@ export default function AILabHomeClient() {
           STUDIO PORTAL BRIDGE (Preserved Emerald Palette)
       ══════════════════════════════════════════════════════════════════════ */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="glass-studio p-8 md:p-12 rounded-3xl border border-emerald-500/30 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
+        <div className="glass-studio p-8 md:p-12 rounded-3xl border border-brand-light/30 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
           <div className="space-y-3 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 text-xs font-bold font-mono">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-light/10 text-brand-light dark:text-brand-dark text-xs font-bold font-mono">
               <Compass size={14} /> FullstackBrand Ecosystem
             </div>
             <h3 className="text-2xl md:text-3xl font-black text-zinc-900 dark:text-white">
@@ -362,7 +337,7 @@ export default function AILabHomeClient() {
             <Link
               href="/studio"
               prefetch={true}
-              className="flex-shrink-0 inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-8 py-4 rounded-full shadow-lg shadow-emerald-500/20 group"
+              className="flex-shrink-0 inline-flex items-center gap-2 bg-brand-light dark:bg-brand-dark hover:opacity-90 text-white font-bold px-8 py-4 rounded-full shadow-lg shadow-brand-light/20 group transition-opacity duration-200"
               id="studio-bridge-cta"
             >
               <span>Visit FullstackBrand Studio</span>

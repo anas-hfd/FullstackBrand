@@ -179,12 +179,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body
-        className={`${inter.className} bg-[#bfbfbf] text-zinc-900 dark:bg-[#1a1a1a] dark:text-zinc-100 transition-colors duration-300`}
+        className={`${inter.className} bg-[#f2f2f2] text-zinc-900 dark:bg-[#1a1a1a] dark:text-zinc-100 transition-colors duration-300`}
       >
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <CursorLight />
           <Navbar />
-          <main className="relative min-h-screen overflow-hidden">
+          <main className="relative min-h-screen overflow-x-clip">
             {children}
           </main>
           <Footer />

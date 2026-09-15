@@ -2,6 +2,7 @@
 // Replaces formsubmit.co redirect with a proper POST-only API
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
+import { createRateLimiter, clientIpFrom } from '@/lib/rate-limit'
 
 // ── Schema ───────────────────────────────────────────────────────────────────
 const NewsletterSchema = z.object({
@@ -14,35 +15,18 @@ const NewsletterSchema = z.object({
 })
 
 // ── Basic in-process rate limiter (resets on cold start; upgrade to KV/Redis for production) ──
-const RATE_MAP = new Map<string, { count: number; resetAt: number }>()
-const RATE_LIMIT = 3   // requests
-const RATE_WINDOW = 60 * 60 * 1000 // 1 hour in ms
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now()
-  const entry = RATE_MAP.get(ip)
-  if (!entry || now > entry.resetAt) {
-    RATE_MAP.set(ip, { count: 1, resetAt: now + RATE_WINDOW })
-    return true
-  }
-  if (entry.count >= RATE_LIMIT) return false
-  entry.count += 1
-  return true
-}
+const checkRateLimit = createRateLimiter({ limit: 3, windowMs: 60 * 60 * 1000 })
 
 // ── POST only ────────────────────────────────────────────────────────────────
 export async function POST(req: NextRequest) {
   // Rate limit by IP
-  const ip =
-    req.headers.get('cf-connecting-ip') ||
-    req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-    req.headers.get('x-real-ip') ||
-    'unknown'
+  const ip = clientIpFrom(req.headers)
 
-  if (!checkRateLimit(ip)) {
+  const rate = checkRateLimit(ip)
+  if (!rate.allowed) {
     return NextResponse.json(
       { ok: false, error: 'Too many requests. Please try again later.' },
-      { status: 429 }
+      { status: 429, headers: { 'Retry-After': String(rate.retryAfterSeconds) } }
     )
   }
 

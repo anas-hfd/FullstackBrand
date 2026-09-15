@@ -42,6 +42,8 @@ function sanitize(str: string, maxLen = 200) {
 export default function LeadForm() {
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
+  const [projectId, setProjectId] = useState<string | null>(null)
+  const [toast, setToast] = useState<{ kind: 'error'; text: string } | null>(null)
   const [selectedServices, setSelectedServices] = useState<string[]>([])
   const [form, setForm] = useState({
     name: '',
@@ -103,9 +105,28 @@ export default function LeadForm() {
           message: sanitize(form.message, 1000),
         }),
       })
-      if (res.ok) setSuccess(true)
+
+      if (res.ok) {
+        try {
+          const data = await res.json()
+          if (typeof data?.projectId === 'string') setProjectId(data.projectId)
+        } catch {
+          // The reference is cosmetic - a missing one must not fail the submission.
+        }
+        setSuccess(true)
+      } else {
+        let errMsg = 'Something went wrong while sending your inquiry. Please try again.'
+        try {
+          const data = await res.json()
+          if (data?.error) errMsg = data.error
+        } catch {
+          // keep default message
+        }
+        setToast({ kind: 'error', text: errMsg })
+      }
     } catch (error) {
       console.error('Form submission error:', error)
+      setToast({ kind: 'error', text: 'Network error — please check your connection and try again.' })
     } finally {
       setLoading(false)
     }
@@ -135,6 +156,25 @@ export default function LeadForm() {
         </p>
       </motion.div>
 
+      {/* Inline toast for submission feedback */}
+      <AnimatePresence>
+        {toast && (
+          <motion.div
+            key={toast.kind + toast.text}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 8 }}
+            transition={{ duration: 0.25 }}
+            role="status"
+            aria-live="polite"
+            className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-5 py-3 rounded-full text-sm font-medium shadow-lg border max-w-[calc(100vw-2rem)] text-center bg-red-500/95 text-white border-red-400`}
+            onClick={() => setToast(null)}
+          >
+            {toast.text}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <AnimatePresence mode="wait">
         {success ? (
           <motion.div
@@ -159,7 +199,7 @@ export default function LeadForm() {
               <span className="text-brand-light dark:text-brand-dark font-semibold">{form.email}</span> within 24 hours.
             </p>
             <p className="text-xs text-slate-400 mt-4 font-mono">
-              REF: FSB-{Math.random().toString(36).substring(2, 10).toUpperCase()}
+              REF: {projectId ?? 'FSB-PENDING'}
             </p>
           </motion.div>
         ) : (

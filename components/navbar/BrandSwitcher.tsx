@@ -32,7 +32,7 @@ export default function BrandSwitcher({ brand, onSelect, className = '' }: Brand
         href="/"
         prefetch={true}
         onClick={onSelect}
-        className={`relative z-10 flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-full transition-colors duration-200 ${
+        className={`relative z-10 flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-full transition-colors duration-200 after:absolute after:left-0 after:right-0 after:-top-2 after:-bottom-2 after:content-[''] ${
           isLab
             ? 'text-white'
             : 'text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white'
@@ -62,7 +62,7 @@ export default function BrandSwitcher({ brand, onSelect, className = '' }: Brand
         href="/studio"
         prefetch={true}
         onClick={onSelect}
-        className={`relative z-10 flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-full transition-colors duration-200 ${
+        className={`relative z-10 flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-full transition-colors duration-200 after:absolute after:left-0 after:right-0 after:-top-2 after:-bottom-2 after:content-[''] ${
           !isLab
             ? 'text-white'
             : 'text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white'
@@ -72,7 +72,7 @@ export default function BrandSwitcher({ brand, onSelect, className = '' }: Brand
         {!isLab && (
           <motion.div
             layoutId="brand-pill-active"
-            className="absolute inset-0 rounded-full bg-emerald-600 shadow-[0_0_14px_rgba(16,185,129,0.65)] border border-emerald-400/30"
+            className="absolute inset-0 rounded-full bg-brand-light dark:bg-brand-dark shadow-[0_0_14px_rgba(0,204,96,0.65)] border border-brand-light/30"
             transition={{ type: 'spring', stiffness: 450, damping: 30 }}
           />
         )}
@@ -80,7 +80,7 @@ export default function BrandSwitcher({ brand, onSelect, className = '' }: Brand
           className={`relative z-10 w-2.5 h-2.5 rounded-full flex-shrink-0 transition-colors duration-200 ${
             !isLab
               ? 'bg-white shadow-[0_0_8px_rgba(255,255,255,0.9)]'
-              : 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.7)]'
+              : 'bg-brand-light shadow-[0_0_8px_rgba(0,204,96,0.7)]'
           }`}
           aria-hidden="true"
         />

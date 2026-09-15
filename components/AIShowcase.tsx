@@ -38,22 +38,34 @@ export default function AIShowcase() {
   const [activeStep, setActiveStep] = useState(-1)
 
   useEffect(() => {
-    fetch('/api/automation/demo')
+    const controller = new AbortController()
+    const timers: ReturnType<typeof setTimeout>[] = []
+    let cancelled = false
+
+    fetch('/api/automation/demo', { signal: controller.signal })
       .then(res => res.json())
       .then((data: { steps: AgentStep[] }) => {
+        if (cancelled) return
         setSteps(data.steps)
-        // Animate steps one by one
+        // Animate steps one by one; every timer is tracked so it can be cleared on unmount
         data.steps.forEach((_: AgentStep, i: number) => {
-          setTimeout(() => setActiveStep(i), i * 800 + 600)
+          timers.push(setTimeout(() => setActiveStep(i), i * 800 + 600))
         })
       })
       .catch(() => {
-        // Silently fail — section renders without demo steps
+        // Silently fail — section renders without demo steps (also swallows the unmount abort)
       })
+
+    // Cleanup: abort the in-flight request and cancel every pending animation timer
+    return () => {
+      cancelled = true
+      controller.abort()
+      timers.forEach(clearTimeout)
+    }
   }, [])
 
   return (
-    <section id="ai-showcase" className="max-w-7xl mx-auto px-6 py-24 relative">
+    <section id="ai-showcase" className="max-w-7xl mx-auto px-6 py-24 relative scroll-mt-24">
       <span id="ai" className="absolute -top-24" />
       {/* Header */}
       <motion.div

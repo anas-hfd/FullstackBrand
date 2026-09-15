@@ -313,7 +313,7 @@ export default function ProcessTimeline() {
   }, [])
 
   return (
-    <section id="process" className="max-w-7xl mx-auto px-6 py-24 overflow-hidden">
+    <section id="process" className="max-w-7xl mx-auto px-6 py-24 scroll-mt-24 overflow-x-clip">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
