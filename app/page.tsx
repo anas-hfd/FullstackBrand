@@ -59,9 +59,9 @@ export const metadata: Metadata = {
     creator: '@fullstackbrand',
   },
   icons: {
-    icon: '/logos/Asset 25-8.png',
-    shortcut: '/logos/Asset 25-8.png',
-    apple: '/logos/Asset 25-8.png',
+    icon: '/logos/Asset 25-8.png?v=2',
+    shortcut: '/logos/Asset 25-8.png?v=2',
+    apple: '/logos/Asset 25-8.png?v=2',
   },
 }
 

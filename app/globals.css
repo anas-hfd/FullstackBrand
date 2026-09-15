@@ -28,12 +28,19 @@
     --selection-bg: rgba(139, 92, 246, 0.25);
   }
 
-  /* Hide system cursor ONLY on desktop / fine-pointer hover devices */
+  /* Hide the system cursor ONLY on fine-pointer hover devices, and ONLY while the
+     custom cursor is genuinely rendering: CursorLight sets data-cursor="custom" on
+     <html> from its animation loop. If the custom cursor ever fails to start, or
+     is paused, visitors keep a normal pointer instead of losing it entirely. */
   @media (hover: hover) and (pointer: fine) {
-    html, body, * {
+    html[data-cursor='custom'],
+    html[data-cursor='custom'] body,
+    html[data-cursor='custom'] * {
       cursor: none !important;
     }
-    input, textarea, select {
+    html[data-cursor='custom'] input,
+    html[data-cursor='custom'] textarea,
+    html[data-cursor='custom'] select {
       cursor: text !important;
     }
   }

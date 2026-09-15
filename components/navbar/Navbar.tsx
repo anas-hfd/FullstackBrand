@@ -66,7 +66,11 @@ export default function Navbar() {
     setMobileOpen(false)
 
     // Dynamic Favicon Switcher: Asset 25-8.png for Lab, Logomark.png for Studio
-    const faviconHref = isLab ? '/logos/Asset 25-8.png' : '/logos/Logomark.png'
+    // Versioned so a browser that cached an older/failed favicon must refetch
+    const FAVICON_VERSION = '?v=2'
+    const faviconHref = isLab
+      ? '/logos/Asset 25-8.png' + FAVICON_VERSION
+      : '/logos/Logomark.png' + FAVICON_VERSION
 
     try {
       // Find every existing favicon link Next.js (or the browser) put in <head>
@@ -77,18 +81,12 @@ export default function Navbar() {
       )
 
       if (existingLinks.length > 0) {
-        // Update all existing favicon links and force a browser re-render via clone-replace
+        // Update the href IN PLACE. Never clone/replace these nodes: React owns the
+        // metadata <link> elements, and swapping them out behind React's back makes
+        // its next head reconciliation throw, which aborts client-side navigation.
         existingLinks.forEach(link => {
-          // link.href is the resolved, percent-encoded URL - compare the decoded form
-          const decodedHref = decodeURIComponent(link.href)
-          const isFaviconLink =
-            link.rel === 'icon' || link.rel === 'shortcut icon' || link.rel === 'apple-touch-icon'
-          if (isFaviconLink || decodedHref.includes('Asset 25-8') || decodedHref.includes('Logomark')) {
-            link.href = faviconHref
-            // Clone-replace trick: forces browser to acknowledge the new favicon
-            const clone = link.cloneNode() as HTMLLinkElement
-            clone.href = faviconHref
-            link.parentNode?.replaceChild(clone, link)
+          if (link.getAttribute('href') !== faviconHref) {
+            link.setAttribute('href', faviconHref)
           }
         })
       } else {
@@ -270,7 +268,12 @@ export default function Navbar() {
                   <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
                     Active Brand Context
                   </span>
-                  <BrandSwitcher brand={brand} onSelect={() => setMobileOpen(false)} className="w-full justify-center" />
+                  <BrandSwitcher
+                    brand={brand}
+                    onSelect={() => setMobileOpen(false)}
+                    className="w-full justify-center"
+                    idSuffix="-mobile"
+                  />
                 </div>
 
                 {/* Section Links */}

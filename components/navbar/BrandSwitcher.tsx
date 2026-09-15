@@ -9,9 +9,11 @@ interface BrandSwitcherProps {
   brand: 'lab' | 'studio' | 'agency'
   onSelect?: () => void
   className?: string
+  /** Keeps DOM ids unique when the switcher is mounted more than once (navbar + mobile drawer) */
+  idSuffix?: string
 }
 
-export default function BrandSwitcher({ brand, onSelect, className = '' }: BrandSwitcherProps) {
+export default function BrandSwitcher({ brand, onSelect, className = '', idSuffix = '' }: BrandSwitcherProps) {
   const router = useRouter()
   const isLab = brand === 'lab'
 
@@ -37,12 +39,12 @@ export default function BrandSwitcher({ brand, onSelect, className = '' }: Brand
             ? 'text-white'
             : 'text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white'
         }`}
-        id="brand-switch-lab"
+        id={'brand-switch-lab' + idSuffix}
       >
         {isLab && (
           <motion.div
             layoutId="brand-pill-active"
-            className="absolute inset-0 rounded-full bg-violet-600 shadow-[0_0_14px_rgba(139,92,246,0.65)] border border-violet-400/30"
+            className="pointer-events-none absolute inset-0 rounded-full bg-violet-600 shadow-[0_0_14px_rgba(139,92,246,0.65)] border border-violet-400/30"
             transition={{ type: 'spring', stiffness: 450, damping: 30 }}
           />
         )}
@@ -67,12 +69,12 @@ export default function BrandSwitcher({ brand, onSelect, className = '' }: Brand
             ? 'text-white'
             : 'text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white'
         }`}
-        id="brand-switch-studio"
+        id={'brand-switch-studio' + idSuffix}
       >
         {!isLab && (
           <motion.div
             layoutId="brand-pill-active"
-            className="absolute inset-0 rounded-full bg-brand-light dark:bg-brand-dark shadow-[0_0_14px_rgba(0,204,96,0.65)] border border-brand-light/30"
+            className="pointer-events-none absolute inset-0 rounded-full bg-brand-light dark:bg-brand-dark shadow-[0_0_14px_rgba(0,204,96,0.65)] border border-brand-light/30"
             transition={{ type: 'spring', stiffness: 450, damping: 30 }}
           />
         )}

@@ -46,9 +46,9 @@ export const metadata: Metadata = {
     canonical: SITE_URL,
   },
   icons: {
-    icon: '/logos/Logomark.png',
-    shortcut: '/logos/Logomark.png',
-    apple: '/logos/Logomark.png',
+    icon: '/logos/Logomark.png?v=2',
+    shortcut: '/logos/Logomark.png?v=2',
+    apple: '/logos/Logomark.png?v=2',
   },
   openGraph: {
     title: 'Fullstack Brand | Creative Brand Experience · AI Technology Studio',
