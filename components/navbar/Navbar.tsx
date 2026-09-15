@@ -67,17 +67,35 @@ export default function Navbar() {
 
     // Dynamic Favicon Switcher: Asset 25-8.png for Lab, Logomark.png for Studio
     const faviconHref = isLab ? '/logos/Asset 25-8.png' : '/logos/Logomark.png'
-    
+
     try {
-      let linkIcon = document.getElementById('fsb-dynamic-favicon') as HTMLLinkElement | null
-      if (!linkIcon) {
-        linkIcon = document.createElement('link')
-        linkIcon.id = 'fsb-dynamic-favicon'
-        linkIcon.rel = 'icon'
-        linkIcon.type = 'image/png'
-        document.head.appendChild(linkIcon)
+      // Find every existing favicon link Next.js (or the browser) put in <head>
+      const existingLinks = Array.from(
+        document.querySelectorAll<HTMLLinkElement>(
+          'link[rel="icon"], link[rel="shortcut icon"], link[rel="apple-touch-icon"]'
+        )
+      )
+
+      if (existingLinks.length > 0) {
+        // Update all existing favicon links and force a browser re-render via clone-replace
+        existingLinks.forEach(link => {
+          if (link.href.includes('Asset 25-8') || link.href.includes('Logomark') || link.rel === 'icon' || link.rel === 'shortcut icon') {
+            link.href = faviconHref
+            // Clone-replace trick: forces browser to acknowledge the new favicon
+            const clone = link.cloneNode() as HTMLLinkElement
+            clone.href = faviconHref
+            link.parentNode?.replaceChild(clone, link)
+          }
+        })
+      } else {
+        // Fallback: create a new favicon link if none exist in the DOM yet
+        const newLink = document.createElement('link')
+        newLink.id = 'fsb-dynamic-favicon'
+        newLink.rel = 'icon'
+        newLink.type = 'image/png'
+        newLink.href = faviconHref
+        document.head.appendChild(newLink)
       }
-      linkIcon.href = faviconHref
     } catch {
       // Ignore DOM exceptions on non-browser environments
     }
