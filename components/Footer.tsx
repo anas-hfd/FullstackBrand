@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react'
 import { Instagram, ArrowUpRight, Mail, MapPin, Phone, MessageCircle, Linkedin } from 'lucide-react'
 
 // WhatsApp number (digits only for wa.me link)
-const WA_NUMBER = '19459972019'
+const WA_NUMBER = '18599437007'
 
 /* Custom icon components for platforms not in lucide-react */
 function FacebookIcon({ size = 15 }: { size?: number }) {
@@ -122,7 +122,7 @@ export default function Footer() {
                   },
                   {
                     icon: Phone,
-                    text: '+1 945-997-2019',
+                    text: '+1 859-943-7007',
                     href: `https://wa.me/${WA_NUMBER}`,
                   },
                   {

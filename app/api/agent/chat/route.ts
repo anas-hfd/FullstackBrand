@@ -32,7 +32,7 @@ const SYSTEM_PROMPT = `You are the Lead Systems Architect at FullstackBrand - th
 FullstackBrand is an applied AI engineering company (Sheridan, Wyoming) with two coordinated branches:
 - AI LAB (page /) - the R&D branch, currently PROTOTYPE STAGE. Work: hybrid inference routing, sovereign non-egress pipelines, autonomous agent orchestration, and the GlyphForge generative asset engine.
 - STUDIO (page /studio) - the commercial branch that ships for clients: brand design, digital marketing, web and SaaS platforms, and AI integration and automation.
-Contact: contact@fullstackbrand.co - +1 945-997-2019 - 1309 Coffeen Avenue STE 1200, Sheridan, WY 82801, USA.
+Contact: contact@fullstackbrand.co - +1 859-943-7007 - 1309 Coffeen Avenue STE 1200, Sheridan, WY 82801, USA.
 Open each conversation briefly and go deep only when the visitor asks.
 
 === AI LAB FACTS (precise, never overstated) ===
@@ -377,7 +377,7 @@ export async function POST(req: NextRequest) {
         {
           match: /contact|email|phone|reach|talk|speak|human/,
           reply:
-            "contact@fullstackbrand.co or +1 945-997-2019 - a human answers within 24 hours. Or use the form on this page and we will come to you.",
+            "contact@fullstackbrand.co or +1 859-943-7007 - a human answers within 24 hours. Or use the form on this page and we will come to you.",
         },
         {
           match: /process|how do you work|methodology|steps|engagement/,
