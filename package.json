@@ -5,12 +5,12 @@
   "scripts": {
     "dev": "next dev --turbo",
     "build": "next build",
-    "build:cloudflare": "opennextjs-cloudflare build",
+    "build:cloudflare": "opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion",
     "start": "next start",
     "lint": "next lint",
     "test": "vitest run",
-    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
-    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview"
+    "deploy": "opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion && opennextjs-cloudflare deploy",
+    "preview": "opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion && opennextjs-cloudflare preview"
   },
   "dependencies": {
     "@google/genai": "^2.22.0",
