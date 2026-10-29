@@ -79,10 +79,10 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-8 inline-flex items-center gap-2 px-5 py-2 rounded-full glass text-sm font-medium"
+          className="mt-8 mb-8 inline-flex items-center gap-2 px-5 py-2 rounded-full glass text-sm font-medium"
         >
           <FlaskConical size={14} className="text-brand-light dark:text-brand-dark" />
-          Commercial AI Deployment Studio · Powered by AI Lab R&amp;D
+          Crafting web art that make your business stunning.
           <span className="w-1.5 h-1.5 rounded-full bg-brand-light dark:bg-brand-dark animate-pulse" />
         </motion.div>
 
@@ -91,21 +91,14 @@ export default function Hero() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="text-5xl sm:text-6xl md:text-8xl font-black tracking-tighter mb-6 leading-[0.9]"
+          className="text-5xl sm:text-5xl md:text-7xl font-black tracking-tighter mb-6 leading-[0.9]"
           style={{ transform: 'translateZ(30px)' }}
         >
-          Applied AI{' '}
-          <span className="relative inline-block">
-            <span className="text-brand-light dark:text-brand-dark glow-text">Engineering.</span>
-            <motion.span
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ duration: 0.8, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="absolute -bottom-2 left-0 right-0 h-1 rounded-full bg-gradient-to-r from-brand-light to-brand-dark origin-left"
-            />
-          </span>
+          Full Branding Ecosystem
           <br />
-          <span className="text-slate-900 dark:text-white">Commercial Deployment.</span>
+          <span className="text-brand-light dark:text-brand-dark sm:text-4xl md:text-5xl">Design · Development · Marketing · AI Integration</span>
+          <br />
+          <span className="text-slate-900 dark:text-white text-4xl sm:text-5xl md:text-6xl">Empowering Brands to Grow Correctly.</span>
         </motion.h1>
 
         {/* Subtext */}
@@ -116,7 +109,7 @@ export default function Hero() {
           className="text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto mb-12 leading-relaxed"
           style={{ transform: 'translateZ(15px)' }}
         >
-          The Studio applies FullstackBrand&apos;s AI Lab research — routing architectures, agent orchestration, and sovereign inference systems — to client products, SaaS platforms, and enterprise integrations.
+          We blend design, development, marketing, and AI to create cohesive brand experiences that drive growth and performance.
         </motion.p>
 
         {/* CTA buttons */}
