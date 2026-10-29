@@ -82,7 +82,7 @@ export default function Hero() {
           className="mt-8 mb-8 inline-flex items-center gap-2 px-5 py-2 rounded-full glass text-sm font-medium"
         >
           <FlaskConical size={14} className="text-brand-light dark:text-brand-dark" />
-          Crafting web art that make your business stunning.
+          Crafting Web Art that makes your business Grow.
           <span className="w-1.5 h-1.5 rounded-full bg-brand-light dark:bg-brand-dark animate-pulse" />
         </motion.div>
 
